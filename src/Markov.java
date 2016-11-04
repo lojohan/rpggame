@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,8 +17,23 @@ import java.util.regex.Pattern;
 public class Markov {
 	
 	static String templateText = "";
-	static HashMap<String, HashMap<String,Integer> > wordOccurences = new HashMap<>();
+	static HashMap<String, HashMap<String,Integer>> wordOccurrences = new HashMap<>();
+	static HashMap<String, HashMap<String,Integer>> classOccurrences = new HashMap<>();
+	
+//	static HashSet<String> verbs = new HashSet<>();
+//	static HashSet<String> adjectives = new HashSet<>();
+//	static HashSet<String> nouns = new HashSet<>();
+//	static HashSet<String> adverbs = new HashSet<>();
+//	static HashSet<String> prepositions = new HashSet<>();
+//	static HashSet<String> conjunctions = new HashSet<>();
+	static HashMap<String, String> _wordClasses = new HashMap<>();
+	static HashMap<String, List<String>> _wordClasses_reverse = new HashMap<>();
+	
+	final static int ResolutionNormalization = 10000000;
+	
 	static ArrayList<String> wordsToChooseFrom = new ArrayList<>();
+	private static int wordsNotInLists;
+	private static int totalWordsCount;
 	
 	public static void loadTemplate() {
 		try {
@@ -31,85 +50,233 @@ public class Markov {
 		}
 	}
 	
+	public static void loadWordClasses() {
+		for (String clazz : new String[]{"verbs", "adjectives", "nouns", "adverbs", "prepositions", "conjunctions", "pronouns", "punctuations"}) {
+			_wordClasses_reverse.put(clazz, new ArrayList<>());
+			try {
+				BufferedReader in = new BufferedReader(new FileReader("wordclasses/" + clazz + ".txt"));
+				String line;
+				while ((line = in.readLine()) != null) {
+					String word = line.trim();
+					if (word.isEmpty()) continue;
+					_wordClasses.put(word, clazz);
+				}
+				in.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public static void populateMap() {
 		
 		final Pattern p = Pattern.compile("(\\w|')+|[.:,!?-]");
 		
+		HashSet<String> notInListSet = new HashSet<>();
+		
 		Matcher m = p.matcher(templateText);
+		
 		int nextIndex = 0;
 		while(m.find(nextIndex)) {
 			String next = m.group();
 			
+			/* Check the following word,, and add an occurrence count. */
 		    nextIndex = m.end();
 			if (m.find(nextIndex)) {
 				String following = m.group();
 				
-				HashMap<String, Integer> occ = wordOccurences.get(next);
+				HashMap<String, Integer> occ = wordOccurrences.get(next);
 				if (occ == null) {
 					occ = new HashMap<String,Integer>();
-					wordOccurences.put(next, occ);
+					wordOccurrences.put(next, occ);
 				}
 				if(!occ.containsKey(following))
 					occ.put(following, 1);
 				else
 					occ.put(following, occ.get(following) + 1);
+				
+				// do the same but for word class
+				occ = classOccurrences.get(next);
+				if (occ == null) {
+					occ = new HashMap<String,Integer>();
+					classOccurrences.put(next, occ);
+				}
+				final String followingClass = getWordClassNormalized(following);
+				if(followingClass != null) {
+					if(!occ.containsKey(followingClass))
+						occ.put(followingClass, 1);
+					else
+						occ.put(followingClass, occ.get(followingClass) + 1);
+				}
 			}
 			
 			wordsToChooseFrom.add(next);
+			putWordClassNormalized(next);
+			
+			if (hasWordClassNormalized(next)) {
+				notInListSet.add(next);
+			}
+		}
+		totalWordsCount = wordOccurrences.size();
+		
+		wordsNotInLists = notInListSet.size();
+		System.out.println("Stats: words not in lists: " + wordsNotInLists + ", total wordCount:" + totalWordsCount + " ("+(100*(float)wordsNotInLists/totalWordsCount)+"%)");
+		normalizeOccurrences();
+	}
+	
+	static void normalizeOccurrences() {
+		
+		for(String word : wordOccurrences.keySet()) {
+			int numberOfOccs = 0;
+			HashMap<String, Integer> nextwordstats = wordOccurrences.get(word);
+			for(Integer count : nextwordstats.values()) {
+				numberOfOccs += count;
+			}
+			
+			int sumWordCount = 0;
+			
+			for (Entry<String, Integer> entry : nextwordstats.entrySet()) {
+				int n = (int)((double)entry.getValue() / (double)numberOfOccs * ResolutionNormalization);
+				sumWordCount += n;
+				entry.setValue(n);
+			}
+			
+			if (sumWordCount != ResolutionNormalization) {
+				assert false;
+			}
+		}
+		// do the same for clazzzzes
+		for(String word : classOccurrences.keySet()) {
+			int numberOfOccs = 0;
+			HashMap<String, Integer> nextwordstats = classOccurrences.get(word);
+			for(Integer count : nextwordstats.values()) {
+				numberOfOccs += count;
+			}
+			
+			int sumClassCount = 0;
+			
+			for (Entry<String, Integer> entry : nextwordstats.entrySet()) {
+				int n = (int)((double)entry.getValue() / (double)numberOfOccs * ResolutionNormalization);
+				sumClassCount += n;
+				entry.setValue(n);
+			}
+			
+			if (sumClassCount != ResolutionNormalization) {
+				assert false;
+			}
 		}
 	}
 	
+	static boolean hasWordClassNormalized(String word) {
+		String w = word.toLowerCase();
+		return _wordClasses.containsKey(w);
+	}
+	
+	static String getWordClassNormalized(String word) {
+		String w = word.toLowerCase();
+		String clazz = _wordClasses.get(w);
+		return clazz;
+	}
+	
+	static List<String> getWordsOfClass(String clazz) {
+		List<String> words = _wordClasses_reverse.get(clazz);
+		return words;
+	}
+	
+	static void putWordClassNormalized(String word) {
+		final String wordClassNormalized = getWordClassNormalized(word);
+		if (wordClassNormalized != null)
+			_wordClasses_reverse.get(wordClassNormalized).add(word);
+	}
+	
 	public static String generate() {
-		populateMap();
-		Random rn = new Random();
-		StringBuilder sb = new StringBuilder();
+		final Random rn = new Random();
+		final StringBuilder sb = new StringBuilder();
 		String lastWord = "";
-		int rand = 0;
+		int rand;
+		
+		// Choose first word
 		do {
 			rand = rn.nextInt(wordsToChooseFrom.size());
 			lastWord = wordsToChooseFrom.get(rand);
 		} while (lastWord.matches("\\W"));
-		String firstLetter = lastWord.substring(0, 1);
-		String firstWord = lastWord.replaceFirst("\\w", firstLetter.toUpperCase());
-		sb.append(firstWord);
 		
-		while(!lastWord.equals(".") && !lastWord.equals("?")  && !lastWord.equals("!")) {
+		final String firstLetter = lastWord.substring(0, 1);
+		final String firstWord = lastWord.replaceFirst("\\w", firstLetter.toUpperCase());
+		sb.append(firstWord);		
+		int numberofwords = 0;
+		
+		while(!lastWord.equals(".") && !lastWord.equals("?")  && !lastWord.equals("!") && numberofwords < 20) {
 			
 			// get next word...
-			HashMap<String,Integer> tmpmap = wordOccurences.get(lastWord);
-			
-			int numberOfOccs = 0;
-			
-			for(Integer count : tmpmap.values()) {
-				numberOfOccs += count;
-			}
-			
-			rand = rn.nextInt(numberOfOccs);
-			
-			int count = 0;
-			
-			for(String word : tmpmap.keySet()) {
-				count += tmpmap.get(word);
-				if(rand <= count) {
-					lastWord = word;
-					break;
+			String nextWord = ""; // in case the following algos goes wrong...
+			int rand1 = rn.nextInt(100);
+			if (rand1 < 90) {
+				final HashMap<String,Integer> nextwordstats = wordOccurrences.get(lastWord);
+				
+				rand = rn.nextInt(ResolutionNormalization);
+				
+				int count = 0;
+				
+				for(String word : nextwordstats.keySet()) {
+					count += nextwordstats.get(word);
+					if(rand < count) {
+						nextWord = word;
+						break;
+					}
+				}
+				if (nextWord.equals("")) {
+					assert false;
+				}
+			} else {
+				final HashMap<String,Integer> nextwordclassstats = classOccurrences.get(lastWord);
+				int rand2 = rn.nextInt(ResolutionNormalization);
+				
+				int count = 0;
+				String nextWordClass = "adverbs";
+				
+				for(String clazz : nextwordclassstats.keySet()) {
+					count += nextwordclassstats.get(clazz);
+					if(rand2 < count) {
+						nextWordClass = clazz;
+						break;
+					}
+				}
+				
+				List<String> wordsOfClass = getWordsOfClass(nextWordClass);
+				int rand3 = rn.nextInt(wordsOfClass.size());
+				nextWord = wordsOfClass.get(rand3);
+				
+				if (nextWord.equals("")) {
+					assert false;
 				}
 			}
 			
-			if(lastWord.isEmpty() || lastWord.matches("[.:,!?-]"))
-				sb.append(lastWord);
+			if(nextWord.isEmpty() || nextWord.matches("[.:,!?-]"))
+				sb.append(nextWord);
 			else
-				sb.append(" "+lastWord);
+				sb.append(" "+nextWord);
+			
+			if(numberofwords == 19) {
+				sb.append("...");
+			}
+			
+			if (!nextWord.isEmpty()) {
+				lastWord = nextWord;
+				numberofwords++;
+			}
 		}
 		return sb.toString();
 	}
 	
 	public static void generateDialogues(int numberOfDialogues) {
 		try {
-			PrintWriter pw = new PrintWriter(new FileOutputStream("dialgoues.txt"));
+			PrintWriter pw = new PrintWriter(new FileOutputStream("RandomDialogues.txt"));
 			for(int i = 0; i < numberOfDialogues; i++) {
 				pw.println(String.valueOf(i+1)+":");
 				pw.println(generate());
+				pw.flush();
 			}
 			pw.close();
 		} catch (FileNotFoundException e) {

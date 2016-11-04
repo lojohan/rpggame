@@ -2,7 +2,9 @@
 
 public class Main {
     public static void main(String[] args) {
+    	Markov.loadWordClasses();
     	Markov.loadTemplate();
-    	Markov.generateDialogues(10);
+    	Markov.populateMap();
+    	Markov.generateDialogues(10000);
     }
 }
