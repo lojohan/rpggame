@@ -1,0 +1,3 @@
+It seems there are different ways to read and write data of files in Java.
+
+I want to read ASCII data from a file. What are the possible ways and their differences?
