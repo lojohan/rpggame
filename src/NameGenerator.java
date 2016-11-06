@@ -53,7 +53,7 @@ public class NameGenerator {
 	
 	public static void loadTemplate() {
 		try {
-			BufferedReader in = new BufferedReader(new FileReader("template.txt"));
+			BufferedReader in = new BufferedReader(new FileReader("templates/template.txt"));
 			StringBuilder sb = new StringBuilder(templateText);
 			while(in.ready()) {
 				sb.append((char)in.read());
@@ -70,7 +70,7 @@ public class NameGenerator {
 		HashSet<String> wordClasses = new HashSet<String>();
 		for (String clazz : new String[]{"verbs", "adjectives", "nouns", "adverbs", "prepositions", "conjunctions", "pronouns", "punctuations"}) {
 			try {
-				BufferedReader in = new BufferedReader(new FileReader("wordclasses/" + clazz + ".txt"));
+				BufferedReader in = new BufferedReader(new FileReader("templates/wordclasses/" + clazz + ".txt"));
 				String line;
 				while ((line = in.readLine()) != null) {
 					String word = line.trim();
@@ -103,7 +103,7 @@ public class NameGenerator {
 	
 	static void loadPrefixes() {
 		try {
-			BufferedReader in = new BufferedReader(new FileReader("fixes/prefixes.txt"));
+			BufferedReader in = new BufferedReader(new FileReader("templates/fixes/prefixes.txt"));
 			String line;
 			while ((line = in.readLine()) != null) {
 				String word = line.trim();
@@ -119,7 +119,7 @@ public class NameGenerator {
 	
 	static void loadSuffixes() {
 		try {
-			BufferedReader in = new BufferedReader(new FileReader("fixes/suffixes.txt"));
+			BufferedReader in = new BufferedReader(new FileReader("templates/fixes/suffixes.txt"));
 			String line;
 			while ((line = in.readLine()) != null) {
 				String word = line.trim();

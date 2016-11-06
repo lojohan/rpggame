@@ -33,7 +33,7 @@ public class DialogueGenerator {
 	
 	public static void loadTemplate() {
 		try {
-			BufferedReader in = new BufferedReader(new FileReader("template.txt"));
+			BufferedReader in = new BufferedReader(new FileReader("templates/template.txt"));
 			StringBuilder sb = new StringBuilder(templateText);
 			while(in.ready()) {
 				sb.append((char)in.read());
@@ -50,7 +50,7 @@ public class DialogueGenerator {
 		for (String clazz : new String[]{"verbs", "adjectives", "nouns", "adverbs", "prepositions", "conjunctions", "pronouns", "punctuations"}) {
 			_wordClasses_reverse.put(clazz, new ArrayList<>());
 			try {
-				BufferedReader in = new BufferedReader(new FileReader("wordclasses/" + clazz + ".txt"));
+				BufferedReader in = new BufferedReader(new FileReader("templates/wordclasses/" + clazz + ".txt"));
 				String line;
 				while ((line = in.readLine()) != null) {
 					String word = line.trim();
@@ -279,7 +279,7 @@ public class DialogueGenerator {
 	
 	public static void printDialoguesToFile() {
 		try {
-			PrintWriter pw = new PrintWriter(new FileOutputStream("RandomDialogues.txt"));
+			PrintWriter pw = new PrintWriter(new FileOutputStream("output/RandomDialogues.txt"));
 			for(int i = 0; i < dialogues.size(); i++) {
 				pw.println(String.valueOf(i+1)+":");
 				pw.println(dialogues.get(i));
