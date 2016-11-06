@@ -14,7 +14,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Markov {
+public class DialogueGenerator {
 	
 	static String templateText = "";
 	static HashMap<String, HashMap<String,Integer>> wordOccurrences = new HashMap<>();
@@ -22,12 +22,6 @@ public class Markov {
 	
 	static ArrayList<String> dialogues = new ArrayList<>();
 	
-//	static HashSet<String> verbs = new HashSet<>();
-//	static HashSet<String> adjectives = new HashSet<>();
-//	static HashSet<String> nouns = new HashSet<>();
-//	static HashSet<String> adverbs = new HashSet<>();
-//	static HashSet<String> prepositions = new HashSet<>();
-//	static HashSet<String> conjunctions = new HashSet<>();
 	static HashMap<String, String> _wordClasses = new HashMap<>();
 	static HashMap<String, List<String>> _wordClasses_reverse = new HashMap<>();
 	
@@ -297,6 +291,8 @@ public class Markov {
 			e.printStackTrace();
 		}
 	}
+	
+	
 }
 
 

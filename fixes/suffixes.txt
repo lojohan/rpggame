@@ -1,0 +1,7 @@
+Village
+Town
+City
+Cavern
+Cave
+Fields
+Forest
