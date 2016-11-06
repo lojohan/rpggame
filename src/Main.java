@@ -6,7 +6,7 @@ public class Main {
     	DialogueGenerator.loadWordClasses();
     	DialogueGenerator.loadTemplate();
     	DialogueGenerator.populateMap();
-    	DialogueGenerator.generateDialogues(100,3,15);
+    	DialogueGenerator.generateDialogues(10000,3,15);
     	DialogueGenerator.printDialoguesToFile();
     	
     	
