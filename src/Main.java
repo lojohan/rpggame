@@ -5,6 +5,7 @@ public class Main {
     	Markov.loadWordClasses();
     	Markov.loadTemplate();
     	Markov.populateMap();
-    	Markov.generateDialogues(10000);
+    	Markov.generateDialogues(10000,3,15);
+    	Markov.printDialoguesToFile();
     }
 }

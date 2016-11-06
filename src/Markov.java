@@ -20,6 +20,8 @@ public class Markov {
 	static HashMap<String, HashMap<String,Integer>> wordOccurrences = new HashMap<>();
 	static HashMap<String, HashMap<String,Integer>> classOccurrences = new HashMap<>();
 	
+	static ArrayList<String> dialogues = new ArrayList<>();
+	
 //	static HashSet<String> verbs = new HashSet<>();
 //	static HashSet<String> adjectives = new HashSet<>();
 //	static HashSet<String> nouns = new HashSet<>();
@@ -190,7 +192,7 @@ public class Markov {
 			_wordClasses_reverse.get(wordClassNormalized).add(word);
 	}
 	
-	public static String generate() {
+	public static String generate(int minimumWords, int maximumWords) {
 		final Random rn = new Random();
 		final StringBuilder sb = new StringBuilder();
 		String lastWord = "";
@@ -207,7 +209,7 @@ public class Markov {
 		sb.append(firstWord);		
 		int numberofwords = 0;
 		
-		while(!lastWord.equals(".") && !lastWord.equals("?")  && !lastWord.equals("!") && numberofwords < 20) {
+		while(!lastWord.equals(".") && !lastWord.equals("?")  && !lastWord.equals("!")) {
 			
 			// get next word...
 			String nextWord = ""; // in case the following algos goes wrong...
@@ -267,15 +269,26 @@ public class Markov {
 				numberofwords++;
 			}
 		}
-		return sb.toString();
+		if(numberofwords <= maximumWords && numberofwords >= minimumWords)
+			return sb.toString();
+		else
+			return null;
 	}
 	
-	public static void generateDialogues(int numberOfDialogues) {
+	public static void generateDialogues(int numberOfDialogues, int minimumWords, int maximumWords) {
+		while(dialogues.size() < numberOfDialogues) {
+			String s = generate(minimumWords,maximumWords);
+			if(s != null)
+				dialogues.add(s);
+		}
+	}
+	
+	public static void printDialoguesToFile() {
 		try {
 			PrintWriter pw = new PrintWriter(new FileOutputStream("RandomDialogues.txt"));
-			for(int i = 0; i < numberOfDialogues; i++) {
+			for(int i = 0; i < dialogues.size(); i++) {
 				pw.println(String.valueOf(i+1)+":");
-				pw.println(generate());
+				pw.println(dialogues.get(i));
 				pw.flush();
 			}
 			pw.close();
@@ -285,3 +298,5 @@ public class Markov {
 		}
 	}
 }
+
+
