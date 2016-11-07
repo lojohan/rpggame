@@ -3,5 +3,12 @@ Town
 City
 Cavern
 Cave
-Fields
+Field
 Forest
+Mountain
+River
+Sea
+Ocean
+Hill
+Park
+Hole
