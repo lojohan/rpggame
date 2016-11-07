@@ -13,6 +13,6 @@ public class Main {
     	System.out.println(NameGenerator.generateRandomName());
     	System.out.println(NameGenerator.generateRandomPlaceName());
     	
-    	MapGenerator.generateMap(15, 20, 5);
+    	MapGenerator.generateMap(15, 20, 1);
     }
 }
