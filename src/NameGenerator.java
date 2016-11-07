@@ -20,6 +20,13 @@ public class NameGenerator {
 		return names.get(rand);
 	}
 	
+	static void initNameGenerator() {
+    	NameGenerator.loadTemplate();
+    	NameGenerator.loadPossibleNames();
+    	NameGenerator.loadPrefixes();
+    	NameGenerator.loadSuffixes();
+	}
+	
 	static String generateRandomPlaceName() {
 		
 		final Random rn = new Random();
