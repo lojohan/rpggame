@@ -32,25 +32,77 @@ public class MapGenerator {
 	
 	public static void generate(int sizeX, int sizeY, int maximumDepth) {
 		int currentDepth = 0;
-    	MapGenerator.generateMap(0,0,sizeX, sizeY, currentDepth, maximumDepth,0,0);
+    	MapGenerator.generateMap(50,50,sizeX, sizeY, currentDepth, maximumDepth,0,0,Dir.EAST);
     	MapGenerator.printToMap();
 	}
 	
-	public static void generateMap(int startX, int startY, int sizeX, int sizeY, int currentDepth, int maximumDepth, int prevExitX, int prevExitY) {
+	public static void generateMap(int startX, int startY, int sizeX, int sizeY, int currentDepth, int maximumDepth, int prevExitX, int prevExitY, Dir exclude) {
 		if(currentDepth <= maximumDepth) {
 			
-			entityStrings.add("Zone;"+NameGenerator.generateRandomPlaceName()+";"+startX+","+startY+";"+sizeX+","+sizeY+";");
+			entityStrings.add("Zone;"+NameGenerator.generateRandomPlaceName()+";"+startX+","+startY+";"+(startX+sizeX)+","+(startY+sizeY)+";");
 			Zone currentZone = new Zone(startX, startY, sizeX, sizeY);
+			Dir exitDir = Dir.SOUTH;
+			//Dir exitDir = Zone.getRandomDirectionExcl(exclude);
+			
+			//used to not have the next zone be the same as the current one.
+			Dir excludeDir = getExcludeDir(exitDir);
+			
+			IntegerPair exitPoint = getRandomPointOnEdge(currentZone.getEdge(exitDir));
+			
+			IntegerPair nextCoords = getNewStartCoords(currentZone,sizeX,sizeY,exitDir);
 			
 	    	MapGenerator.generateEdgeTiles(currentZone);
 	    	MapGenerator.generateNonPlayerEntities(currentZone, 2);
 	    	MapGenerator.generatePlayer(currentZone, currentDepth);
 	    	
-	    	int newStartX = startX-sizeX;
-	    	generateMap(newStartX,0, sizeX, sizeY, currentDepth+1,maximumDepth, startX, 5);
+	    	generateMap(nextCoords.x,nextCoords.y, sizeX, sizeY, currentDepth+1,maximumDepth, exitPoint.x, exitPoint.y, excludeDir);
 	    	
+	    	if(currentDepth != maximumDepth)
+	    		clearExit(currentDepth, exitPoint.x, exitPoint.y);
 			clearExit(currentDepth, prevExitX, prevExitY);
 	    	
+		}
+	}
+	
+	private static IntegerPair getNewStartCoords(Zone currentZone,int nextZoneSizeX, int nextZoneSizeY, Dir dir) {
+		IntegerPair ip;
+		switch(dir) {
+		case NORTH:
+			ip = new IntegerPair(currentZone.x - nextZoneSizeX, currentZone.y);
+			break;
+		case EAST:
+			ip = new IntegerPair(currentZone.x, currentZone.y + currentZone.sizeY);
+			break;
+		case SOUTH:
+			ip = new IntegerPair(currentZone.x + currentZone.sizeX, currentZone.y);
+			break;
+		case WEST:
+			ip = new IntegerPair(currentZone.x, currentZone.y - nextZoneSizeY);
+			break;
+		default:
+			return null;
+		}
+		return ip;
+	}
+	
+	private static IntegerPair getRandomPointOnEdge(ArrayList<IntegerPair> edge) {
+		final Random rn = new Random();
+		int rand = 1 + rn.nextInt(edge.size()-2);
+		return edge.get(rand);
+	}
+	
+	private static Dir getExcludeDir(Dir dir) {
+		switch(dir) {
+		case NORTH:
+			return Dir.SOUTH;
+		case EAST:
+			return Dir.WEST;
+		case SOUTH:
+			return Dir.NORTH;
+		case WEST:
+			return Dir.WEST;
+		default:
+			return null;
 		}
 	}
 
@@ -61,12 +113,14 @@ public class MapGenerator {
 			
 			Iterator<String> it = entityStrings.iterator();
 			
+			
 			while(it.hasNext()) {
 				String entity = it.next();
-				if(entity.contains("Tile;;"+exitCoords)) {
+				if(entity.startsWith("Tile;;"+exitCoords)) {
 					it.remove();
 				}
 			}
+			
 		}
 	}
 	
@@ -74,7 +128,7 @@ public class MapGenerator {
 	public static void generateNonPlayerEntities(Zone zone, double entityDensity) {
 		// placeholder
 		int count = 0;
-		int numberOfEntities = (int) (zone.sizeX*zone.sizeY*entityDensity/100);
+		int numberOfEntities = (int) ( (zone.sizeX-1)*(zone.sizeY-1)*entityDensity/100);
 		
 		while(count < numberOfEntities) {
 			

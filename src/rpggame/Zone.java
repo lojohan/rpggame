@@ -59,7 +59,41 @@ public class Zone {
 		return this.edges.get(dir);
 	}
 	
-	public Dir getRandomDirection() {
+	public ArrayList<IntegerPair> getRandomEdgeExclude(Dir exclude) {
+		Dir dir = exclude;
+		while(dir == exclude) {
+			dir = getRandomDirection();
+		}
+		return getEdge(dir);
+	}
+	
+	static public Dir getRandomDirectionExcl(Dir exclude) {
+		final Random rn = new Random();
+		Dir dir = null;
+		
+		while(dir != exclude) {
+			int rand = rn.nextInt(4);
+			
+			switch (rand) {
+	        case 0:
+	            dir = Dir.NORTH;
+	                
+	        case 1:
+	            dir = Dir.EAST;
+	                     
+	        case 2:
+	            dir = Dir.SOUTH;
+	                    
+	        case 3:
+	            dir = Dir.WEST;
+	        default:
+	        	dir = null;
+			}
+		}
+		return dir;
+	}
+	
+	static public Dir getRandomDirection() {
 		final Random rn = new Random();
 		int rand = rn.nextInt(4);
 		
