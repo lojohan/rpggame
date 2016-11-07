@@ -1,3 +1,4 @@
+package rpggame;
 
 
 public class Main {
@@ -13,6 +14,6 @@ public class Main {
     	System.out.println(NameGenerator.generateRandomName());
     	System.out.println(NameGenerator.generateRandomPlaceName());
     	
-    	MapGenerator.generateMap(15, 20, 1);
+    	MapGenerator.generate(15, 20, 3);
     }
 }
