@@ -10,9 +10,10 @@ public class Main {
     	DialogueGenerator.generateDialogues(10000,3,15);
     	DialogueGenerator.printDialoguesToFile();
     	
-    	NameGenerator.initNameGenerator();
-    	System.out.println(NameGenerator.generateRandomName());
-    	System.out.println(NameGenerator.generateRandomPlaceName());
+    	for (int i = 0 ; i < 10; i++) {
+	    	System.out.println("A random name: " + NameGenerator.generateRandomName());
+	    	System.out.println("A random place: " + NameGenerator.generateRandomPlaceName());
+    	}
     	
     	MapGenerator.generate(15, 20, 3);
     }
