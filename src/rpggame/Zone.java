@@ -1,6 +1,7 @@
 package rpggame;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 
@@ -69,28 +70,16 @@ public class Zone {
 	
 	static public Dir getRandomDirectionExcl(Dir exclude) {
 		final Random rn = new Random();
-		Dir dir = null;
+		ArrayList<Dir> directions = new ArrayList<>();
 		
-		while(dir != exclude) {
-			int rand = rn.nextInt(4);
-			
-			switch (rand) {
-	        case 0:
-	            dir = Dir.NORTH;
-	                
-	        case 1:
-	            dir = Dir.EAST;
-	                     
-	        case 2:
-	            dir = Dir.SOUTH;
-	                    
-	        case 3:
-	            dir = Dir.WEST;
-	        default:
-	        	dir = null;
-			}
+		for (Dir dir : Dir.values()) {
+			  if(dir != exclude) {
+				  directions.add(dir);
+			  }
 		}
-		return dir;
+		
+		int rand = rn.nextInt(directions.size());
+        return directions.get(rand);
 	}
 	
 	static public Dir getRandomDirection() {

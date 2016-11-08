@@ -1,4 +1,5 @@
 package rpggame;
+import java.awt.Rectangle;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import rpggame.Zone.Dir;
 public class MapGenerator {
 	static HashMap<String,String> entities = new HashMap<>();
 	static ArrayList<String> entityStrings = new ArrayList<>();
+	static ArrayList<Zone> createdZones = new ArrayList<>();
 	
 	// Generate tiles in a specific zone
 	public static void generateTiles(int startX, int startY, int sizeX, int sizeY) {
@@ -39,29 +41,45 @@ public class MapGenerator {
 	public static void generateMap(int startX, int startY, int sizeX, int sizeY, int currentDepth, int maximumDepth, int prevExitX, int prevExitY, Dir exclude) {
 		if(currentDepth <= maximumDepth) {
 			
-			entityStrings.add("Zone;"+NameGenerator.generateRandomPlaceName()+";"+startX+","+startY+";"+(startX+sizeX)+","+(startY+sizeY)+";");
-			Zone currentZone = new Zone(startX, startY, sizeX, sizeY);
-			Dir exitDir = Dir.SOUTH;
-			//Dir exitDir = Zone.getRandomDirectionExcl(exclude);
+			boolean canCreateZone = true;
 			
-			//used to not have the next zone be the same as the current one.
-			Dir excludeDir = getExcludeDir(exitDir);
+			for(Zone createdZone : createdZones) {
+				if(zoneOverLaps(createdZone, startX,startY,sizeX,sizeY)) {
+					canCreateZone = false;
+				}
+			}
 			
-			IntegerPair exitPoint = getRandomPointOnEdge(currentZone.getEdge(exitDir));
-			
-			IntegerPair nextCoords = getNewStartCoords(currentZone,sizeX,sizeY,exitDir);
-			
-	    	MapGenerator.generateEdgeTiles(currentZone);
-	    	MapGenerator.generateNonPlayerEntities(currentZone, 2);
-	    	MapGenerator.generatePlayer(currentZone, currentDepth);
-	    	
-	    	generateMap(nextCoords.x,nextCoords.y, sizeX, sizeY, currentDepth+1,maximumDepth, exitPoint.x, exitPoint.y, excludeDir);
-	    	
-	    	if(currentDepth != maximumDepth)
-	    		clearExit(currentDepth, exitPoint.x, exitPoint.y);
-			clearExit(currentDepth, prevExitX, prevExitY);
+			if(canCreateZone) {
+				entityStrings.add("Zone;"+NameGenerator.generateRandomPlaceName()+";"+startX+","+startY+";"+(startX+sizeX)+","+(startY+sizeY)+";");
+				Zone currentZone = new Zone(startX, startY, sizeX, sizeY);
+				//Dir exitDir = Dir.WEST;
+				Dir exitDir = Zone.getRandomDirectionExcl(exclude);
+				
+				//used to not have the next zone be the same as the current one.
+				Dir excludeDir = getExcludeDir(exitDir);
+				
+				IntegerPair exitPoint = getRandomPointOnEdge(currentZone.getEdge(exitDir));
+				
+				IntegerPair nextCoords = getNewStartCoords(currentZone,sizeX,sizeY,exitDir);
+				
+		    	MapGenerator.generateEdgeTiles(currentZone);
+		    	MapGenerator.generateNonPlayerEntities(currentZone, 2);
+		    	MapGenerator.generatePlayer(currentZone, currentDepth);
+		    	
+		    	generateMap(nextCoords.x,nextCoords.y, sizeX, sizeY, currentDepth+1,maximumDepth, exitPoint.x, exitPoint.y, excludeDir);
+		    	
+		    	if(currentDepth != maximumDepth)
+		    		clearExit(currentDepth, exitPoint.x, exitPoint.y);
+				clearExit(currentDepth, prevExitX, prevExitY);
+			}
 	    	
 		}
+	}
+	
+	private static boolean zoneOverLaps(Zone zone, int startX, int startY, int sizeX, int sizeY) {
+		Rectangle r1 = new Rectangle(zone.x, zone.y, zone.sizeX, zone.sizeY);
+		Rectangle r2 = new Rectangle(startX, startY, sizeX, sizeY);
+		return r1.intersects(r2);
 	}
 	
 	private static IntegerPair getNewStartCoords(Zone currentZone,int nextZoneSizeX, int nextZoneSizeY, Dir dir) {
