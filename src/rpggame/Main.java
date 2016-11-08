@@ -15,6 +15,6 @@ public class Main {
 	    	System.out.println("A random place: " + NameGenerator.generateRandomPlaceName());
     	}
     	
-    	MapGenerator.generate(15, 20, 3, 2);
+    	MapGenerator.generate(15, 20, 20, 2);
     }
 }

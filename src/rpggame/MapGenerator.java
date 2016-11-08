@@ -54,7 +54,11 @@ public class MapGenerator {
 			}
 			
 			if(canCreateZone) {
-					entityStrings.add("Zone;"+NameGenerator.generateRandomPlaceName()+";"+startX+","+startY+";"+(startX+sizeX)+","+(startY+sizeY)+";");
+					int friendly = 0;
+					if(isAreaFriendly(10) || currentDepth == 0)
+						friendly = 1;
+					
+					entityStrings.add("Zone;"+NameGenerator.generateRandomPlaceName()+";"+startX+","+startY+";"+(startX+sizeX)+","+(startY+sizeY)+";"+friendly+";");
 					Zone currentZone = new Zone(startX, startY, sizeX, sizeY);
 					createdZones.add(currentZone);
 					
@@ -75,7 +79,7 @@ public class MapGenerator {
 					}
 					
 			    	MapGenerator.generateEdgeTiles(currentZone);
-			    	MapGenerator.generateNonPlayerEntities(currentZone, entityDensity);
+			    	MapGenerator.generateNonPlayerEntities(currentZone, entityDensity, friendly);
 			    	MapGenerator.generatePlayer(currentZone, currentDepth);
 					exitsToClear.add(new IntegerPair(prevExitX,prevExitY));
 				}
@@ -134,6 +138,14 @@ public class MapGenerator {
 		int rand2 = ylimlower + rn.nextInt(ylimupper - ylimlower);
 		
 		return new IntegerPair(rand1,rand2);
+	}
+	
+	private static boolean isAreaFriendly(int proportionOfFriendlyAreas) {
+		final Random rn = new Random();
+		int rand = rn.nextInt(100);
+		if(rand < proportionOfFriendlyAreas)
+			return true;
+		return false;
 	}
 	
 	private static IntegerPair getRandomPointOnEdge(ArrayList<IntegerPair> edge) {
@@ -205,7 +217,7 @@ public class MapGenerator {
 	}
 	
 	// generate entities in specific zone
-	public static void generateNonPlayerEntities(Zone zone, double entityDensity) {
+	public static void generateNonPlayerEntities(Zone zone, double entityDensity, int friendly) {
 		// placeholder
 		int count = 0;
 		int numberOfEntities = (int) ( (zone.sizeX-1)*(zone.sizeY-1)*entityDensity/100);
@@ -219,7 +231,10 @@ public class MapGenerator {
 			String pos = randX+","+randY;
 			if(!entities.containsKey(pos)) {
 				entities.put(pos, "NPC");
-				entityStrings.add("NPC;"+NameGenerator.generateRandomName()+";"+pos+";2;2;battle;randomAI;displayDialogue(0);");
+				if(friendly == 0)
+					entityStrings.add("NPC;"+NameGenerator.generateRandomName()+";"+pos+";2;1;battle;randomAI;displayDialogue(0);");
+				else
+					entityStrings.add("NPC;"+NameGenerator.generateRandomName()+";"+pos+";2;2;;randomAI;displayDialogue(0);");
 				count++;
 			}
 		}
