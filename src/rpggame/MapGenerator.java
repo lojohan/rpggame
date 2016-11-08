@@ -27,22 +27,24 @@ public class MapGenerator {
 			ArrayList<IntegerPair> tmp = zone.getEdge(dir);
 			for(IntegerPair ip : tmp) {
 				String pos = ip.x+","+ip.y;
-				entities.put(pos, "Tile");
-				entityStrings.add("Tile;;"+ pos +";1;7;");
+				if(!entities.containsKey(pos)) {
+					entities.put(pos, "Tile");
+					entityStrings.add("Tile;;"+ pos +";1;7;");
+				}
 			}
 		}
 	}
 	
-	public static void generate(int sizeX, int sizeY, int maximumDepth) {
+	public static void generate(int sizeX, int sizeY, int maximumDepth, int entityDensity) {
 		int currentDepth = 0;
-    	MapGenerator.generateMap(50,50,sizeX, sizeY, currentDepth, maximumDepth,0,0,Dir.EAST);
+    	MapGenerator.generateMap(50,50,sizeX, sizeY, currentDepth, maximumDepth,0,0,entityDensity);
     	clearExits();
     	MapGenerator.printToMap();
 	}
 	
-	public static void generateMap(int startX, int startY, int sizeX, int sizeY, int currentDepth, int maximumDepth, int prevExitX, int prevExitY, Dir exclude) {
+	public static void generateMap(int startX, int startY, int sizeX, int sizeY, int currentDepth, int maximumDepth, int prevExitX, int prevExitY, int entityDensity) {
 		if(currentDepth <= maximumDepth) {
-			
+				
 			boolean canCreateZone = true;
 			
 			for(Zone createdZone : createdZones) {
@@ -52,34 +54,33 @@ public class MapGenerator {
 			}
 			
 			if(canCreateZone) {
-				entityStrings.add("Zone;"+NameGenerator.generateRandomPlaceName()+";"+startX+","+startY+";"+(startX+sizeX)+","+(startY+sizeY)+";");
-				Zone currentZone = new Zone(startX, startY, sizeX, sizeY);
-				createdZones.add(currentZone);
-				//Dir exitDir = Dir.WEST;
-				Dir exitDir = Zone.getRandomDirectionExcl(exclude);
-				
-				//used to not have the next zone be the same as the current one.
-				Dir excludeDir = getExcludeDir(exitDir);
-				
-				
-				IntegerPair nextSize = getNextSize(5,5,30,30);
-				IntegerPair nextCoords = getNewStartCoords(currentZone,nextSize.x,nextSize.y,exitDir);
-				
-				IntegerPair exitPoint = getRandomPointOnEdge(currentZone.getEdge(exitDir),
-						getLimit(currentZone,nextSize.x,nextSize.y,exitDir));
-				
-		    	MapGenerator.generateEdgeTiles(currentZone);
-		    	MapGenerator.generateNonPlayerEntities(currentZone, 2);
-		    	MapGenerator.generatePlayer(currentZone, currentDepth);
-		    	
-		    	if(currentDepth != maximumDepth) {
-		    		generateMap(nextCoords.x,nextCoords.y, nextSize.x, nextSize.y, currentDepth+1,maximumDepth, exitPoint.x, exitPoint.y, excludeDir);
-		    	}
-		    	
-		    	exitsToClear.add(new IntegerPair(prevExitX,prevExitY));
+					entityStrings.add("Zone;"+NameGenerator.generateRandomPlaceName()+";"+startX+","+startY+";"+(startX+sizeX)+","+(startY+sizeY)+";");
+					Zone currentZone = new Zone(startX, startY, sizeX, sizeY);
+					createdZones.add(currentZone);
+					
+					//used to not have the next zone be the same as the current one.
+					
+					for(Dir direction : Dir.values()) {
+						IntegerPair nextSize = getNextSize(5,5,30,30);
+						IntegerPair nextCoords = getNewStartCoords(currentZone,nextSize.x,nextSize.y,direction);
+						
+						IntegerPair exitPoint = getRandomPointOnEdge(currentZone.getEdge(direction),
+								getLimit(currentZone,nextSize.x,nextSize.y,direction));
+						
+				    	
+				    	if(currentDepth != maximumDepth) {
+				    		generateMap(nextCoords.x,nextCoords.y, nextSize.x, nextSize.y, currentDepth+1,maximumDepth,exitPoint.x,exitPoint.y,entityDensity);
+				    	}
+				    	
+					}
+					
+			    	MapGenerator.generateEdgeTiles(currentZone);
+			    	MapGenerator.generateNonPlayerEntities(currentZone, entityDensity);
+			    	MapGenerator.generatePlayer(currentZone, currentDepth);
+					exitsToClear.add(new IntegerPair(prevExitX,prevExitY));
+				}
 			}
 	    	
-		}
 	}
 	
 	// TODO: not correct
@@ -103,7 +104,7 @@ public class MapGenerator {
 	private static boolean zoneOverLaps(Zone zone, int startX, int startY, int sizeX, int sizeY) {
 		Rectangle r1 = new Rectangle(zone.x, zone.y, zone.sizeX, zone.sizeY);
 		Rectangle r2 = new Rectangle(startX, startY, sizeX, sizeY);
-		return r1.intersects(r2);
+		return (r1.intersects(r2) || r1.contains(r2));
 	}
 	
 	private static IntegerPair getNewStartCoords(Zone currentZone,int nextZoneSizeX, int nextZoneSizeY, Dir dir) {
