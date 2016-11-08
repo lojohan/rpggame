@@ -46,10 +46,15 @@ public class Wordlist {
 		return instance;
 	}
 
+	final static Pattern FIRST_LETTER_RE = Pattern.compile("^\\W*(\\w)");
 	public static String capitalize(String word) {
-		String firstLetter = word.substring(0, 1);
-		String firstWord = word.replaceFirst("\\w", firstLetter.toUpperCase());
-		return firstWord;
+		Matcher m = FIRST_LETTER_RE.matcher(word);
+		if (m.find()) {
+			String firstLetter = m.group(1);
+			String cap = word.replaceFirst("\\w", firstLetter.toUpperCase());
+			return cap;
+		}
+		return word;
 	}
 
 	public String getRandomAdjective() {
@@ -130,9 +135,7 @@ public class Wordlist {
 			if (word.matches("\\d+")) continue;
 			if (!word.matches(".*\\w+.*")) continue;
 			if (!isWordlistWord(word.toLowerCase().replaceAll("'s$", "").replaceAll("s'$", "s"))) {
-				final String firstLetter = word.substring(0, 1);
-				final String firstWord = word.replaceFirst("\\w", firstLetter.toUpperCase());
-				names.add(firstWord);
+				names.add(capitalize(word));
 			}
 		}
 	}

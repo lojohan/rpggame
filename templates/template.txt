@@ -34,7 +34,6 @@ Tullius Excellent work, soldier. I have to admit, I had my doubts it even
          him. Be aware soldier, these documents contain sensitive intelligence
          for the Jarl's eyes only.
 
-
 |
 
 |
@@ -278,11 +277,9 @@ Balgruuf You've returned with my axe. I knew that would be his response. As
 Cipius The Stormcloaks are here. In force. Get down to the front line. This is
         it. We must hold the city. Now move it!
 
-
 |
 
 |
-
 
 [As catapult projectiles start bombarding the city, the player reaches the
  front gate, just as Whiterun troops start showing their ugly mugs.]
@@ -327,7 +324,6 @@ Balgruuf Thank you for your role in all of this. It would be my honor should
           you decide to make Whiterun your home. Speak with Proventus. He'll
           make the necessary arrangements.
 
-
 |
 
 |
@@ -357,7 +353,6 @@ Tullius You'd be wasted as a regular soldier. I have special plans for you.
          
           • For the Emperor!
           • Gods be with you.
-
 
 |
 
@@ -399,7 +394,6 @@ Hadring I tend to keep my patrons' privacy.
          
           • It is? Well that's different.
           • Yeah, sure it is. You don't fool me.
-
 
          
           • Well, if you insist...
@@ -460,7 +454,6 @@ Frorkmar • Is that so? I don't recognize you. Why aren't you wearing your
           easy running messages, what with Imperial scouts crawling over the
           place. Well done. Why don't you grab yourself a drink at the Windpeak
           before heading back?
-
 
 |
 
@@ -690,7 +683,6 @@ Hadvar We make quite a team, eh? I'll stay here and guard the shipment. You
 
 |
 
-
 [One goes back to Rikke.]
 
 Rikke Good work. I'll send some men with a wagon to collect the prize. We
@@ -823,7 +815,6 @@ Dragonborn What's next?
 Tullius You've little time to glory in your accomplishments. We're gathering
          for our final assault on Windhelm. Report to our camp in Eastmarch.
 
-
 |
 
 |
@@ -853,7 +844,6 @@ Dragonborn Reporting in.
 
 Rikke We're taking the city. Meet the soldiers gathering for the attack. Move
        it!
-
 
 |
 
@@ -1339,7 +1329,6 @@ Galmar Now you're one of us. Which means you get to tag along on a little trip
         with me. Oh, and here. You're a Stormcloak now, you ought to look the
         part.
 
-
 Dragonborn What's the mission?
 
 Galmar I have found the final resting place of the Jagged Crown. Can you
@@ -1603,7 +1592,6 @@ Dragonborn Understood.
 
 Ulfric Keep your wits about you. The Jarl of Whiterun is known for his temper.
 
-
 |
 
 |
@@ -1748,7 +1736,6 @@ Ulfric So it begins. Make haste to our camp in Whiterun. I want you on the
 Galmar We're taking the city. Meet the brothers gathering for the attack.
         Fight well or die well. Talos be with you.
 
-
 |
 
 |
@@ -1847,7 +1834,6 @@ Ulfric I suspect you'll be of greater use to us with greater freedom, so
          • Talos guide you.
          • Go with the gods.
 
-
 |
 
 |
@@ -1874,11 +1860,9 @@ Galmar You're going to Fort Neugrad. They have some of our boys locked up
          • We all have faith in you.
          • Good. You've got real fire in you. I like that... Talos guide you.
 
-
 |
 
 |
-
 
 [Near the fort, the player finds the ambush party. Ralof is there, too.]
 
@@ -1967,7 +1951,6 @@ Ulfric Get over to our camp in the Reach. They need every able body they can
         
          • Talos guide you.
          • For Skyrim!
-
 
 |
 
@@ -2124,7 +2107,6 @@ Ralof We make quite a team, eh? I'll stay here and guard the shipment. You
 Galmar Well done! I'll send men with a wagon to collect our prize. We'll put
         the weapons to use here, and I'll send the coin back to Windhelm.
 
-
 |
 
 |
@@ -2171,7 +2153,6 @@ Ulfric You're needed in Hjaalmarch. There's much to be done.
          • For Skyrim!
          • Talos guide you.
 
-
 |
 
 |
@@ -2208,7 +2189,6 @@ Mralki I tend to keep my patrons' privacy.
         
          • It is? Well that's different.
          • Yeah, sure it is. You don't fool me.
-
 
         
          • Well, if you insist...
@@ -2265,7 +2245,6 @@ Duilis • Is that so? Lost your uniform along the way did you, soldier?
         you made it here in one piece. Why don't you have yourself a drink at
         the Moorside before you head back?
 
-
 |
 
 |
@@ -2289,7 +2268,6 @@ Galmar You're going to Fort Snowhawk. Meet the brothers preparing for the
         
          Good. You've got real fire in you. I like that... Talos guide you.
 
-
 |
 
 |
@@ -2312,7 +2290,6 @@ Dragonborn What's next?
 Ulfric You've no time to glory in your accomplishments. We're gathering for
         our final assault on Solitude. I need you there. Report to our camp in
         Haafingar.
-
 
 |
 
@@ -2345,7 +2322,6 @@ Dragonborn How can I help?
 
 Galmar We're taking the city. Meet the brothers gathering for the attack.
         Fight well or die well. Talos be with you.
-
 
 |
 
@@ -2669,25 +2645,6 @@ Elisif No. Although it's true my husband Torygg was the High King and I am his
         victorious, and the Jarls have fallen in line. It seems I will never
         take my rightful place as High Queen.
 
-
-
-THIEVES GUILD                                                            [THVS]
-
-
- 01) A Chance Arrangement .............................................. TH01
- 02) Taking Care of Business ........................................... TH02
- 03) Loud and Clear .................................................... TH03
- 04) Dampened Spirits .................................................. TH04
- 05) Scoundrel's Folly ................................................. TH05
- 06) Speaking With Silence ............................................. TH06
- 07) Hard Answers ...................................................... TH07
- 08) The Pursuit ....................................................... TH08
- 09) Trinity Restored .................................................. TH09
- 10) Blindsighted ...................................................... TH10
- 11) Darkness Returns .................................................. TH11
- 12) Under New Management .............................................. TH12
-
-
 |
 
 |
@@ -2839,7 +2796,6 @@ Brynjolf Bah. My organization's been having a run of bad luck, but I suppose
            represent has its home in the Ratway beneath Riften...a tavern
            called the Ragged Flagon. When you come to your senses, find me
            there and we'll discuss your future.
-
 
 |
 
@@ -3135,11 +3091,9 @@ Dragonborn Fair enough.
 Brynjolf Now if there are no more questions, how about following me and I'll
           show you what you're all about.
 
-
 |
 
 |
-
 
 [Brynjolf leads the player through a hidden door into the Thieves Guild's real
  domain, a cistern beyond the Ragged Flagon. The guildmaster is waiting.]
@@ -3363,7 +3317,6 @@ Dragonborn Speaking of which...
 
 Brynjolf Of course...your pay. Haha! You're smart as a whip, lad. Keep doing
           right by us and there'll be plenty more where that came from.
-
 
 |
 
@@ -3686,11 +3639,9 @@ Brynjolf Mercer thinks he knows a way to identify this new thorn in our side.
           He wants to meet with you right away. And if I were you, I'd hurry.
           I've never seen him this angry before.
 
-
 |
 
 |
-
 
 [The player finds Mercer at his usual desk in the cistern.]
 
@@ -3994,7 +3945,6 @@ Mercer Yes, I'm going with you and together we're going to kill her. Here's
         your payment for Solitude. Prepare yourself and meet me at the ruins
         as soon as you can. We can't let her slip through our fingers.
 
-
 |
 
 |
@@ -4266,11 +4216,9 @@ Karliah There were three of us Myself, Gallus and Mercer. We were an
 
          Remember, speak only to Enthir. Trust no one else.
 
-
 |
 
 |
-
 
 [Enthir is found at Winterhold's inn.]
 
@@ -4537,11 +4485,9 @@ Karliah If the Guild isn't willing to listen to reason, you might have to.
 
 [He takes Gallus' Nightingale Blade and makes for the Flagon.]
 
-
 |
 
 |
-
 
 [Karliah waits at the Flagon's entrance, far away from the sitting area.]
 
@@ -4881,7 +4827,6 @@ Brynjolf Agreed. He's taken everything the Guild has left, and to go after
           one of the last greatest heists is just an insult. I've spoken to
           Karliah, and made amends for how the Guild's treated her. Now she
           wishes to speak with both of us. Quickly, we have no time to lose.
-
 
 |
 
@@ -5238,7 +5183,6 @@ Karliah Yes. Now that you're a Nightingale, you may consider this your new
          learn. Once the Skeleton Key has been restored to the Twilight
          Sepulcher, I'll make this place my home as well.
 
-
 |
 
 |
@@ -5529,7 +5473,6 @@ Karliah Take this with you. I'm not certain if it will help within the walls
           that we're given Nocturnal's greatest gift, our luck. What she gains
           in return is a complete mystery.
 
-
 |
 
 |
@@ -5811,11 +5754,9 @@ Karliah Absolutely. When we say walk with the shadows, we are asking those
          ours. That's why the Ebonmere needed to be reopened. Without it,
          there's no way Nocturnal was able to allow them through.
 
-
 |
 
 |
-
 
 [The player returns to the Guild.]
 
@@ -5941,34 +5882,8 @@ Brynjolf Take a good look around you! Have you ever seen the Guild in such a
           prosperous state? With Mercer Frey gone and our influence spreading
           across Skyrim, the Guild's earned a new level of respect it hasn't
           seen in decades. I couldn't be more proud to be part of the Thieves
-          Guild, or its new Guild Master.
-                                                          
-/ DLC QUESTS [DLCQ] |_
-
-DAWNGUARD                                                                [DWNG]
-
-
-
- 01) Dawnguard ......................................................... DW01
- 02) Awakening ......................................................... DW02
- 03) Bloodline ......................................................... DW03
- 4a) A New Order ....................................................... DW4a
- 4b) The Bloodstone Chalice ............................................ DW4b
- 5a) Prophet ........................................................... DW5a
- 5b) Prophet ........................................................... DW5b
- 06) Chasing Echoes .................................................... DW06
- 07) Scroll Scouting ................................................... DW07
- 08) Beyond Death ...................................................... DW08
- 09) Seeking Disclosure ................................................ DW09
- 10) Unseen Visions .................................................... DW10
- 11) Touching the Sky .................................................. DW11
- 12) Kindred Judgment .................................................. DW12
-
-
-|
-
-|
-
+          Guild, or its new Guild Master. 
+  
 [On one's travels, the player finds an orc slaying a vampire.]
 
 Durak You there. The Dawnguard is looking for anyone willing to fight against
@@ -6150,7 +6065,6 @@ Isran Yes, a crossbow. Best thing for killing vampires. Just take a few shots
 
 Celann Isran found something for you to do, eh? I thought he'd like you. Good
         luck!
-
 
 |
 
@@ -6380,7 +6294,6 @@ Serana I disagree.
 Serana You can't get rid of me that easily.
 Serana And go where? You can't just leave me alone whenever you feel like it.
         I'm coming with you, like it or not.
-
 
 |
 
@@ -6682,7 +6595,6 @@ Harkon Good. You are weaker while on the ground, because you cannot access the
          upon your prey to regain your strength. With experience, your powers
          will grow and you will discover new ways to use them.
 
-
 |
 [DW4a] A NEW ORDER |===========================================================
 |
@@ -6934,7 +6846,6 @@ Isran In the meantime, we're going to get to the bottom of why a vampire
        showed up here looking for you. Let's go have a little chat with it,
        shall we?
 
-
 |
 [DW4b] THE BLOODSTONE CHALICE |================================================
 |
@@ -7060,7 +6971,6 @@ Garan I see you have returned. Lord Harkon will be pleased. You met Stalf and
        them of their little pets. You've done Lord Harkon two great services.
        Take what you've learned to heart, and be careful who you trust. Now, I
        believe Lord Harkon wishes to speak with you.
-
 
 |
 [DW5a] PROPHET |===============================================================
@@ -7241,7 +7151,6 @@ Driver Might be that I have, but I can't say for sure. I got enough troubles
          • Can't help you, friend. I might remember better if my pockets
            weren't so light.
 
-
         
          • Ah yes, I remember your Moth Priest now. He wanted me to take him
            out to Dragon Bridge, but I told him it ain't one of my stops.
@@ -7276,7 +7185,6 @@ Corpulus Oh, he just left a short while ago. He said he'd finished up his
              helps.
 
            • It's like I said, I'm not going to talk about it.
-
 
           
            • I can see that. He said he was heading for Dragon Bridge next. I
@@ -7391,7 +7299,6 @@ Dexion I see a vision before me, an image of a great bow. I know this weapon!
         rest now. The reading has made me weary.
 
 Isran Come on, old man. You should get some rest.
-
 
 |
 [DW5b] PROPHET |===============================================================
@@ -7572,7 +7479,6 @@ Harkon My traitor wife stole one of them away and then disappeared. As for
         the other, the last that I heard, it was lost in the bowels of a
         Dwemer ruin. It seems our work is not yet done. But I have waited this
         long, and we are so very close now. I can wait a bit longer.
-
 
 |
 
@@ -8053,7 +7959,6 @@ Serana Are you sure? I'm willing to do it, but you need to think it through.
 [Once one is soul-trapped or vampirized, the team can finally descend the
  steps into the magnificent new location.]
 
-
 |
 
 |
@@ -8138,7 +8043,6 @@ Urag Aye, that's the work of Septimus Signus. He's the world's master on the
 [At this point, the quest ends, and Discerning the Transmundane begins. It's
  a completely different quest unrelated to the Dawnguard, but it needs to be
  done to find the scroll. See that section for relevant details.]
-
 
 |
 
@@ -8686,18 +8590,14 @@ Durnehviir Free? No. I've been here too long, Qahnaarin. The Soul Cairn has
 
 [After hearing the necrodragon's words, it's back to Castle Volkihar...]
 
-
 |
 
 |  This is another shared Dawnguard/Vampire quest.
-
 
 [The team emerges from the Cairn.]
 
 Serana The sooner we get the scroll home, the sooner we can deal with my
         father.
-
-
 
 Dexion I trust your journey was successful?
 
@@ -8731,8 +8631,6 @@ Dexion I can't guarantee you'll be free from harm. Becoming blind could be the
         least of your worries.
 
 Dragonborn Don't worry about that. Just tell me.
-
-
 
 [They return to Dexion, who now appears with a blindfold.]
 
@@ -8769,8 +8667,6 @@ Dragonborn Go on.
 Dexion Oh thank you, milord. Thank you!
 
 Dragonborn Just get to it!
-
-
 
 Dexion Scattered across Tamriel are secluded locations known only as Ancestor
         Glades. There's one in Skyrim, in the Pine Forest. Performing the
@@ -8842,7 +8738,6 @@ Dexion Sadly, yes. It is the inevitable fate we agree to pursue when reading
         the Elder Scrolls. It generally does not occur until a Moth Priest is
         in his latter years, but in my case I simply was not preparing myself
         properly.
-
 
 |
 
@@ -8923,7 +8818,6 @@ Serana Then let's get going. I want to get there before my father has a chance
 
 [They leave, just in time to slay intruders from the faction opposite the one
  they're currently aligned with.]
-
 
 |
 
@@ -9490,7 +9384,6 @@ Gelebor For the time being I will remain here, on the overlook and continue
          trying to keep the Sanctum free of the Betrayed. You're always welcome
          to return here at any time, of course.
 
-
 |
 
 |
@@ -9592,8 +9485,6 @@ Serana I don't think you can ever be ready to kill your parent. I'm doing my
 
         • Just...leave me alone for now. I'll be fine.
 
-
-
 [One returns to Isran after exploring the Vale.]
 
 Isran The bow...you have Auriel's Bow! I've heard it described in tales, but
@@ -9638,8 +9529,6 @@ Isran It's time we take the fight to their door. Gather your things and rest
  fight moves into the dining hall, where the rest of the lesser vampires are
  put to the sword. Finally, it's time to visit the chapel.]
 
-
-
 [Everyone returns to Volkihar to confront Harkon. Before finding him, some of
  the other vampires will comment on it. This is optional, but eh well.]
 
@@ -9667,8 +9556,6 @@ Fura Present the bow to Lord Harkon at once!
 Hestla You've served us all well, friend.
 Hestla Auriel's Bow is ours. Deliver it to Lord Harkon at once, so we can reap
         the benefits of this prophecy.
-
-
 
 [The player and Serana find Harkon in the cathedral, where Molag Bal's blood
  shrine is. The Lord is waiting in his Vampire Lord form.]
@@ -9810,8 +9697,6 @@ Serana I'm not sure.
         
          Suit yourself.
 
-
-
 [Garan Marethi enters and sees the carnage and Harkon's bloody remains.]
 
 Garan Lord Harkon, defeated. I never imagined I'd see the day. My lady, you
@@ -9857,8 +9742,6 @@ Garan Well, now that the Castle is yours, I was wondering. Would you be
        
         My apologies. I shall not trouble you with it again.
 
-
-
 [After Harkon's demise, Isran walks into the cathedral.]
 
 Isran It's over. He's dead, and the prophecy dies with him. I...I suppose this
@@ -9877,8 +9760,6 @@ Isran So, the beast is destroyed. Not only that, but Auriel's Bow is in safe
        Even with these vampires gone, the fight isn't completely over. Once
        we're settled back in at the fort, there will be more work to do. We'd
        be honored to have you join us.
-
-
 
 [If one revisits Valerica in the Soul Cairn, the good news can be conveyed.]
 
@@ -9911,21 +9792,6 @@ Valerica I'm sorry, I don't feel comfortable giving them to you. I understand
 
           but the prophecy never sat well with me, and I don't want to be part
           of it. I'm sorry.
-
-
-
-DRAGONBORN                                                               [DRGN]
-
-
-
- 01) Dragonborn ......................................................... DR01
- 02) The Temple of Miraak ............................................... DR02
- 03) The Fate of the Skaal .............................................. DR03
- 04) Cleansing the Stones ............................................... DR04
- 05) The Path of Knowledge .............................................. DR05
- 06) The Gardener of Men ................................................ DR06
- 07) At the Summit of Apocrypha ......................................... DR07
-
 
 |
 
@@ -10171,7 +10037,6 @@ Neloth I'm not sure, but it is fascinating, isn't it? Perhaps it has some
 [With the tip received, one visits the island's central temple. Like the stone
  near Raven Rock, many disparate people are, trance-like, repairing the old
  temple.]
-
 
 |
 
@@ -10477,7 +10342,6 @@ Storn Miraak had this? This does not look like something of the Dragon cult.
  [This quest is just the player destroying the other shrines. There isn't much
  to speak of, unfortunately.]
 
-
 |
 
 |
@@ -10772,7 +10636,6 @@ Neloth Yes, it worked! The steam is flowing. Now it should be as simple as...
 Neloth At last. I hope it was worth it. Please...be my guest. You deserve the
         first look. Besides, it could be very dangerous. These books are known
         to drive many people insane.
-
 
 |
 
@@ -11563,7 +11426,6 @@ Around was fog—ahead, the spray
 Of star-streams in the Milky Way. . . .
 There was no hand to hold me back
 That night I found the ancient track.
-
 
 Beseech you, sir, be merry; you have cause,
 So have we all, of joy; for our escape
@@ -13125,7 +12987,6 @@ fragile control over his own legs, Hugh bent slightly so that he could see under
  There were lots and lots of little legs. Very deliberately, Hugh turned around and walked very carefully
 towards the Broken Drum.
 
-
  Odd, said Ymor.
  He had this big wooden chest, added Cripple Wa.
  He'd have to be a merchant or a spy, said Ymor.
@@ -13160,7 +13021,6 @@ joining those little deities in the multifold dimensions of Beyond. And he owed 
 Withel. Perhaps, too, we may try this beer that your men find so tempting.
  Withel said nothing. Being Ymor's right-hand man was like being gently flogged to death with scented
 bootlaces.
-
 
  The twin city of Ankh-Morpork, foremost of all the cities bounding the Circle Sea, was as a matter of
 course the home of a large number of gangs, thieves' guilds, syndicates and similar organisations. This
@@ -13286,7 +13146,6 @@ the major seaport of the Agatean Empire.
 a week and there it is. Are you all right? He hurried around the table and patted the wizard on the back.
 Rincewind choked on his beer–The Counterweight Continent!
 
-
  Three streets away an old man dropped a coin into a saucer of acid and swirled it gently. Broadman
 waited impatiently, ill at ease in a room made noisome by vats and bubbling beakers and lined with
 shelves containing shadowy shapes suggestive of skulls and stuffed impossibilities.
@@ -13322,7 +13181,6 @@ humour.
 scurrying along in faultless obedience to an ancient instinct, the Patrician of Ankh-Morpork picked up the
 letters delivered that morning by albatross. He looked pensively at the topmost one again, and summoned
 his chief of spies.
-
 
  And in the Broken Drum Rincewind was listening open-mouthed as Twoflower talked.
  So I decided to see for myself, the little man was saying. Eight years' saving up, this has cost me. But
@@ -13382,7 +13240,6 @@ horse-dealer he knew who was rich enough to give change out of almost a whole ou
 say two hundred miles. That would be the sensible thing.
  But what would happen to Twoflower, all alone in a city where even the cockroaches had an unerring
 instinct for gold? A man would have to be a real heel to leave him.
-
 
  The Patrician of Ankh-Morpork smiled, but with his mouth only.
  The Hub Gate, you say? he murmured.
@@ -13484,7 +13341,6 @@ a born city person. But you may be sure that the lords of the other cities will 
 conditions by nightfall.
  I assure you the thought never even crossed my mind, lord.
  Indeed? Then if I were you I'd sue my face for slander.
-
 
  Rincewind reached the Broken Drum at a dead run and was just in time to collide with a man who came
 out backwards, fast. The stranger's haste was in part accounted for by the spear in his chest. He bubbled
@@ -13619,12 +13475,10 @@ it, and said brightly, Smile please!
  Smile, rasped Rincewind. There was a whirr from the box.
  Right.
 
-
  High above the disc the second albatross soared; so high in fact that its tiny mad orange eyes could see
 the whole of the world and the great, glittering, girdling Circle Sea. There was a yellow message capsule
 strapped to one leg. Far below it, unseen in the clouds, the bird that had brought the earlier message to
 the Patrician of Ankh-Morpork flapped gently back to its home.
-
 
  Rincewind looked at the tiny square of glass in astonishment. There he was, all right - a tiny figure, in
 perfect colour, standing in front of a group of Watchmen whose faces were each frozen in a terrified
@@ -13694,7 +13548,6 @@ terms.
  Twoflower tried to explain.
  Rincewind tried to understand.
 
-
  In the long afternoon they toured the city Turnwise of the river. Twoflower led the way, with the strange
 picture-box slung on a strap round his neck, Rincewind trailed behind, whimpering at intervals and
 checking to see that his head was still there. A few others followed, too. In a city where public
@@ -13757,14 +13610,12 @@ and pointed the box.
 terrible things he might see, and by the time Withel looked for him again he was on the other side of the
 plaza and still accelerating.
 
-
  The albatross descended in wide, slow sweeps that ended in an undignified flurry of feathers and a
 thump as it landed heavily on its platform in the Patrician's bird garden.
  The custodian of the birds, dozing in the sun and hardly expecting a long-distance message so soon after
 this morning's arrival, jerked to his feet and looked up. A few moments later he was scuttling through the
 palace's corridors holding the message capsule and - owing to carelessness brought on by surprise -
 sucking at the nasty beak wound on the back of his hand
-
 
  Rincewind pounded down an alley, paying no heed to the screams of rage coming from the picture box
 and cleared a high wall with his frayed robe flapping around him like the feathers of a dishevelled
@@ -13849,12 +13700,10 @@ scratched an ear thoughtfully, perhaps the Assassins' Guild?
  The Patrician nodded. It was all rather a relief. He agreed with Nine Turning Mirrors - life was difficult
 enough; People ought to stay where they were put.
 
-
  Brilliant constellations shone down on the Discworld. One by one the traders shuttered their shops. One
 by one the gonophs, thieves, finewirers, whores, illusionists, backsliders and second-storey men awoke
 and breakfasted. Wizards went about their polydimensional affairs. Tonight saw the conjunction of two
 powerful planets, and already the air over the Magical Quarter was hazy with early spells.
-
 
  Look, said Rincewind, this isn't getting us anywhere. He inched sideways. The Luggage followed
 faithfully, lid half open and menacing. Rincewind briefly considered making a desperate leap to safety.
@@ -13968,7 +13817,6 @@ ononono pleasssse
  Rincewind had gone. The guard felt the unseen leg-gripper release his - or, as he was beginning to fear,
 it's - hold. Then, as he tried to pull himself to his feet, something big and heavy and square cannoned into
 him out of the dark and plunged off after the wizard. Something with hundreds of tiny feet.
-
 
  With only his home-made phrase book to help him Twoflower was trying to explain the mysteries of
 in-sour-ants to Broadman. The fat innkeeper was listening intently, his little black eyes glittering. From the
@@ -14096,7 +13944,6 @@ assassin's head and buried itself in a luckless thief behind him.
  Rerpf ducked, allowing a troll behind him to raise its huge iron crossbow and fire a spear-length quarrel
 into the nearest assassin. That was the start
 
-
  It has been remarked before that those who are sensitive to radiations in the far octarine - the eighth
 colour, the pigment of the imagination- can see things that others cannot.
  Thus it was that Rincewind, hurrying through the crowded, flare-lit evening bazaars of Morpork. With
@@ -14161,7 +14008,6 @@ smashed timber around it.
  Rincewind appeared in the ruined doorway hurling another of his gold grenades. It smashed into a wall,
 showering coins.
 
-
  Down in the cellar Broadman looked up, muttered to himself, and carried on with his work. His entire
 spindlewinter's supply of candles had already been strewn on the floor, mixed with his store of kindling
 wood. Now he was attacking a barrel of lamp oil. inn-sewer-ants he muttered. Oil gushed out and
@@ -14198,7 +14044,6 @@ Most important, the street was empty. Rincewind sniffed.
  Can you smell oil? he said.
  Then Withel stepped out of the shadows and tripped him up.
 
-
  At the top of the cellar steps Broadman knelt down and fumbled in his tinderbox. It turned out to be
 damp.
  I'll kill that bloody cat, he muttered, and groped for the spare box that was normally on the ledge by
@@ -14212,7 +14057,6 @@ his brow furrowing. Then he turned around and held the taper up to illuminate th
 much light, but it did give the darkness a shape
  Oh, no he breathed.
  BUT YES, said Death.
-
 
  Rincewind rolled.
  For a moment he thought Withel was going to spit him where he lay. But it was worse than that. He was
@@ -14303,7 +14147,6 @@ who heard them.
  He grabbed Twoflower again.
  Let's get out of here! he suggested.
 
-
  One interesting side effect of the fire in Ankh-Morpork concerns the inn-sewer-ants policy, which left
 the city through the ravaged roof of the Broken Drum, was wafted high into the Discworld's atmosphere
 on the ensuing thermal, and came to earth several days and a few thousand miles away on an uloruaha
@@ -14312,7 +14155,6 @@ the amusement of their more sophisticated neighbours. Strangely enough the rainf
 next few years were almost supernaturally abundant, and this led to a research team being despatched to
 the islands by the Minor Religions faculty of Unseen University. Their verdict was that it only went to
 show.
-
 
  The fire, driven by the wind, spread out from the Drum faster than a man could walk. The timbers of the
 Widdershin Gate were already on fire when Rincewind, his face blistered and reddened from the flames,
@@ -14336,7 +14178,6 @@ numerous legs and scrabbled for a purchase.
  Hauling itself to the top of the bank the Luggage–streaked with soot, stained with water and very very
 angry - shook itself and took its bearings. Then it moved away at a brisk trot, the small and incredibly
 ugly imp that was perching on its lid watching the scenery with interest.
-
 
  Bravd looked at the Weasel and raised his eyebrows.
  And that's it, said Rincewind, The Luggage caught up with us, don't ask me how. Is there any more
@@ -14371,7 +14212,6 @@ defenceless state a stray thought, wandering through the dimensions in search of
 into his brain.
  Here's another fine mess you've got me into, he moaned, and slumped backwards.
 
-
  Mad, said the Weasel.
  Bravd, galloping along a few feet away, nodded.
  All wizards get like that, he said. it's the quicksilver fumes. Rots their brains. Mushrooms, too 
@@ -14390,8 +14230,6 @@ as the time being vanished into whatever demonic dimension it called home.
 opportunities! 
  Bravd nodded. Together they turned their steeds and galloped towards ancient Ankh, and honest
 enchantments.
-
-
 
  The Sending of Eight
  
@@ -14613,7 +14451,6 @@ rock, drew him into the tree. The solid bark parted like a mist, closed like a c
  He glanced at the cloud of mayflies that were dancing their joyful zigzags near His skull. He snapped His
 fingers. The insects fell out of the air. But, somehow, it wasn't quite the same.
 
-
  Blind Io pushed his stack of chips across the table, glowered through such of his eyes that were currently
 in the room, and strode out. A few demigods tittered. At least Offler had taken the loss of a perfectly
 good troll with precise, if somewhat reptilian, grace.
@@ -14655,7 +14492,6 @@ her.
  Play, she said.
  You can match my stake?
  Play.
-
 
  Rincewind knew what was inside trees wood, sap, possibly squirrels. Not a palace.
  Still–the cushions underneath him were definitely softer than wood, the wine in the wooden cup beside
@@ -14753,7 +14589,6 @@ finished with your friend.
 in an oak tree.
  One of the giants grinned at him.
  Druellae snorted. Stupid! Where do you think acorns come from?
-
 
  There was a vast empty space like a hall, its roof lost in the golden haze. The endless stair ran right
 through it.
@@ -14868,7 +14703,6 @@ dryads who were creating the magic circle, and watched to see what Druellae woul
  There was a vaguely Rincewind-shaped violet shadow, dwindling to a point and winking out.
  There was nothing at all.
 
-
  Hrun the Barbarian crept soundlessly along the corridors, which were lit with a light so violet that it was
 almost black. His earlier confusion was gone. This was obviously a magical temple, and that explained
 everything.
@@ -14895,7 +14729,6 @@ over stone.
  Be silent!
  All I said was-
  Shut up!
-
 
  And Twoflower
  He was lost, he knew that. Either the building was much bigger than it looked, or he was now on some
@@ -14974,7 +14807,6 @@ right. Trust me!
  Rincewind relaxed slightly; which was to say that he still made a violin string look like a bowl of jelly.
  Come on, he said. Let's try and get out. And I'll try and tell you.
 
-
  After the first Age of Magic the disposal of grimoires began to become a severe problem on the
 Discworld. A spell is still a spell even when imprisoned temporarily in parchment and ink. It has potency.
 This is not a problem while the book's owner still lives, but on his death the Spell book becomes a source
@@ -14993,7 +14825,6 @@ stored until their potency had attenuated.
 owned by the Creator of the Universe. It was this book that Rincewind had once opened for a bet. He
 had only a second to stare at a page before setting off various alarm spells, but that was time enough for
 one spell to leap from it and settle in his memory like a toad in a stone.
-
 
  Then what? said Twoflower.
  Oh, they dragged me out. Thrashed me, of course.
@@ -15237,7 +15068,6 @@ decaying timber and falling leaves.
  Rincewind looked down at Kring the sword. It had a couple of rubies set in the pommel. He got the
 impression they were watching him.
 
-
  From the moorland rimwards of the wood they watched the battle between the trees and Time, which
 could only have one ending. It was a sort of cabaret to the main business of the halt, which Was the
 consumption of quite a lot of a bear which had incautiously come within bowshot of Hrun.
@@ -15288,7 +15118,6 @@ in a tiny tub, while the salamanders dozed in their cage.
  Twoflower frowned. I don't quite understand, he said.
  Rincewind picked up the picture box. Hrun, he said. Come over here, will you?
 
-
  The days passed peacefully. True, a small band of bridge trolls tried to ambush them on one occasion,
 and a party of brigands nearly caught them unawares one night (but unwisely tried to investigate the
 Luggage before slaughtering the sleepers). Hrun demanded, and got, double pay for both occasions.
@@ -15310,11 +15139,9 @@ better profile, hokay?
 calloused, potion-stained and unfocused thumb.
  That's the story of my life, he said wearily.
 
-
  You win, said Fate, pushing the heap of souls across the gaming table. The assembled gods relaxed.
 There will be other games, he added.
  The Lady smiled into two eyes that were like holes in the universe.
-
 
  And then there was nothing but the ruin of the forests and a cloud of dust on the horizon, which drifted
 away on the breeze. And, sitting on a pitted and moss-grown milestone, a black and raggedy figure. His
@@ -15325,8 +15152,6 @@ His face possessed any mobility at all, have been a frown. Death, although excep
 decided that He now had a hobby. There was something about the wizard that irked Him beyond
 measure. He didn't keepappointments for one thing.
  I'LL GET YOU YET, CULLY, said Death, in the voice like the slamming of leaden coffin lids.
-
-
 
  The Lure of the Wyrm
 
@@ -15340,7 +15165,6 @@ small river, tumbling over the edge in a waterfall so wind-whipped that it reach
 regular look about them, so that on this crisp autumn morning the Wyrmberg hung over the clouds like a
 giant's dovecote.
  This would mean that the doves had a wingspan slightly in excess of forty yards.
-
 
  I knew it, said Rincewind. We're in a strong magical field.
  Twoflower and Hrun looked around the little hollow where they had made their noonday halt. Then they
@@ -15360,7 +15184,6 @@ of a fish with legs.
  When it's in the air, said Rincewind. Hrun grinned and flicked his thumb. The iotum rose, spinning.
  Edge, said Rincewind, without looking at it.
 
-
  Magic never dies. It merely fades away.
  Nowhere was this more evident on the wide blue expanse of the Discworld than in those areas that had
 been the scene of the great battles of the Mage Wars, which had happened very shortly after Creation. In
@@ -15377,7 +15200,6 @@ much of the old wild magic was sucked out of the earth.
  That did not solve the problem of those places on the disc which, during the wars, had suffered a direct
 hit by a spell. The magic faded away slowly, over the millenia, releasing as it decayed myriads of
 sub-astral particles that severely distorted the reality around it
-
 
  Rincewind, Twoflower and Hrun stared at the coin.
  Edge it is, said Hrun. Well, you're a wizard. So what?
@@ -15413,7 +15235,6 @@ and indistinct passed over Rincewind's head, throwing up a cloud of ashes from t
 carcass took off from the spit and rocketed into the sky.
  It banked to avoid a clump of trees, righted itself, roared around in a tight circle, and headed hubwards
 leaving a trail of hot pork-fat droplets.
-
 
  What are they doing now? asked the old man.
  The young woman glanced at the scrying glass. Heading rimwards at speed, she reported. By the way
@@ -15489,7 +15310,6 @@ she adds by way of encouragement.
  Oh, you know how it is with wizards. Half an hour afterwards you could do with another one, the
 dragon grumbles.
  He spreads his wings and drops.
-
 
  They're gaining, screamed Rincewind. He bent even lower over his horse's neck and groaned.
 Twoflower was trying to keep up while at the same time craning round to look at the flying beasts.
@@ -15581,7 +15401,6 @@ or–have you ever spent a million years in a coal measure?
 throat. He tried to force his fingers to let go. They wouldn't.
  I don't know how to be a hero! he shouted.
  I propose to teach you.
-
 
  Bronze Psepha rumbled deep in his throat.
  K!sdra the dragonrider leaned forward and squinted across the clearing. I see him, he said. He swung
@@ -15803,7 +15622,6 @@ pressing images of his fate on the rocks below.
 to flail down with his free hand, and a fistful of rings stabbed into the wizard's fingers.
  He let go.
 
-
  Twoflower grabbed the bars and pulled himself up.
  See anything? said Hrun, from the region of his feet.
  Just clouds.
@@ -15931,7 +15749,6 @@ weapon from another. A moment later it was all over.
  Do you intend to kill me?
  What? Oh no. No, this is just, you know, kind of a habit. Just keeping in practice. So where are these
 brothers? He grinned.
-
 
  Twoflower sat on his straw and stared into the darkness. He wondered how long he had been there.
 Hours, at least. Days, probably. He speculated that perhaps it had been years, and he had simply
@@ -16119,7 +15936,6 @@ were somehow walking upside down.
  As Twoflower watched, one of the shapes far above detached itself from the roof and began to grow
 larger
 
-
  Rincewind watched as Lio!rt's pale face dropped away from him. This is funny, gibbered a small part of
 his mind, why am I rising?
  Then he began to tumble in the air and reality took over. He was dropping to the distant,
@@ -16141,7 +15957,6 @@ for a moment the topmost rock on the Wyrmberg's noisome floor. Twoflower laughed
  Got him!
  And the dragon, curving gracefully at the top of his flight, gave a lazy flip of his wings and soared through
 a cavemouth into the morning air.
-
 
  At noon, in a wide green meadow on the lush tableland that was the top of the impossibly-balanced
 Wyrmberg, the dragons and their riders formed a wide circle. There was room beyond them for a rabble
@@ -16357,7 +16172,6 @@ flash in the landscape may have been the little river that overflowed into the a
 Rincewind tried to force the memory out of his mind , but it was rather enjoying itself there, terrorizing the
 other occupants and kicking over the furniture.
 
-
  I think not, said Liessa.
  Hrun took the wine cup, slowly. He grinned like a pumpkin.
  Around the arena the dragons started to bay. Their riders looked up. And something like a green blur
@@ -16392,7 +16206,6 @@ black dimensions.
  My Lord what is Death like? called the old man tremulously.
  When I have investigated it fully, I will let you know, came the faintest of modulations on the breeze.
  Yes, murmured the loremaster. A thought struck him. During daylight, please, he added.
-
 
  You clowns, screamed Hrun, from his perch on Ninereed's foreclaws.
  What did he say? roared Rincewind, as the dragon ripped its way through the air in the race for the
@@ -16546,8 +16359,6 @@ embrace. A moment later there was another splash as the luggage, still bearing a
 powerful travelling rune TWA, also hit the sea.
  Later on, they used it as a raft.
 
-
-
  Close to the Edge
 
  It had been a long time in the making. Now it was almost completed, and the slaves hacked away at the
@@ -16624,7 +16435,6 @@ Great A'Tuin's tail will be in an unmatched position.
  The old man smiled. it always does, he said.
  If only you could navigate
  If only you could steer-
-
 
  A wave washed over the deck. Rincewind and Twoflower looked at each other. Keep bailing! they
 screamed in unison, and reached for the buckets.
@@ -16711,7 +16521,6 @@ looking down at him with an expression of deep concern. Rincewind groaned and sa
  This turned out to be a mistake. The edge of the world was a few feet away.
  Beyond it, at a level just below that of the lip of the endless Rimfall, was something altogether magical.
 
-
  Some seventy miles away, and well beyond the tug of the rim current, a scow with the red sails typical of
 a freelance slaver drifted aimlessly through the velvety twilight. The crew - such as remained were
 clustered on the foredeck, surrounding the men working feverishly on the raft.
@@ -16749,7 +16558,6 @@ eat lobsters.
  Some pirates achieved immortality by great deeds of cruelty or derring-do. Some achieved immortality
 by amassing great wealth. But the captain had long ago decided that he would, on the whole, prefer to
 achieve immortality by not dying.
-
 
  What the hell is that? demanded Rincewind.
  It's beautiful, said Twoflower beatifically.
@@ -16975,7 +16783,6 @@ and sail to far-off worlds, too. I wonder
  Scrdfngh
  We've got to get out of here before this salvage fleet comes!
 
-
  The dishwater light of dawn oozed through the shack's one window, slopping across the piles of
 salvaged boxes and bundles that were strewn around the interior. Twoflower grunted again and tried to
 burrow into the pile of furs and blankets that Tethis had given them.
@@ -17027,7 +16834,6 @@ wine again.
  He picked up a large mallet that hung on a pillar beside the bell and used it to tap out a brief carillon.
  That'll be passed from lengthman to lengthman all the way back to Krull, he said. Marvellous really,
 isn't it?
-
 
  It came speeding across the sea, floating a man-length above it, but still leaving a foaming wake as
 whatever power that held it up smacked brutally into the water. Rincewind knew what power held it up.
@@ -17091,7 +16897,6 @@ sounds fascinating.
  Oh yes, said Rincewind, in a hollow voice. Fascinating. He was thinking I've seen excitement, and
 I've seen boredom. And boredom was best.
 
-
  Had either of them happened to look down at that moment they would have noticed a strange v-shaped
 wave surging through the water far below them, its apex pointing directly at Tethis' island. But they
 weren't looking. The twenty-four hydrophobic magicians were looking, but to them it was just another
@@ -17124,7 +16929,6 @@ coming from their minute jungle; when some of the bolder spirits went to investi
 found that the trees had been smashed in a broad swathe that started on the hubmost shore of the atoll
 and made a line of total destruction pointing precisely Edgewise, littered with broken lianas, crushed
 bushes and a few bewildered and angry oysters.
-
 
  They were high enough now to see the wide curve of the Rim sweeping away from them, lapped by the
 fluffy clouds that mercifully hid the waterfall for most of the time. From up here the sea, a deep blue
@@ -17175,7 +16979,6 @@ sure we'd all-
 lives in Krull will be rich, full and comfortable-
  Oh, good, said Rincewind.
  -just not very long.
-
 
  Krull turned out to be a large island, quite mountainous and heavily wooded, with pleasant white
 buildings visible here and there among the trees. The land sloped gradually up towards the rim, so that the
@@ -17283,7 +17086,6 @@ worth the bother of knowing, really. Sleep well. Comparatively well, anyway.
  He shut the door. A brief octarine flicker of balefire around it suggested that it had now been sealed
 beyond the skills of any earthly locksmith.
 
-
  Gling, clang, tangwent the bells along the Circumfence in the moonlit, rimfall-roaring night.
  Terton, lengthman of the 45th Length, hadn't heard such a clashing since the night a giant kraken had
 been swept into the Fence five years ago. He leaned out of his hut, which for the lack of any convenient
@@ -17304,7 +17106,6 @@ clinging to the Circumfence; some weeks later he was picked up by a returning sa
 subsequently escaped from Krull on a hijacked lens (having developed hydrophobia to an astonishing
 degree) and after a number of adventures eventually found his way to the Great Nef, an area of the Disc
 so dry that it actually has negative rainfall, which he nevertheless considered uncomfortably damp.
-
 
  Have you tried the door?
  Yes, said Twoflower. And it isn't any less locked than it was last time you asked. There's the window,
@@ -17470,7 +17271,6 @@ we– hey! he finished, as the sight of the contents of the room filtered up his
  Twoflower was already staring at the walls.
  Because what was so odd about the room was, it contained the whole Universe.
 
-
  Death sat in His garden, running a whetstone along the edge of His scythe. It was already so sharp that
 any passing breeze that blew across it was sliced smoothly into two puzzled zephyrs, although breezes
 were rare indeed in Death's silent garden. It lay on a sheltered plateau overlooking the Disc world's
@@ -17513,7 +17313,6 @@ cottage. The beast snuffled at him in a friendly fashion; though it was crimson-
 oiled silk, it was nevertheless a real flesh-and-blood horse and, indeed, was in all probability better
 treated than most beasts of burden on the Disc. Death was not an unkind master. He weighed very little
 and, although He often rode back with His saddlebags bulging, they weighed nothing whatsoever.
-
 
  All those worlds! said Twoflower. It's fantastic!
  Rincewind grunted, and continued to prowl warily around the star-filled room. Twoflower turned to a
@@ -17594,7 +17393,6 @@ the top half of a suit over his head. Anything's better than being sacrificed.
  He thrust an arm savagely into his suit and banged his head on the helmet. He reflected briefly that
 someone up there was watching over him.
  Thanks a lot, he said bitterly.
-
 
  At the very edge of the city and country of Krull was a large semicircular amphitheatre, with seating for
 several tens of thousands of people. The arena was only semi-circular for the very elegant reason that it
@@ -17766,12 +17564,10 @@ suppressed excitement.
  Atop the centre of the ship was a large round bronze hatch with hasps around it. The troll and the tourist
 knelt down and started to work on them.
 
-
  In the heart of the Potent Voyager fine sand had been trickling into a carefully designed cup for several
 hours. Now the cup was filled by exactly the right amount to dip down and upset a carefully-balanced
 weight. The weight swung away, pulling a pin from an intricate little mechanism. A chain began to move.
 There was a clonk
-
 
  What was that? said Rincewind urgently. He looked down.
  The hail of arrows had stopped. The crowd of priests and soldiers were standing motionless, staring
@@ -17898,8 +17694,6 @@ Potent Voyager. And there were all the stars, looking remarkably like powdered d
 black velvet, the stars that lured and ultimately called the boldest towards them
  The whole of Creation was waiting for Rincewind to drop in. He did so. There didn't seem to be any
 alternative.
-
-
 
  The shape and cosmology of the disc system are perhaps worthy of note at this point. There are, of
 course, two major directions on the disc Hubward and Rimward. But since the disc itself revolves at the
@@ -19444,9 +19238,6 @@ mortal armies rush blindly towards their doom, the burning shadow comes to
 consume us all.
 
 You must rally the horde and lead your people to their destiny!  [Whisper] Seek
-me out.....
-
-
 
 Prologue Campaign
 Chapter One Chasing Visions
@@ -19496,7 +19287,6 @@ The Prophet flies off.
 
 Thrall None of this makes sense, but the spirits tell me... that I should
 trust him.
-
 
 Chapter Two Departures
 
@@ -19565,7 +19355,6 @@ The Prophet No, go, young Thrall.  Sail west to the lands of Kalimdor.  It is
 there that you will find your destiny.  It is there that your people's
 salvation will be assured.
 
-
 End prologue campaign.
 Begin human campaign.
 
@@ -19623,7 +19412,6 @@ Now, be gone!
 
 The Prophet I failed humanity once before, and I will not do so again.  If you
 can not take up this cup, I shall find another who will.
-
 
 Chapter One The Defense of Strahnbrad
 
@@ -19684,7 +19472,6 @@ A knight rushes in.
 Knight Prince Arthas, Lord Uther needs you at the orc encampment immediately!
 
 Arthas Never a dull moment.  Let's get moving!
-
 
 Chapter Two Blackrock and Roll
 
@@ -19755,7 +19542,6 @@ Uther the Lightbringer Have faith, lad.  These Orcs are trying to hold on to
 dying traditions.  We defeated their demons a long time ago.  Let's head for
 home.  It's been a long day.
 
-
 Intermission Jaina's meeting.
 
 The scene shifts to mage kingdom of Dalaran, led by Antonidas.  The Prophet is
@@ -19787,7 +19573,6 @@ and investigate the matter.  I've arranged for a special envoy to assist you.
 Jaina Yes, master.  I'll do my best.
 
 Antonidas I know you will, child.  Farewell.
-
 
 Chapter Three Ravages of the Plague.
 
@@ -19899,7 +19684,6 @@ lackeys are behind this plague.
 Arthas Well, it's a good bet we'll find him, and the answers we're looking
 for, in Andorhal.
 
-
 Chapter Four The Cult of the Damned
 
 The next day, outside of Andorhal, Arthas and Jaina catch up to the undead.
@@ -19948,7 +19732,6 @@ Kel'Thuzad Naive fool.  My death will make little difference in the long run.
 For now, the scourging of this land... begins.
 
 Kel'Thuzad dies.
-
 
 Chapter Five March of the Scourge.
 
@@ -20049,7 +19832,6 @@ Arthas Nothing he can say will make me abandon my homeland, Jaina.  I don't
 care if that madman has seen the future.  Let's go.
 
 They run off, heading to Stratholme.
-
 
 Chapter Six The Culling
 
@@ -20160,7 +19942,6 @@ falls to you now, young sorceress.  You must lead your people to the west to
 the ancient lands of Kalimdor.  Only there can you combat the shadow and save
 this world from the flame.
 
-
 Chapter Seven The Shores of Northrend
 
 A month has passed, Arthas' fleet has just arrived at the distant shores of
@@ -20222,7 +20003,6 @@ establish this site as our primary base.
 
 Captain Yes, milord.
 
-
 Chapter Eight Dissension
 
 The next morning, at the new base camp a messenger from King Terenas arrives
@@ -20280,7 +20060,6 @@ Footman Our ships are ruined.  What will we do now?
 Arthas Listen to me, all of you!  There is no way home for any of us, save
 through victory!  In this land we will stand or fall together.  Now, return to
 the base and man your posts.
-
 
 Chapter Nine Frostmourne
 
@@ -20393,10 +20172,8 @@ before coming to rest.
 Arthas This kingdom shall fall.  And from he ashes shall arise a new order,
 which will shake the very foundations of the world.
 
-
 End human campaign.
 Begin undead campaign.
-
 
 Chapter One Trudging through the Ashes
 
@@ -20462,7 +20239,6 @@ Arthas And what's that?
 
 Tichondrius You will go to Andorhal and recover the remains of the acolytes'
 former master, the necromancer, Kel'Thuzad.
-
 
 Chapter Two Digging up the Dead
 
@@ -20567,7 +20343,6 @@ Kel'Thuzad [To Arthas] Tell him nothing!  Only you can hear me.  The
 dreadlords cannot be trusted.  They are the Lich King's jailors!  I will tell
 you all... when I walk this world again.
 
-
 The Dreadlords Convene
 
 At a secret meeting place, several Dreadlords get together to talk of coming
@@ -20594,7 +20369,6 @@ Anetheron See that they do not.  Lord Archimonde has little patience for
 failure.
 
 The meeting ends and the Dreadlords go back to wherever it is they came from.
-
 
 Chapter Three Into the Realm Eternal
 
@@ -20652,7 +20426,6 @@ back!
 
 Arthas The elfgate has fallen!  Onward, my warriors!  Onward to victory!
 
-
 Chapter Four Key of the Three Moons.
 
 Moments later, as the pursuing Undead army approaches the second gate, they
@@ -20693,7 +20466,6 @@ Arthas proceeds inward.
 Sylvanas Windrunner Damn you monsters!  What will it take to drive you back?
 
 Arthas The ranger woman is starting to vex me greatly.
-
 
 Chapter Five The fall of Silvermoon
 
@@ -20763,7 +20535,6 @@ about the dreadlords now?
 Kel'Thuzad Certainly, but not here.  They have eyes and ears everywhere.
 We'll talk where it's safe.
 
-
 The Revelation
 
 Three days later in the Alterac Mountains, the undead army flies through the
@@ -20797,7 +20568,6 @@ of the elves... it was all just to prepare for some huge demonic invasion?
 
 Kel'Thuzad Yes, In time, you will find that our entire history has been shaped
 by the coming conflict.  Now come, we have much work to do.
-
 
 Chapter Six Blackrock & Roll, Too!
 
@@ -20857,7 +20627,6 @@ Kel'Thuzad Where should we search for it, great one?
 Archimonde Seek out the mortal city of Dalaran.  It is there that the tome is
 kept.  At twilight, three days from now, you will begin the summoning.
 
-
 Chapter Seven The Siege of Dalaran
 
 Arthas' army approaches the Mage Capital of Dalaran.  His army sets up a camp
@@ -20897,7 +20666,6 @@ Arthas The spellbook is all yours, lich.  Let's take it an leave before the
 wizards amass for their final attack.
 
 Kel'Thuzad Indeed.  I will begin summoning Lord Archimonde at sunset.
-
 
 Chapter Eight Under the Burning Sky.
 
@@ -20954,7 +20722,6 @@ Soon, the city is destroyed.  Archimonde's example complete.
 
 End undead campaign.
 Start orc campaign.
-
 
 Chapter One Landfall.
 
@@ -21020,7 +20787,6 @@ brethren and I will escort you on your march.
 Cairne Bloodhoof I am intrigued by you and your people, young Thrall.  You are
 more than welcome to join us.
 
-
 Chapter Two The Long March
 
 Thrall and Cairne have assembled their forces and a caravan to move Cairne's
@@ -21074,7 +20840,6 @@ Thrall Thank you, Cairne.  I will not forget you.
 Cairne Bloodhoof Go with honor, young warchief.  May the Earth Mother smile
 upon you.
 
-
 Intermission The Wreckage of Lordaeron
 
 While the Orcs are busy trying to find destiny, Archimonde is having fun
@@ -21106,7 +20871,6 @@ Archimonde teleports in.
 Archimonde And you are mine, Mannoroth!  You would do well to remember that
 fact.  We will watch the wayward Orcs and wait.  Despite their failure, they
 may still prove useful to us.
-
 
 Chapter Three Cry of the Warsong
 
@@ -21175,7 +20939,6 @@ Thrall I can't take that chance, Grom.  Take your clan into the northern
 forest and build us a settlement.  I'll come and find you after we've reached
 the Oracle.
 
-
 Chapter Four The Spirits of Ashenvale
 
 Thrall and his forces are moving towards the Oracle.  Hellscream and another
@@ -21202,7 +20965,6 @@ elves of the human lands, these elves are all female.  Their bases are made of
 large trees.  Grom, upon destroying some of these, utilizes them for the new
 settlement.  Before long, the Orc lumber stockpiles are nearly full.  Grom
 issues the order to begin constructing a larger settlement for Thrall's forces.
-
 
 Intermission The Blood of Mannoroth
 
@@ -21236,7 +20998,6 @@ Orcs to it, and once they've tasted your blood again, they will be unstoppable!
 
 Mannoroth spills his blood into the pool, laughing at the inevitable victory it
 will bring.
-
 
 Chapter Five The Hunter of Shadows.
 
@@ -21308,7 +21069,6 @@ Mannoroth Stupid, pitiful creature.  I am the rage in your heart.  I am the
 fury of your thoughts.  I alone empowered you to bring chaos to this world, and
 by the endless void, you shall!
 
-
 Chapter Six Where Wyverns Dare
 
 At the base of Stonetalon Peak, Thrall and his forces have run into a bit of a
@@ -21366,7 +21126,6 @@ ambush.
 Thrall Don't worry, Cairne.  I was raised by the humans.  I know their tricks
 and stratagems.  There's no way that I'll let them stop me from reaching the
 Oracle.
-
 
 Chapter Seven The Oracle
 
@@ -21449,7 +21208,6 @@ Jaina Wait!  This is insane!  You can't possibly expect me to--
 The Prophet Destiny is at hand, young sorceress.  The time to choose has come.
 For the fate of all who live, humanity must join forces with the Horde.
 
-
 Chapter Eight By Demons Be Driven
 
 Three days later, near the edge of the Barrens, Thrall, Jaina and Cairne
@@ -21523,7 +21281,6 @@ Grom Hellscream Mannoroth... We must face Mannoroth in the canyon.
 
 Thrall Then let's go.  I don't want to keep the bastard waiting.
 
-
 Cinematic
 
 Thrall and Grom walk into the canyon to fight the pit lord, Mannoroth.  Due to
@@ -21567,10 +21324,8 @@ Thrall No, old friend.  You've freed us all.
 
 Thrall yells out a loud shout which shakes the canyon.
 
-
 End Orc Campaign.
 Begin Night Elf Campaign.
-
 
 Chapter One Enemies at the Gate
 
@@ -21625,7 +21380,6 @@ clear all the armies of the living are doomed.
 Tyrande Whisperwind Quickly, my sisters, back to the trees!  We are no match
 for a force this vast.
 
-
 Chapter Two Daughters of the Moon
 
 Three hours later, in the foothills of Mount Hyjal, Tyrande and her troops are
@@ -21666,7 +21420,6 @@ appeared out of nowhere and attacked our village without warning!
 Tyrande Whisperwind Ishnu-dal-dieb, Shandris.  We have a greater problem.  The
 undead were sent here by the Burning Legion, our ancient enemies of old.
 Against such might, we have only one option.  We must awaken the druids.
-
 
 Chapter Three The Awakening of Stormrage
 
@@ -21712,7 +21465,6 @@ Furion Stormrage Come forth, you defenders of old!  Crush these invaders as
 you did in ages past!
 
 The treants run off and attack the undead.
-
 
 Chapter Four The Druids Arise
 
@@ -21784,7 +21536,6 @@ Druid of the Talon We are yours to command, Shan'do Stormrage.
 
 Furion Stormrage Now, we must delve into the earth and rouse the ferocious
 druids of the claw from their slumber.
-
 
 Chapter Five Brothers in Blood
 
@@ -21919,7 +21670,6 @@ what is left of our beloved land!
 Furion Stormrage Have you even considered the cost, Tyrande?  This betrayer's
 aid may doom us all before the end.  I will have nothing of this.
 
-
 Chapter Six A Destiny of Flame and Sorrow
 
 The following evening, deep in the corrupted forests of Felwood Illidan
@@ -21995,7 +21745,6 @@ Illidan Stormrage So be it... brother.
 
 Illidan runs off.
 
-
 Interlude The Last Guardian.
 
 Two days later, Furion and Tyrande are standing in a tranquil area of the
@@ -22033,7 +21782,6 @@ my death, war raged across the lands of the east for many long years, leaving
 entire kingdoms devastated in its wake.  Now, at long last, I have returned to
 set things right.  I... am Medivh, the Last Guardian.  I tell you now, the only
 chance for this world is to unite in arms against the enemies of all who live!
-
 
 Chapter Seven Twilight of the Gods
 
@@ -22159,7 +21907,7 @@ said Filby, an argumentative person with red hair.
 
 'I do not mean to ask you to accept anything without reasonable
 ground for it. You will soon admit as much as I need from you. You
-know of course that a mathematical line, a line of thickness _nil_,
+know of course that a mathematical line, a line of thickness nil,
 has no real existence. They taught you that? Neither has a
 mathematical plane. These things are mere abstractions.'
 
@@ -22171,7 +21919,7 @@ real existence.'
 'There I object,' said Filby. 'Of course a solid body may exist. All
 real things--'
 
-'So most people think. But wait a moment. Can an _instantaneous_
+'So most people think. But wait a moment. Can an instantaneous
 cube exist?'
 
 'Don't follow you,' said Filby.
@@ -22180,7 +21928,7 @@ cube exist?'
 existence?'
 
 Filby became pensive. 'Clearly,' the Time Traveller proceeded, 'any
-real body must have extension in _four_ directions: it must have
+real body must have extension in four directions: it must have
 Length, Breadth, Thickness, and--Duration. But through a natural
 infirmity of the flesh, which I will explain to you in a moment, we
 incline to overlook this fact. There are really four dimensions,
@@ -22197,19 +21945,19 @@ his cigar over the lamp; 'that ... very clear indeed.'
 continued the Time Traveller, with a slight accession of
 cheerfulness. 'Really this is what is meant by the Fourth Dimension,
 though some people who talk about the Fourth Dimension do not know
-they mean it. It is only another way of looking at Time. _There is
+they mean it. It is only another way of looking at Time. There is
 no difference between Time and any of the three dimensions of Space
-except that our consciousness moves along it_. But some foolish
+except that our consciousness moves along it. But some foolish
 people have got hold of the wrong side of that idea. You have all
 heard what they have to say about this Fourth Dimension?'
 
-'_I_ have not,' said the Provincial Mayor.
+'I have not,' said the Provincial Mayor.
 
 'It is simply this. That Space, as our mathematicians have it, is
 spoken of as having three dimensions, which one may call Length,
 Breadth, and Thickness, and is always definable by reference to
 three planes, each at right angles to the others. But some
-philosophical people have been asking why _three_ dimensions
+philosophical people have been asking why three dimensions
 particularly--why not another direction at right angles to the other
 three?--and have even tried to construct a Four-Dimension geometry.
 Professor Simon Newcomb was expounding this to the New York
@@ -22270,11 +22018,11 @@ present moment.'
 the whole world has gone wrong. We are always getting away from the
 present moment. Our mental existences, which are immaterial and have
 no dimensions, are passing along the Time-Dimension with a uniform
-velocity from the cradle to the grave. Just as we should travel _down_
+velocity from the cradle to the grave. Just as we should travel down
 if we began our existence fifty miles above the earth's surface.'
 
 'But the great difficulty is this,' interrupted the Psychologist.
-'You _can_ move about in all directions of Space, but you cannot
+'You can move about in all directions of Space, but you cannot
 move about in Time.'
 
 'That is the germ of my great discovery. But you are wrong to say
@@ -22289,7 +22037,7 @@ should he not hope that ultimately he may be able to stop or
 accelerate his drift along the Time-Dimension, or even turn about
 and travel the other way?'
 
-'Oh, _this_,' began Filby, 'is all--'
+'Oh, this,' began Filby, 'is all--'
 
 'Why not?' said the Time Traveller.
 
@@ -22338,7 +22086,7 @@ basis.'
 'Yes, so it seemed to me, and so I never talked of it until--'
 
 'Experimental verification!' cried I. 'You are going to verify
-_that_?'
+that?'
 
 'The experiment!' cried Filby, who was getting brain-weary.
 
@@ -22506,11 +22254,7 @@ None of us quite knew how to take it.
 I caught Filby's eye over the shoulder of the Medical Man, and he
 winked at me solemnly.
 
-
-
-
 II
-
 
 I think that at that time none of us quite believed in the Time
 Machine. The fact is, the Time Traveller was one of those men who
@@ -22518,7 +22262,7 @@ are too clever to be believed: you never felt that you saw all round
 him; you always suspected some subtle reserve, some ingenuity in
 ambush, behind his lucid frankness. Had Filby shown the model and
 explained the matter in the Time Traveller's words, we should have
-shown _him_ far less scepticism. For we should have perceived his
+shown him far less scepticism. For we should have perceived his
 motives; a pork butcher could understand Filby. But the Time
 Traveller had more than a touch of whim among his elements, and we
 distrusted him. Things that would have made the frame of a less
@@ -22628,7 +22372,7 @@ curiosity. 'Does our friend eke out his modest income with a
 crossing? or has he his Nebuchadnezzar phases?' he inquired. 'I feel
 assured it's this business of the Time Machine,' I said, and took up
 the Psychologist's account of our previous meeting. The new guests
-were frankly incredulous. The Editor raised objections. 'What _was_
+were frankly incredulous. The Editor raised objections. 'What was
 this time travelling? A man couldn't cover himself with dust by
 rolling in a paradox, could he?' And then, as the idea came home to
 him, he resorted to caricature. Hadn't they any clothes-brushes in
@@ -22711,11 +22455,7 @@ downward were illuminated. At first we glanced now and again at each
 other. After a time we ceased to do that, and looked only at the
 Time Traveller's face.
 
-
-
-
 III
-
 
 'I told some of you last Thursday of the principles of the Time
 Machine, and showed you the actual thing itself, incomplete in the
@@ -22912,11 +22652,7 @@ beautiful kind of consumptive--that hectic beauty of which we used
 to hear so much. At the sight of him I suddenly regained confidence.
 I took my hands from the machine.
 
-
-
-
 IV
-
 
 'In another moment we were standing face to face, I and this fragile
 thing out of futurity. He came straight up to me and laughed into my
@@ -23242,7 +22978,7 @@ loyal alliance of capable men, upon self-restraint, patience, and
 decision. And the institution of the family, and the emotions that
 arise therein, the fierce jealousy, the tenderness for offspring,
 parental self-devotion, all found their justification and support in
-the imminent dangers of the young. _Now_, where are these imminent
+the imminent dangers of the young. Now, where are these imminent
 dangers? There is a sentiment arising, and it will grow, against
 connubial jealousy, against fierce maternity, against passion
 of all sorts; unnecessary things now, and things that make us
@@ -23293,11 +23029,7 @@ and their numbers had rather diminished than kept stationary.
 That would account for the abandoned ruins. Very simple was my
 explanation, and plausible enough--as most wrong theories are!
 
-
-
-
 V
-
 
 'As I stood there musing over this too perfect triumph of man, the
 full moon, yellow and gibbous, came up out of an overflow of silver
@@ -23314,7 +23046,7 @@ bushes, black in the pale light, and there was the little lawn.
 I looked at the lawn again. A queer doubt chilled my complacency.
 "No," said I stoutly to myself, "that was not the lawn."
 
-'But it _was_ the lawn. For the white leprous face of the sphinx was
+'But it was the lawn. For the white leprous face of the sphinx was
 towards it. Can you imagine what I felt as this conviction came
 home to me? But you cannot. The Time Machine was gone!
 
@@ -23814,7 +23546,7 @@ fact, except along the river valley--showed how universal were its
 ramifications. What so natural, then, as to assume that it was in
 this artificial Underworld that such work as was necessary to the
 comfort of the daylight race was done? The notion was so plausible
-that I at once accepted it, and went on to assume the _how_ of this
+that I at once accepted it, and went on to assume the how of this
 splitting of the human species. I dare say you will anticipate the
 shape of my theory; though, for myself, I very soon felt that it
 fell far short of the truth.
@@ -23898,11 +23630,7 @@ banishing these signs of the human inheritance from Weena's eyes.
 And very soon she was smiling and clapping her hands, while I
 solemnly burned a match.
 
-
-
-
 VI
-
 
 'It may seem odd to you, but it was two days before I could follow
 up the new-found clue in what was manifestly the proper way. I felt
@@ -24100,11 +23828,7 @@ sunlight. I fell upon my face. Even the soil smelt sweet and clean.
 Then I remember Weena kissing my hands and ears, and the voices of
 others among the Eloi. Then, for a time, I was insensible.
 
-
-
-
 VII
-
 
 'Now, indeed, I seemed in a worse case than before. Hitherto,
 except during my night's anguish at the loss of the Time Machine,
@@ -24223,7 +23947,7 @@ against my shoulder. So we went down a long slope into a valley, and
 there in the dimness I almost walked into a little river. This I
 waded, and went up the opposite side of the valley, past a number
 of sleeping houses, and by a statue--a Faun, or some such figure,
-_minus_ the head. Here too were acacias. So far I had seen nothing of
+minus the head. Here too were acacias. So far I had seen nothing of
 the Morlocks, but it was yet early in the night, and the darker hours
 before the old moon rose were still to come.
 
@@ -24339,11 +24063,7 @@ away. Weena I had resolved to bring with me to our own time. And
 turning such schemes over in my mind I pursued our way towards the
 building which my fancy had chosen as our dwelling.
 
-
-
-
 VIII
-
 
 'I found the Palace of Green Porcelain, when we approached it about
 noon, deserted and falling into ruin. Only ragged vestiges of glass
@@ -24488,7 +24208,7 @@ might, perhaps, have moralized upon the futility of all ambition.
 But as it was, the thing that struck me with keenest force was the
 enormous waste of labour to which this sombre wilderness of rotting
 paper testified. At the time I will confess that I thought chiefly
-of the _Philosophical Transactions_ and my own seventeen papers upon
+of the Philosophical Transactions and my own seventeen papers upon
 physical optics.
 
 'Then, going up a broad staircase, we came to what may once have
@@ -24502,8 +24222,8 @@ I cried to her in her own tongue. For now I had a weapon indeed
 against the horrible creatures we feared. And so, in that derelict
 museum, upon the thick soft carpeting of dust, to Weena's huge
 delight, I solemnly performed a kind of composite dance, whistling
-_The Land of the Leal_ as cheerfully as I could. In part it was a
-modest _cancan_, in part a step dance, in part a skirt-dance (so far
+The Land of the Leal as cheerfully as I could. In part it was a
+modest cancan, in part a step dance, in part a skirt-dance (so far
 as my tail-coat permitted), and in part original. For I am naturally
 inventive, as you know.
 
@@ -24573,11 +24293,7 @@ largely because of the mystery on the other side. They had never
 impressed me as being very strong, and I hoped to find my bar of
 iron not altogether inadequate for the work.
 
-
-
-
 IX
-
 
 'We emerged from the palace while the sun was still in part above
 the horizon. I was determined to reach the White Sphinx early the
@@ -24815,11 +24531,7 @@ that was pain.
 sky, I made a discovery. In my trouser pocket were still some loose
 matches. The box must have leaked before it was lost.
 
-
-
-
 X
-
 
 'About eight or nine in the morning I came to the same seat of
 yellow metal from which I had viewed the world upon the evening of
@@ -24932,11 +24644,7 @@ hands slipped from me. The darkness presently fell from my eyes.
 I found myself in the same grey light and tumult I have already
 described.
 
-
-
-
 XI
-
 
 'I have already told you of the sickness and confusion that comes
 with time travelling. And this time I was not seated properly in the
@@ -25113,11 +24821,7 @@ blood-red water, and it was hopping fitfully about. Then I felt I
 was fainting. But a terrible dread of lying helpless in that remote
 and awful twilight sustained me while I clambered upon the saddle.
 
-
-
-
 XII
-
 
 'So I came back. For a long time I must have been insensible upon
 the machine. The blinking succession of the days and nights was
@@ -25158,7 +24862,7 @@ Sphinx, into which the Morlocks had carried my machine.
 
 'For a time my brain went stagnant. Presently I got up and came
 through the passage here, limping, because my heel was still
-painful, and feeling sorely begrimed. I saw the _Pall Mall Gazette_
+painful, and feeling sorely begrimed. I saw the Pall Mall Gazette
 on the table by the door. I found the date was indeed to-day, and
 looking at the timepiece, saw the hour was almost eight o'clock. I
 heard your voices and the clatter of plates. I hesitated--I felt so
@@ -25320,11 +25024,7 @@ would bring with him. But I am beginning now to fear that I must
 wait a lifetime. The Time Traveller vanished three years ago. And,
 as everybody knows now, he has never returned.
 
-
-
-
 EPILOGUE
-
 
 One cannot choose but wonder. Will he ever return? It may be that he
 swept back into the past, and fell among the blood-drinking, hairy
