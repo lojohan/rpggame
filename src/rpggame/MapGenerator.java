@@ -82,16 +82,17 @@ public class MapGenerator {
 		}
 	}
 	
+	// TODO: not correct
 	private static int getLimit(Zone zone,  int sizeX, int sizeY, Dir dir) {
 		switch(dir) {
 		case NORTH:
-			return zone.sizeY+sizeY-2;
+			return sizeY;
 		case EAST:
-			return zone.sizeX+sizeX-2;
+			return sizeX;
 		case SOUTH:
-			return zone.sizeY+sizeY-2;
+			return sizeY;
 		case WEST:
-			return zone.sizeX+sizeX-2;
+			return sizeX;
 		default:
 			return 0;
 		}
@@ -143,7 +144,7 @@ public class MapGenerator {
 	private static IntegerPair getRandomPointOnEdge(ArrayList<IntegerPair> edge, int limit) {
 		final Random rn = new Random();
 		int rand = 0;
-		if(edge.size() <= limit) {
+		if(edge.size() <= limit || limit <= 0) {
 			rand = 1 + rn.nextInt(edge.size()-2);
 		} else {
 			rand = 1 + rn.nextInt(limit-1);
