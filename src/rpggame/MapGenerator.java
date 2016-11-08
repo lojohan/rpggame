@@ -15,6 +15,7 @@ public class MapGenerator {
 	static HashMap<String,String> entities = new HashMap<>();
 	static ArrayList<String> entityStrings = new ArrayList<>();
 	static ArrayList<Zone> createdZones = new ArrayList<>();
+	static ArrayList<IntegerPair> exitsToClear = new ArrayList<>();
 	
 	// Generate tiles in a specific zone
 	public static void generateTiles(int startX, int startY, int sizeX, int sizeY) {
@@ -35,6 +36,7 @@ public class MapGenerator {
 	public static void generate(int sizeX, int sizeY, int maximumDepth) {
 		int currentDepth = 0;
     	MapGenerator.generateMap(50,50,sizeX, sizeY, currentDepth, maximumDepth,0,0,Dir.EAST);
+    	clearExits();
     	MapGenerator.printToMap();
 	}
 	
@@ -52,28 +54,49 @@ public class MapGenerator {
 			if(canCreateZone) {
 				entityStrings.add("Zone;"+NameGenerator.generateRandomPlaceName()+";"+startX+","+startY+";"+(startX+sizeX)+","+(startY+sizeY)+";");
 				Zone currentZone = new Zone(startX, startY, sizeX, sizeY);
+				createdZones.add(currentZone);
 				//Dir exitDir = Dir.WEST;
 				Dir exitDir = Zone.getRandomDirectionExcl(exclude);
 				
 				//used to not have the next zone be the same as the current one.
 				Dir excludeDir = getExcludeDir(exitDir);
 				
-				IntegerPair exitPoint = getRandomPointOnEdge(currentZone.getEdge(exitDir));
 				
-				IntegerPair nextCoords = getNewStartCoords(currentZone,sizeX,sizeY,exitDir);
+				IntegerPair nextSize = getNextSize(5,5,30,30);
+				IntegerPair nextCoords = getNewStartCoords(currentZone,nextSize.x,nextSize.y,exitDir);
+				
+				IntegerPair exitPoint = getRandomPointOnEdge(currentZone.getEdge(exitDir),
+						getLimit(currentZone,nextSize.x,nextSize.y,exitDir));
 				
 		    	MapGenerator.generateEdgeTiles(currentZone);
 		    	MapGenerator.generateNonPlayerEntities(currentZone, 2);
 		    	MapGenerator.generatePlayer(currentZone, currentDepth);
 		    	
-		    	generateMap(nextCoords.x,nextCoords.y, sizeX, sizeY, currentDepth+1,maximumDepth, exitPoint.x, exitPoint.y, excludeDir);
+		    	if(currentDepth != maximumDepth) {
+		    		generateMap(nextCoords.x,nextCoords.y, nextSize.x, nextSize.y, currentDepth+1,maximumDepth, exitPoint.x, exitPoint.y, excludeDir);
+		    	}
 		    	
-		    	if(currentDepth != maximumDepth)
-		    		clearExit(currentDepth, exitPoint.x, exitPoint.y);
-				clearExit(currentDepth, prevExitX, prevExitY);
+		    	exitsToClear.add(new IntegerPair(prevExitX,prevExitY));
 			}
 	    	
 		}
+	}
+	
+	private static int getLimit(Zone zone,  int sizeX, int sizeY, Dir dir) {
+		switch(dir) {
+		case NORTH:
+			return zone.sizeY+sizeY-2;
+		case EAST:
+			return zone.sizeX+sizeX-2;
+		case SOUTH:
+			return zone.sizeY+sizeY-2;
+		case WEST:
+			return zone.sizeX+sizeX-2;
+		default:
+			return 0;
+		}
+		
+		
 	}
 	
 	private static boolean zoneOverLaps(Zone zone, int startX, int startY, int sizeX, int sizeY) {
@@ -103,9 +126,28 @@ public class MapGenerator {
 		return ip;
 	}
 	
+	private static IntegerPair getNextSize(int xlimlower, int ylimlower, int xlimupper, int ylimupper) {
+		final Random rn = new Random();
+		int rand1 = xlimlower + rn.nextInt(xlimupper - xlimlower);
+		int rand2 = ylimlower + rn.nextInt(ylimupper - ylimlower);
+		
+		return new IntegerPair(rand1,rand2);
+	}
+	
 	private static IntegerPair getRandomPointOnEdge(ArrayList<IntegerPair> edge) {
 		final Random rn = new Random();
 		int rand = 1 + rn.nextInt(edge.size()-2);
+		return edge.get(rand);
+	}
+	
+	private static IntegerPair getRandomPointOnEdge(ArrayList<IntegerPair> edge, int limit) {
+		final Random rn = new Random();
+		int rand = 0;
+		if(edge.size() <= limit) {
+			rand = 1 + rn.nextInt(edge.size()-2);
+		} else {
+			rand = 1 + rn.nextInt(limit-1);
+		}
 		return edge.get(rand);
 	}
 	
@@ -139,6 +181,24 @@ public class MapGenerator {
 				}
 			}
 			
+		}
+	}
+	
+	private static void clearExits() {
+		
+		for(IntegerPair exit : exitsToClear) {
+		String exitCoords = exit.x+","+exit.y;
+		entities.remove(exitCoords);
+		
+		Iterator<String> it = entityStrings.iterator();
+		
+		
+		while(it.hasNext()) {
+			String entity = it.next();
+			if(entity.startsWith("Tile;;"+exitCoords)) {
+				it.remove();
+			}
+			}
 		}
 	}
 	
