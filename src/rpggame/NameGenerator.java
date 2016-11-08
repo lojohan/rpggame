@@ -31,7 +31,11 @@ public class NameGenerator {
 			}
 			
 			// name
-			sb.append(generateRandomName());
+			if (rn.nextInt(100) < 80) {
+				sb.append(Wordlist.capitalize(wlist.getRandomTemplateNoun()));
+			} else {
+				sb.append(generateRandomName());
+			}
 		} else {
 			// adjective
 			if (rn.nextInt(100) < 33) {

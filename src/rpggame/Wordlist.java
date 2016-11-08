@@ -127,7 +127,9 @@ public class Wordlist {
 
 	private void loadPossibleNames() {
 		for (String word : templateWords) {
-			if (!isWordlistWord(word)) {
+			if (word.matches("\\d+")) continue;
+			if (!word.matches(".*\\w+.*")) continue;
+			if (!isWordlistWord(word.toLowerCase().replaceAll("'s$", "").replaceAll("s'$", "s"))) {
 				final String firstLetter = word.substring(0, 1);
 				final String firstWord = word.replaceFirst("\\w", firstLetter.toUpperCase());
 				names.add(firstWord);
@@ -169,7 +171,7 @@ public class Wordlist {
 
 				while (m.find()) {
 					String word = m.group();
-					templateWords.add(word);
+					templateWords.add(word.toLowerCase());
 				}
 			}
 			in.close();
