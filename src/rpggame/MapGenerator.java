@@ -79,15 +79,18 @@ public class MapGenerator {
 					}
 					
 			    	MapGenerator.generateEdgeTiles(currentZone);
-			    	MapGenerator.generateNonPlayerEntities(currentZone, entityDensity, friendly);
+			    	MapGenerator.generateNonPlayerEntities(currentZone,entityDensity,friendly);
 			    	MapGenerator.generatePlayer(currentZone, currentDepth);
-					exitsToClear.add(new IntegerPair(prevExitX,prevExitY));
+			    	
+			    	IntegerPair nextExit = new IntegerPair(prevExitX,prevExitY);
+			    	
+			    	if(!exitsToClear.contains(nextExit))
+			    		exitsToClear.add(nextExit);
 				}
 			}
 	    	
 	}
 	
-	// TODO: not correct
 	private static int getLimit(Zone zone,  int sizeX, int sizeY, Dir dir) {
 		switch(dir) {
 		case NORTH:
@@ -108,7 +111,7 @@ public class MapGenerator {
 	private static boolean zoneOverLaps(Zone zone, int startX, int startY, int sizeX, int sizeY) {
 		Rectangle r1 = new Rectangle(zone.x, zone.y, zone.sizeX, zone.sizeY);
 		Rectangle r2 = new Rectangle(startX, startY, sizeX, sizeY);
-		return (r1.intersects(r2) || r1.contains(r2));
+		return (r1.intersects(r2) || r1.contains(r2) || r1.equals(r2));
 	}
 	
 	private static IntegerPair getNewStartCoords(Zone currentZone,int nextZoneSizeX, int nextZoneSizeY, Dir dir) {
