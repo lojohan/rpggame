@@ -16,6 +16,7 @@ public class MapGenerator {
 	static ArrayList<String> entityStrings = new ArrayList<>();
 	static ArrayList<Zone> createdZones = new ArrayList<>();
 	static ArrayList<IntegerPair> exitsToClear = new ArrayList<>();
+	static int numberOfCreatedExits = 0;
 	
 	public static void generateEdgeTiles(Zone zone) {
 		for(Dir dir : Dir.values()) {
@@ -88,10 +89,12 @@ public class MapGenerator {
 		    	
 		    	IntegerPair nextExit = new IntegerPair(prevExitX,prevExitY);
 		    	
-		    	if(!exitsToClear.contains(nextExit))
+		    	if(!exitsToClear.contains(nextExit)) {
 		    		exitsToClear.add(nextExit);
+		    		numberOfCreatedExits++;
+		    	}
 		    	
-		    	//checkNumbersBeforeClearing(currentZone);
+		    	checkNumbersBeforeClearing(currentZone);
 		    	
 			}
 		}
@@ -106,7 +109,6 @@ public class MapGenerator {
 			for(IntegerPair pointonedge : edge) {
 				for(IntegerPair exit : exitsToClear) {
 					if(exit.x == pointonedge.x && exit.y == pointonedge.y) {
-						//System.out.println("Found exit on edge");
 						exitcount++;
 					}
 				}	
@@ -124,7 +126,13 @@ public class MapGenerator {
 				System.out.println("Warning: edge contains multiple exits.");
 			}
 			if(tilesonedgemap != edge.size() ) {
-				System.out.println("Expected "+(edge.size()-exitcount)+" tiles on this edge. Found: "+tilesonedgestr);
+				System.out.println("Expected "+edge.size()+" tiles on this edge. Found: "+tilesonedgestr);
+			}
+			if(tilesonedgestr != tilesonedgemap) {
+				System.out.println("Generated a different number of tiles than expected");
+			}
+			if(numberOfCreatedExits != exitsToClear.size()) {
+				System.out.println("Created "+numberOfCreatedExits+" but cleared "+exitsToClear.size()+" tiles.");
 			}
 		}
 	}
@@ -151,11 +159,20 @@ public class MapGenerator {
 				}
 				
 			}
-			if(exitcount > 1) {
+			if(exitcount != (edge.size() - tilesonedgemap)) {
 				System.out.println("Warning: edge contains multiple exits.");
+			}
+			if(exitcount != (edge.size() - tilesonedgestr)) {
+				//System.out.println("Warning: edge contains multiple exits.");
+			}
+			if(tilesonedgestr != tilesonedgemap) {
+				//System.out.println("Generated a different number of tiles than expected");
 			}
 			if(tilesonedgemap != edge.size() - exitcount ) {
 				System.out.println("Expected "+(edge.size()-exitcount)+" tiles on this edge. Found: "+tilesonedgestr);
+			}
+			if(numberOfCreatedExits != exitsToClear.size()) {
+				System.out.println("Created "+numberOfCreatedExits+" but cleared "+exitsToClear.size()+" tiles.");
 			}
 		}
 	}
@@ -190,7 +207,8 @@ public class MapGenerator {
 	private static boolean zoneOverLaps(Zone zone, int startX, int startY, int sizeX, int sizeY) {
 		Rectangle r1 = new Rectangle(zone.x, zone.y, zone.sizeX, zone.sizeY);
 		Rectangle r2 = new Rectangle(startX, startY, sizeX, sizeY);
-		return (r1.intersects(r2) || r1.contains(r2) || r1.equals(r2));
+		//return (r1.intersects(r2) || r1.contains(r2) || r1.equals(r2));
+		return (r1.intersects(r2));
 	}
 	
 	private static IntegerPair getNewStartCoords(Zone currentZone,int nextZoneSizeX, int nextZoneSizeY, Dir dir) {
