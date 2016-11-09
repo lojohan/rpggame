@@ -212,8 +212,17 @@ public class MapGenerator {
 
 				MapGenerator.generateEdgeTiles(currentZone);
 				
-				if(zoneName.contains("Cave"))
+				if(zoneName.contains("Labyrinth") && friendly == 0) {
 					MapGenerator.generateLabyrinth(currentZone.x, currentZone.y, currentZone.sizeX, currentZone.sizeY);
+				}
+				else if(zoneName.contains("Forest")) {
+					MapGenerator.generateForest(currentZone, 10);
+				}
+				else if(zoneName.contains("River")) {
+					MapGenerator.generateWater(currentZone, 7);
+				} else if(zoneName.contains("Ocean") || zoneName.contains("Sea")) {
+					MapGenerator.generateWater(currentZone, 15);
+				}
 
 				MapGenerator.generateNonPlayerEntities(currentZone, entityDensity, friendly);
 				
@@ -231,6 +240,48 @@ public class MapGenerator {
 		}
 
 	}
+	
+	private static void generateForest(Zone zone, int forestDensity) {
+		// placeholder
+		int count = 0;
+		int numberOfEntities = (int) ((zone.sizeX - 4) * (zone.sizeY - 4) * forestDensity / 100);
+
+		while (count < numberOfEntities) {
+
+			final Random rn = new Random();
+			int randX = zone.x + 2 + rn.nextInt(zone.sizeX - 2);
+			int randY = zone.y + 2 + rn.nextInt(zone.sizeY - 2);
+
+			String pos = randX + "," + randY;
+			if (!entities.containsKey(pos)) {
+				entities.put(pos, "Tile");
+				entityStrings.add("Tile;;" + pos+ ";4;2;");
+				count++;
+			}
+		}
+	}
+	
+	private static void generateWater(Zone zone, int waterDensity) {
+		// placeholder
+		int count = 0;
+		int numberOfEntities = (int) ((zone.sizeX - 4) * (zone.sizeY - 4) * waterDensity / 100);
+
+		while (count < numberOfEntities) {
+
+			final Random rn = new Random();
+			int randX = zone.x + 2 + rn.nextInt(zone.sizeX - 2);
+			int randY = zone.y + 2 + rn.nextInt(zone.sizeY - 2);
+
+			String pos = randX + "," + randY;
+			if (!entities.containsKey(pos)) {
+				entities.put(pos, "Tile");
+				entityStrings.add("Tile;;" + pos+ ";5;6;");
+				count++;
+			}
+		}
+	}
+	
+	
 
 	private static void checkNumbersBeforeClearing(Zone currentZone) {
 		if (DEBUG) {
