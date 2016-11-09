@@ -17,11 +17,6 @@ public class MapGenerator {
 	static ArrayList<Zone> createdZones = new ArrayList<>();
 	static ArrayList<IntegerPair> exitsToClear = new ArrayList<>();
 	
-	// Generate tiles in a specific zone
-	public static void generateTiles(int startX, int startY, int sizeX, int sizeY) {
-		// placeholder		
-	}
-	
 	public static void generateEdgeTiles(Zone zone) {
 		for(Dir dir : Dir.values()) {
 			ArrayList<IntegerPair> tmp = zone.getEdge(dir);
@@ -37,15 +32,22 @@ public class MapGenerator {
 	
 	public static void generate(int sizeX, int sizeY, int maximumDepth, int entityDensity) {
 		int currentDepth = 0;
-    	MapGenerator.generateMap(50,50,sizeX, sizeY, currentDepth, maximumDepth,0,0,entityDensity);
+    	MapGenerator.generateMap(50,50,sizeX, sizeY, currentDepth, maximumDepth,0,0,entityDensity, Dir.SOUTH);
     	clearExits();
     	MapGenerator.printToMap();
+    	
+    	for(Zone zone : createdZones) {
+    		//checkNumbersAfterClearing(zone);
+    	}
 	}
 	
-	public static void generateMap(int startX, int startY, int sizeX, int sizeY, int currentDepth, int maximumDepth, int prevExitX, int prevExitY, int entityDensity) {
+	public static void generateMap(int startX, int startY, int sizeX, int sizeY, int currentDepth, int maximumDepth, int prevExitX, int prevExitY, int entityDensity, Dir excludeDir) {
 		if(currentDepth <= maximumDepth) {
 				
 			boolean canCreateZone = true;
+			
+			if(createdZones.isEmpty())
+				canCreateZone = true;
 			
 			for(Zone createdZone : createdZones) {
 				if(zoneOverLaps(createdZone, startX,startY,sizeX,sizeY)) {
@@ -54,17 +56,18 @@ public class MapGenerator {
 			}
 			
 			if(canCreateZone) {
-					int friendly = 0;
-					if(isAreaFriendly(10) || currentDepth == 0)
-						friendly = 1;
-					
-					entityStrings.add("Zone;"+NameGenerator.generateRandomPlaceName()+";"+startX+","+startY+";"+(startX+sizeX)+","+(startY+sizeY)+";"+friendly+";");
-					Zone currentZone = new Zone(startX, startY, sizeX, sizeY);
-					createdZones.add(currentZone);
-					
-					//used to not have the next zone be the same as the current one.
-					
-					for(Dir direction : Dir.values()) {
+				int friendly = 0;
+				if(isAreaFriendly(10) || currentDepth == 0)
+					friendly = 1;
+				
+				entityStrings.add("Zone;"+NameGenerator.generateRandomPlaceName()+";"+startX+","+startY+";"+(startX+sizeX)+","+(startY+sizeY)+";"+friendly+";");
+				Zone currentZone = new Zone(startX, startY, sizeX, sizeY);
+				createdZones.add(currentZone);
+				
+				//used to not have the next zone be the same as the current one.
+				
+				for(Dir direction : Dir.values()) {
+					if(direction != excludeDir) {
 						IntegerPair nextSize = getNextSize(5,5,30,30);
 						IntegerPair nextCoords = getNewStartCoords(currentZone,nextSize.x,nextSize.y,direction);
 						
@@ -73,22 +76,98 @@ public class MapGenerator {
 						
 				    	
 				    	if(currentDepth != maximumDepth) {
-				    		generateMap(nextCoords.x,nextCoords.y, nextSize.x, nextSize.y, currentDepth+1,maximumDepth,exitPoint.x,exitPoint.y,entityDensity);
+				    		generateMap(nextCoords.x,nextCoords.y, nextSize.x, nextSize.y, currentDepth+1,maximumDepth,exitPoint.x,exitPoint.y,entityDensity, getExcludeDir(direction));
 				    	}
-				    	
 					}
-					
-			    	MapGenerator.generateEdgeTiles(currentZone);
-			    	MapGenerator.generateNonPlayerEntities(currentZone,entityDensity,friendly);
-			    	MapGenerator.generatePlayer(currentZone, currentDepth);
 			    	
-			    	IntegerPair nextExit = new IntegerPair(prevExitX,prevExitY);
-			    	
-			    	if(!exitsToClear.contains(nextExit))
-			    		exitsToClear.add(nextExit);
 				}
+				
+		    	MapGenerator.generateEdgeTiles(currentZone);
+		    	MapGenerator.generateNonPlayerEntities(currentZone,entityDensity,friendly);
+		    	MapGenerator.generatePlayer(currentZone, currentDepth);
+		    	
+		    	IntegerPair nextExit = new IntegerPair(prevExitX,prevExitY);
+		    	
+		    	if(!exitsToClear.contains(nextExit))
+		    		exitsToClear.add(nextExit);
+		    	
+		    	//checkNumbersBeforeClearing(currentZone);
+		    	
 			}
+		}
 	    	
+	}
+
+	private static void checkNumbersBeforeClearing(Zone currentZone) {
+		for(ArrayList<IntegerPair> edge : getAllEdges(currentZone)) {
+			int exitcount = 0;
+			int tilesonedgemap = 0;
+			int tilesonedgestr = 0;
+			for(IntegerPair pointonedge : edge) {
+				for(IntegerPair exit : exitsToClear) {
+					if(exit.x == pointonedge.x && exit.y == pointonedge.y) {
+						//System.out.println("Found exit on edge");
+						exitcount++;
+					}
+				}	
+				if(entities.containsKey((pointonedge.x+","+pointonedge.y)) ){
+					tilesonedgemap++;
+				}
+				for(String entity : entityStrings) {
+					if(entity.startsWith("Tile;;"+pointonedge.x+","+pointonedge.y)) {
+						tilesonedgestr++;
+					}
+				}
+				
+			}
+			if(exitcount > 1) {
+				System.out.println("Warning: edge contains multiple exits.");
+			}
+			if(tilesonedgemap != edge.size() ) {
+				System.out.println("Expected "+(edge.size()-exitcount)+" tiles on this edge. Found: "+tilesonedgestr);
+			}
+		}
+	}
+	
+	private static void checkNumbersAfterClearing(Zone currentZone) {
+		for(ArrayList<IntegerPair> edge : getAllEdges(currentZone)) {
+			int exitcount = 0;
+			int tilesonedgemap = 0;
+			int tilesonedgestr = 0;
+			for(IntegerPair pointonedge : edge) {
+				for(IntegerPair exit : exitsToClear) {
+					if(exit.x == pointonedge.x && exit.y == pointonedge.y) {
+						//System.out.println("Found exit on edge");
+						exitcount++;
+					}
+				}	
+				if(entities.containsKey((pointonedge.x+","+pointonedge.y)) ){
+					tilesonedgemap++;
+				}
+				for(String entity : entityStrings) {
+					if(entity.startsWith("Tile;;"+pointonedge.x+","+pointonedge.y)) {
+						tilesonedgestr++;
+					}
+				}
+				
+			}
+			if(exitcount > 1) {
+				System.out.println("Warning: edge contains multiple exits.");
+			}
+			if(tilesonedgemap != edge.size() - exitcount ) {
+				System.out.println("Expected "+(edge.size()-exitcount)+" tiles on this edge. Found: "+tilesonedgestr);
+			}
+		}
+	}
+	
+	private static ArrayList< ArrayList<IntegerPair> > getAllEdges(Zone zone) {
+		ArrayList< ArrayList<IntegerPair> > allEdges = new ArrayList<>();
+		
+		for(Dir direction : Dir.values()) {
+			allEdges.add(zone.getEdge(direction)); 
+		}
+		
+		return allEdges;
 	}
 	
 	private static int getLimit(Zone zone,  int sizeX, int sizeY, Dir dir) {
@@ -223,13 +302,13 @@ public class MapGenerator {
 	public static void generateNonPlayerEntities(Zone zone, double entityDensity, int friendly) {
 		// placeholder
 		int count = 0;
-		int numberOfEntities = (int) ( (zone.sizeX-1)*(zone.sizeY-1)*entityDensity/100);
+		int numberOfEntities = (int) ( (zone.sizeX-4)*(zone.sizeY-4)*entityDensity/100);
 		
 		while(count < numberOfEntities) {
 			
 			final Random rn = new Random();
-			int randX = zone.x + 1 + rn.nextInt(zone.sizeX-1);
-			int randY = zone.y + 1 + rn.nextInt(zone.sizeY-1);
+			int randX = zone.x + 2 + rn.nextInt(zone.sizeX-2);
+			int randY = zone.y + 2 + rn.nextInt(zone.sizeY-2);
 			
 			String pos = randX+","+randY;
 			if(!entities.containsKey(pos)) {
