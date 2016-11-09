@@ -8,9 +8,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
+import java.util.TreeSet;
 
 import rpggame.Zone.Dir;
 
@@ -21,17 +25,22 @@ public class MapGenerator {
 	static ArrayList<String> entityStrings = new ArrayList<>();
 	static ArrayList<Zone> createdZones = new ArrayList<>();
 	static ArrayList<IntegerPair> exitsToClear = new ArrayList<>();
+	static ArrayList<IntegerPair> nextToExits = new ArrayList<>();
 	static int numberOfCreatedExits = 0;
 
 	public static void generateEdgeTiles(Zone zone) {
 		for (ArrayList<IntegerPair> edge : getAllEdges(zone)) {
 			for (IntegerPair ip : edge) {
-				String pos = ip.x + "," + ip.y;
-				if (!entities.containsKey(pos)) {
-					entities.put(pos, "Tile");
-					entityStrings.add("Tile;;" + pos + ";1;7;");
-				}
+				generateTile(ip.x, ip.y);
 			}
+		}
+	}
+
+	public static void generateTile(int x, int y) {
+		String pos = x + "," + y;
+		if (!entities.containsKey(pos)) {
+			entities.put(pos, "Tile");
+			entityStrings.add("Tile;;" + pos + ";1;7;");
 		}
 	}
 
@@ -40,6 +49,7 @@ public class MapGenerator {
 		System.out.println("Before clearing exits:");
 		MapGenerator.generateMap(50, 50, sizeX, sizeY, currentDepth, maximumDepth, 0, 0, entityDensity, null);
 		clearExits();
+		clearNextToExits();
 		MapGenerator.printToMap();
 
 		System.out.println("After clearing exits:");
@@ -47,9 +57,87 @@ public class MapGenerator {
 			checkNumbersAfterClearing(zone);
 		}
 		System.out.println("The following tiles are duplicates");
-		ArrayList<String> duplicates = getDuplicateTilesInList();
-		for (String duplicate : duplicates) {
-			System.out.println(duplicate);
+		if(DEBUG) {
+			ArrayList<String> duplicates = getDuplicateTilesInList();
+			for (String duplicate : duplicates) {
+				System.out.println(duplicate);
+			}
+		}
+	}
+
+	public static void generateLabyrinth(int x, int y, int sizeX, int sizeY) {
+		HashMap<IntegerPair, IntegerPair> labyrinthTiles = new HashMap<>();
+
+		// fill with prelim tiles
+		for (int i = 0; i < sizeX - 1; i++) {
+			for (int j = 0; j < sizeY - 1; j++) {
+				if (i % 2 == 0 && j % 2 == 0) {
+					labyrinthTiles.put(new IntegerPair(i, j), new IntegerPair(0, 0));
+				} else {
+					labyrinthTiles.put(new IntegerPair(i, j), new IntegerPair(1, 0));
+				}
+			}
+		}
+
+		recursiveLabyrinth(labyrinthTiles, 0, 0, sizeX-1, sizeY-1);
+
+		// generate tiles
+		for (IntegerPair ip : labyrinthTiles.keySet()) {
+			IntegerPair tile = labyrinthTiles.get(ip);
+			if (tile.x == 1) {
+				generateTile(ip.x + x + 1, ip.y + y + 1);
+			}
+		}
+	}
+
+	public static void recursiveLabyrinth(HashMap<IntegerPair, IntegerPair> labyrinth, int currentX, int currentY,
+			int sizeX, int sizeY) {
+		int newX = 0;
+		int newY = 0;
+		
+		//ArrayList<Dir> dirs = new TreeSet(Arrays.asList(Dir.values()));
+		
+		List<Dir> dirs = (List<Dir>) Arrays.asList(Dir.values());
+		Collections.shuffle(dirs);
+		for (Dir dir : dirs) {
+			IntegerPair newPos = new IntegerPair(currentX + newX, currentY + newY);	
+			
+			newX = 0;
+			newY = 0;
+			switch (dir) {
+			case NORTH:
+				newY = -2;
+				break;
+			case EAST:
+				newX = 2;
+				break;
+			case SOUTH:
+				newY = 2;
+				break;
+			case WEST:
+				newX = -2;
+				break;
+			}
+
+			newPos.x = currentX + newX;
+			newPos.y = currentY + newY;
+			
+			boolean withinMapBounds = currentX + newX >= 0 && currentX + newX < sizeX && currentY + newY >= 0 && currentY + newY < sizeY;
+			
+			if (!withinMapBounds) continue; // next dir
+			
+			boolean visited = labyrinth.get(newPos).y == 1;
+			
+			if (visited) continue; // next dir
+			
+			if(labyrinth.containsKey(newPos)) {	
+				IntegerPair wall = new IntegerPair(currentX + newX/2, currentY + newY/2);
+				labyrinth.put(wall,new IntegerPair(0,0));
+				labyrinth.get(newPos).y = 1;
+				recursiveLabyrinth(labyrinth, newPos.x, newPos.y, sizeX, sizeY);
+			} else {
+				throw new AssertionError("is a bug");
+			}
 		}
 	}
 
@@ -58,7 +146,7 @@ public class MapGenerator {
 		if (currentDepth <= maximumDepth) {
 
 			boolean canCreateZone = true;
-
+			String zoneName;
 			if (createdZones.isEmpty())
 				canCreateZone = true;
 
@@ -72,19 +160,47 @@ public class MapGenerator {
 				int friendly = 0;
 				if (isAreaFriendly(10) || currentDepth == 0)
 					friendly = 1;
-
-				entityStrings.add("Zone;" + NameGenerator.generateRandomPlaceName() + ";" + startX + "," + startY + ";"
+				
+				zoneName = NameGenerator.generateRandomPlaceName();
+				entityStrings.add("Zone;" + zoneName + ";" + startX + "," + startY + ";"
 						+ (startX + sizeX) + "," + (startY + sizeY) + ";" + friendly + ";");
 				Zone currentZone = new Zone(startX, startY, sizeX, sizeY);
 				createdZones.add(currentZone);
 
 				for (Dir direction : Dir.values()) {
 					if (direction != excludeDir) {
-						IntegerPair nextSize = getNextSize(5, 5, 30, 30);
+						IntegerPair nextSize = getNextSize(6, 6, 30, 30);
 						IntegerPair nextCoords = getNewStartCoords(currentZone, nextSize.x, nextSize.y, direction);
 
 						IntegerPair exitPoint = getRandomPointOnEdge(currentZone.getEdge(direction),
 								getLimit(currentZone, nextSize.x, nextSize.y, direction));
+						
+						if(currentDepth != maximumDepth) {
+							IntegerPair nextToExitPoint1 = new IntegerPair(exitPoint.x,exitPoint.y);
+							IntegerPair nextToExitPoint2 = new IntegerPair(exitPoint.x,exitPoint.y);
+							
+							switch (direction) {
+							case NORTH:
+								nextToExitPoint1.x = exitPoint.x +1;
+								nextToExitPoint2.x = exitPoint.x -1;
+								break;
+							case EAST:
+								nextToExitPoint1.y = exitPoint.y -1;
+								nextToExitPoint2.y = exitPoint.y +1;
+								break;
+							case SOUTH:
+								nextToExitPoint1.x = exitPoint.x -1;
+								nextToExitPoint2.x = exitPoint.x +1;
+								break;
+							case WEST:
+								nextToExitPoint1.y = exitPoint.y +1;
+								nextToExitPoint2.y = exitPoint.y -1;
+								break;
+							}
+							
+							nextToExits.add(nextToExitPoint1);
+							nextToExits.add(nextToExitPoint2);
+						}
 
 						if (currentDepth != maximumDepth) {
 							generateMap(nextCoords.x, nextCoords.y, nextSize.x, nextSize.y, currentDepth + 1,
@@ -95,7 +211,12 @@ public class MapGenerator {
 				}
 
 				MapGenerator.generateEdgeTiles(currentZone);
+				
+				if(zoneName.contains("Cave"))
+					MapGenerator.generateLabyrinth(currentZone.x, currentZone.y, currentZone.sizeX, currentZone.sizeY);
+
 				MapGenerator.generateNonPlayerEntities(currentZone, entityDensity, friendly);
+				
 				MapGenerator.generatePlayer(currentZone, currentDepth);
 
 				IntegerPair nextExit = new IntegerPair(prevExitX, prevExitY);
@@ -236,23 +357,6 @@ public class MapGenerator {
 		return duplicate;
 	}
 
-	// TODO: finish
-	private static ArrayList<String> findDuplicateTilesInFile() {
-		ArrayList<String> duplicates = new ArrayList<>();
-		ArrayList<String> tilelist = new ArrayList<>();
-		try {
-			BufferedReader in = new BufferedReader(new FileReader("output/maps/randommap.txt"));
-			StringBuilder sb = new StringBuilder();
-			in.readLine();
-
-			in.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return duplicates;
-	}
-
 	private static ArrayList<ArrayList<IntegerPair>> getAllEdges(Zone zone) {
 		ArrayList<ArrayList<IntegerPair>> allEdges = new ArrayList<>();
 
@@ -309,8 +413,8 @@ public class MapGenerator {
 
 	private static IntegerPair getNextSize(int xlimlower, int ylimlower, int xlimupper, int ylimupper) {
 		final Random rn = new Random();
-		int rand1 = xlimlower + rn.nextInt(xlimupper - xlimlower);
-		int rand2 = ylimlower + rn.nextInt(ylimupper - ylimlower);
+		int rand1 = xlimlower + 2*rn.nextInt((xlimupper - xlimlower)/2);
+		int rand2 = ylimlower + 2*rn.nextInt((ylimupper - ylimlower)/2);
 
 		return new IntegerPair(rand1, rand2);
 	}
@@ -321,12 +425,6 @@ public class MapGenerator {
 		if (rand < proportionOfFriendlyAreas)
 			return true;
 		return false;
-	}
-
-	private static IntegerPair getRandomPointOnEdge(ArrayList<IntegerPair> edge) {
-		final Random rn = new Random();
-		int rand = 1 + rn.nextInt(edge.size() - 2);
-		return edge.get(rand);
 	}
 
 	private static IntegerPair getRandomPointOnEdge(ArrayList<IntegerPair> edge, int limit) {
@@ -355,27 +453,29 @@ public class MapGenerator {
 		}
 	}
 
-	private static void clearExit(int currentDepth, int prevExitX, int prevExitY) {
-		if (currentDepth > 0) {
-			String exitCoords = prevExitX + "," + prevExitY;
+	private static void clearExits() {
+
+		for (IntegerPair exit : exitsToClear) {
+			String exitCoords = exit.x + "," + exit.y;
 			entities.remove(exitCoords);
 
 			Iterator<String> it = entityStrings.iterator();
 
 			while (it.hasNext()) {
 				String entity = it.next();
-				if (entity.startsWith("Tile;;" + exitCoords)) {
+				if (entity.startsWith("Tile;;" + exitCoords + ";")) {
 					it.remove();
 				}
 			}
 		}
 	}
+	
+	private static void clearNextToExits() {
 
-	private static void clearExits() {
-
-		for (IntegerPair exit : exitsToClear) {
+		for (IntegerPair exit : nextToExits) {
 			String exitCoords = exit.x + "," + exit.y;
-			entities.remove(exitCoords);
+			if(entities.get(exitCoords) != null && entities.get(exitCoords).equals("Tile"))
+				entities.remove(exitCoords);
 
 			Iterator<String> it = entityStrings.iterator();
 
