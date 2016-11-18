@@ -21,7 +21,7 @@ import rpggame.Zone.Dir;
 public class MapGenerator {
 	static final boolean DEBUG = false;
 
-	static HashMap<String, String> entities = new HashMap<>();
+	static HashMap<String, String> entities = new HashMap<>(10000000);
 	static ArrayList<String> entityStrings = new ArrayList<>();
 	static ArrayList<Zone> createdZones = new ArrayList<>();
 	static ArrayList<IntegerPair> exitsToClear = new ArrayList<>();
@@ -48,10 +48,10 @@ public class MapGenerator {
 		}
 	};
 
-	public static void generateEdgeTiles(Zone zone) {
+	public static void generateEdgeTiles(Zone zone, boolean visible) {
 		for (ArrayList<IntegerPair> edge : getAllEdges(zone)) {
 			for (IntegerPair ip : edge) {
-				generateTile(ip.x, ip.y);
+				generateSolidTile(ip.x, ip.y, visible);
 			}
 		}
 	}
@@ -75,12 +75,15 @@ public class MapGenerator {
 		return size;
 	}
 
-	public static void generateTile(int x, int y) {
+	public static void generateSolidTile(int x, int y, boolean visible) {
 		String pos = x + "," + y;
-		if (!entities.containsKey(pos)) {
+		//if (!entities.containsKey(pos)) {
 			entities.put(pos, "Tile");
-			entityStrings.add("Tile;;" + pos + ";1;7;");
-		}
+			if(visible)
+				entityStrings.add("Tile;;" + pos + ";1;1;7;");
+			else
+				entityStrings.add(0,"Tile;;" + pos + ";1;6;3;");
+		//}
 	}
 
 	public static void generate(int sizeX, int sizeY, int maximumDepth, double entityDensity) {
@@ -124,7 +127,7 @@ public class MapGenerator {
 		for (IntegerPair ip : labyrinthTiles.keySet()) {
 			IntegerPair tile = labyrinthTiles.get(ip);
 			if (tile.x == 1) {
-				generateTile(ip.x + x + 1, ip.y + y + 1);
+				generateSolidTile(ip.x + x + 1, ip.y + y + 1, true);
 			}
 		}
 	}
@@ -207,6 +210,7 @@ public class MapGenerator {
 						+ (startY + sizeY) + ";" + friendly + ";");
 				Zone currentZone = new Zone(startX, startY, sizeX, sizeY);
 				createdZones.add(currentZone);
+				boolean visibleEdge = true;
 
 				for (Dir direction : Dir.values()) {
 					if (direction != excludeDir) {
@@ -255,17 +259,26 @@ public class MapGenerator {
 
 				}
 
-				MapGenerator.generateEdgeTiles(currentZone);
-
 				if ((zoneName.contains("Labyrinth") || zoneName.contains("Cave")) && friendly == 0) {
 					MapGenerator.generateLabyrinth(currentZone.x, currentZone.y, currentZone.sizeX, currentZone.sizeY);
 				} else if (zoneName.contains("Forest")) {
 					MapGenerator.generateForest(currentZone, 10);
+					MapGenerator.generateGrass(currentZone);
+					visibleEdge = false;
 				} else if (zoneName.contains("River")) {
 					MapGenerator.generateWater(currentZone, 7);
+					MapGenerator.generateGrass(currentZone);
+					visibleEdge = false;
 				} else if (zoneName.contains("Ocean") || zoneName.contains("Sea")) {
 					MapGenerator.generateWater(currentZone, 15);
+					MapGenerator.generateGrass(currentZone);
+					visibleEdge = false;
+				} else if (zoneName.contains("Field") ) {
+					MapGenerator.generateGrass(currentZone);
+					visibleEdge = false;
 				}
+				
+				MapGenerator.generateEdgeTiles(currentZone,visibleEdge);
 
 				MapGenerator.generateNonPlayerEntities(currentZone, entityDensity, friendly);
 
@@ -298,7 +311,7 @@ public class MapGenerator {
 			String pos = randX + "," + randY;
 			if (!entities.containsKey(pos)) {
 				entities.put(pos, "Tile");
-				entityStrings.add("Tile;;" + pos + ";4;2;");
+				entityStrings.add("Tile;;" + pos + ";1;4;2;");
 				count++;
 			}
 		}
@@ -318,8 +331,20 @@ public class MapGenerator {
 			String pos = randX + "," + randY;
 			if (!entities.containsKey(pos)) {
 				entities.put(pos, "Tile");
-				entityStrings.add("Tile;;" + pos + ";5;6;");
+				entityStrings.add("Tile;;" + pos + ";1;5;6;");
 				count++;
+			}
+		}
+	}
+	
+	private static void generateGrass(Zone zone) {
+		for(int i = 1; i < zone.sizeX; i++) {
+			for(int j = 1; j < zone.sizeY; j++) {
+				String pos = (i+zone.x) + "," + (j+zone.y);
+				if (!entities.containsKey(pos)) {
+					//entities.put(pos, "Tile");
+					entityStrings.add("Tile;grass;" + pos + ";0;6;2;");
+				}
 			}
 		}
 	}
@@ -332,7 +357,6 @@ public class MapGenerator {
 				int tilesonedgestr = 0;
 
 				ArrayList<String> edgeStrs = new ArrayList<>();
-				// Collections.sort(edgeStrs);
 
 				for (IntegerPair pointonedge : edge) {
 					for (IntegerPair exit : exitsToClear) {
@@ -340,8 +364,6 @@ public class MapGenerator {
 							exitcount++;
 						}
 					}
-					// if(entities.containsKey((pointonedge.x+","+pointonedge.y))
-					// ){
 					if (entities.get((pointonedge.x + "," + pointonedge.y)).equals("Tile")) {
 						tilesonedgemap++;
 					}
@@ -559,6 +581,7 @@ public class MapGenerator {
 					it.remove();
 				}
 			}
+			entityStrings.add(0,"Tile;grass;" + exitCoords + ";0;6;2;");
 		}
 	}
 
@@ -603,10 +626,10 @@ public class MapGenerator {
 						entities.put(pos, "NPC");
 						if (friendly == 0)
 							entityStrings.add("NPC;" + NameGenerator.generateRandomName() + ";" + pos
-									+ ";2;1;battle;randomAI;displayDialogue(0);");
+									+ ";1;2;1;battle;randomAI;displayDialogue(0);");
 						else
 							entityStrings.add("NPC;" + NameGenerator.generateRandomName() + ";" + pos
-									+ ";2;2;;randomAI;displayDialogue(0);");
+									+ ";1;2;2;;randomAI;displayDialogue(0);");
 						
 						break;
 					}
@@ -630,7 +653,7 @@ public class MapGenerator {
 				if (!entities.containsKey(pos)) {
 					entities.put(pos, "Player");
 					entityStrings
-							.add("Player;" + NameGenerator.generateRandomName() + ";" + pos + ";3;6;;playerControl;");
+							.add("Player;" + NameGenerator.generateRandomName() + ";" + pos + ";1;3;6;;playerControl;");
 					playerAdded = true;
 				}
 			}
