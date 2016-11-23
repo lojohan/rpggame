@@ -276,6 +276,8 @@ public class MapGenerator {
 				} else if (zoneName.contains("Field") ) {
 					MapGenerator.generateGrass(currentZone);
 					visibleEdge = false;
+				} else if (zoneName.contains("Village") || zoneName.contains("City") || zoneName.contains("Town")) {
+					MapGenerator.generateHouse(currentZone, 8);
 				}
 				
 				MapGenerator.generateEdgeTiles(currentZone,visibleEdge);
@@ -316,6 +318,26 @@ public class MapGenerator {
 			}
 		}
 	}
+	
+	private static void generateHouse(Zone zone, int houseDensity) {
+		// placeholder
+		int count = 0;
+		int numberOfEntities = (int) ((zone.sizeX - 4) * (zone.sizeY - 4) * houseDensity / 100);
+
+		while (count < numberOfEntities) {
+
+			final Random rn = new Random();
+			int randX = zone.x + 2 + rn.nextInt(zone.sizeX - 2);
+			int randY = zone.y + 2 + rn.nextInt(zone.sizeY - 2);
+
+			String pos = randX + "," + randY;
+			if (!entities.containsKey(pos)) {
+				entities.put(pos, "Tile");
+				entityStrings.add("Tile;;" + pos + ";1;8;7;");
+				count++;
+			}
+		}
+	}
 
 	private static void generateWater(Zone zone, int waterDensity) {
 		// placeholder
@@ -331,7 +353,7 @@ public class MapGenerator {
 			String pos = randX + "," + randY;
 			if (!entities.containsKey(pos)) {
 				entities.put(pos, "Tile");
-				entityStrings.add("Tile;;" + pos + ";1;5;6;");
+				entityStrings.add("Tile;;" + pos + ";1;6;6;");
 				count++;
 			}
 		}
