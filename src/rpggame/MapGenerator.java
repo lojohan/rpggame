@@ -362,7 +362,7 @@ public class MapGenerator {
 			generateLabyrinth(0, 0, w, h);
 			entityStrings.add("Tile;;" + 1+","+0 + ";1;8;7;enterLevel(" + returnWorldId + " " + returnX + " " + returnY + ")");
 			entityStrings.add("Zone;House of " +NameGenerator.generateRandomName()+ ";" + 0 + "," + 0 + ";" + w + ","
-					+ h + ";" + true + ";");
+					+ h + ";" + 1 + ";");
 			
 		}
 
