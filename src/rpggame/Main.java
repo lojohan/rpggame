@@ -15,6 +15,8 @@ public class Main {
 	    	System.out.println("A random place: " + NameGenerator.generateRandomPlaceName());
     	}
     	
+    	MapGenerator.clearMapFile();
+    	
     	MapGenerator.generate(16, 20, 10, 0.03);
     }
 }
