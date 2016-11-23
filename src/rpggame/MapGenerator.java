@@ -282,7 +282,7 @@ public class MapGenerator {
 				
 				MapGenerator.generateEdgeTiles(currentZone,visibleEdge);
 
-				MapGenerator.generateNonPlayerEntities(currentZone, entityDensity, friendly);
+				//MapGenerator.generateNonPlayerEntities(currentZone, entityDensity, friendly);
 
 				MapGenerator.generatePlayer(currentZone, currentDepth);
 
@@ -333,7 +333,7 @@ public class MapGenerator {
 			String pos = randX + "," + randY;
 			if (!entities.containsKey(pos)) {
 				entities.put(pos, "Tile");
-				entityStrings.add("Tile;;" + pos + ";1;8;7;");
+				entityStrings.add("Tile;;" + pos + ";1;8;7;enterLevel(0 30 30)");
 				count++;
 			}
 		}
