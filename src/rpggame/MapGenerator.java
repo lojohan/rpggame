@@ -686,6 +686,9 @@ public class MapGenerator {
 	public static void printToMap() {
 		try {
 			PrintWriter pw = new PrintWriter(new FileOutputStream("output/maps/randommap.txt"));
+			// place holder, should print appropriate level id
+			pw.println("0");
+			
 			for (int i = 0; i < entityStrings.size(); i++) {
 				pw.println(entityStrings.get(i));
 				pw.flush();
