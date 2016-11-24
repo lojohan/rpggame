@@ -95,9 +95,9 @@ public class MapGenerator {
 			// if (!entities.containsKey(pos)) {
 			entities.put(pos, "Tile");
 			if (visible)
-				entityStrings.add("Tile;;" + pos + ";1;1;7;");
+				entityStrings.add("Tile;;" + pos + ";1;1;");
 			else
-				entityStrings.add(0, "Tile;;" + pos + ";1;6;3;");
+				entityStrings.add(0, "Tile;;" + pos + ";1;6;");
 			// }
 		}
 
@@ -328,7 +328,7 @@ public class MapGenerator {
 				String pos = randX + "," + randY;
 				if (!entities.containsKey(pos)) {
 					entities.put(pos, "Tile");
-					entityStrings.add("Tile;;" + pos + ";1;4;2;");
+					entityStrings.add("Tile;;" + pos + ";1;5;");
 					count++;
 				}
 			}
@@ -348,7 +348,7 @@ public class MapGenerator {
 				String pos = randX + "," + randY;
 				if (!entities.containsKey(pos)) {
 					entities.put(pos, "Tile");
-					entityStrings.add("Tile;;" + pos + ";1;8;7;enterLevel("+worldID+" 0 0)");
+					entityStrings.add("Tile;;" + pos + ";1;3;enterLevel("+worldID+" 0 1)");
 					count++;
 				}
 				World houseWorld = new World(worldID++);
@@ -359,8 +359,11 @@ public class MapGenerator {
 		}
 		
 		private void generateHouseWorld(int w, int h, int d, int returnWorldId, int returnX, int returnY) {
-			generateLabyrinth(0, 0, w, h);
-			entityStrings.add("Tile;;" + 1+","+0 + ";1;8;7;enterLevel(" + returnWorldId + " " + returnX + " " + returnY + ")");
+			//generateLabyrinth(0, 0, w, h);
+			Zone currentZone = new Zone(0, 0, w, h);
+			generateEdgeTiles(currentZone,true);
+			clearTile(0,1);
+			entityStrings.add("Tile;;" + -1+","+1 + ";1;0;enterLevel(" + returnWorldId + " " + returnX + " " + returnY + ")");
 			entityStrings.add("Zone;House of " +NameGenerator.generateRandomName()+ ";" + 0 + "," + 0 + ";" + w + ","
 					+ h + ";" + 1 + ";");
 			
@@ -380,7 +383,7 @@ public class MapGenerator {
 				String pos = randX + "," + randY;
 				if (!entities.containsKey(pos)) {
 					entities.put(pos, "Tile");
-					entityStrings.add("Tile;;" + pos + ";1;6;6;");
+					entityStrings.add("Tile;water;" + pos + ";1;9;");
 					count++;
 				}
 			}
@@ -392,7 +395,7 @@ public class MapGenerator {
 					String pos = (i + zone.x) + "," + (j + zone.y);
 					if (!entities.containsKey(pos)) {
 						// entities.put(pos, "Tile");
-						entityStrings.add("Tile;grass;" + pos + ";0;6;2;");
+						entityStrings.add("Tile;grass;" + pos + ";0;4;");
 					}
 				}
 			}
@@ -620,35 +623,30 @@ public class MapGenerator {
 
 			for (IntegerPair exit : exitsToClear) {
 				String exitCoords = exit.x + "," + exit.y;
-				entities.remove(exitCoords);
-
-				Iterator<String> it = entityStrings.iterator();
-
-				while (it.hasNext()) {
-					String entity = it.next();
-					if (entity.startsWith("Tile;;" + exitCoords + ";")) {
-						it.remove();
-					}
-				}
-				entityStrings.add(0, "Tile;grass;" + exitCoords + ";0;6;2;");
+				clearTile(exit.x,exit.y);
+				entityStrings.add(0, "Tile;grass;" + exitCoords + ";0;4;");
 			}
 		}
+		
+		private void clearTile(int x, int y) {
+			String exitCoords = x + "," + y;
+			if (entities.get(exitCoords) != null && entities.get(exitCoords).equals("Tile"))
+				entities.remove(exitCoords);
 
+			Iterator<String> it = entityStrings.iterator();
+
+			while (it.hasNext()) {
+				String entity = it.next();
+				if (entity.startsWith("Tile;;" + exitCoords + ";")) {
+					it.remove();
+				}
+			}
+		}
+		
 		private void clearNextToExits() {
 
 			for (IntegerPair exit : nextToExits) {
-				String exitCoords = exit.x + "," + exit.y;
-				if (entities.get(exitCoords) != null && entities.get(exitCoords).equals("Tile"))
-					entities.remove(exitCoords);
-
-				Iterator<String> it = entityStrings.iterator();
-
-				while (it.hasNext()) {
-					String entity = it.next();
-					if (entity.startsWith("Tile;;" + exitCoords + ";")) {
-						it.remove();
-					}
-				}
+				clearTile(exit.x,exit.y);
 			}
 		}
 
@@ -676,10 +674,10 @@ public class MapGenerator {
 							entities.put(pos, "NPC");
 							if (friendly == 0)
 								entityStrings.add("NPC;" + NameGenerator.generateRandomName() + ";" + pos
-										+ ";1;2;1;battle;randomAI;displayDialogue(0);");
+										+ ";1;7;battle;randomAI;displayDialogue(0);");
 							else
 								entityStrings.add("NPC;" + NameGenerator.generateRandomName() + ";" + pos
-										+ ";1;2;2;;randomAI;displayDialogue(0);");
+										+ ";1;8;;randomAI;displayDialogue(0);");
 
 							break;
 						}
@@ -703,7 +701,7 @@ public class MapGenerator {
 					if (!entities.containsKey(pos)) {
 						entities.put(pos, "Player");
 						entityStrings.add(
-								"Player;" + NameGenerator.generateRandomName() + ";" + pos + ";1;3;6;;playerControl;");
+								"Player;" + NameGenerator.generateRandomName() + ";" + pos + ";1;2;;playerControl;");
 						playerAdded = true;
 					}
 				}
