@@ -217,13 +217,17 @@ public class MapGenerator {
 
 				if (canCreateZone) {
 					int friendly = 0;
+					Zone currentZone;
 					if (isAreaFriendly(10) || currentDepth == 0)
 						friendly = 1;
 					if (zoneName == null)
 						zoneName = NameGenerator.generateRandomPlaceName();
 					entityStrings.add("Zone;" + zoneName + ";" + startX + "," + startY + ";" + (startX + sizeX) + ","
 							+ (startY + sizeY) + ";" + friendly + ";");
-					Zone currentZone = new Zone(startX, startY, sizeX, sizeY);
+					if(friendly == 1)
+						currentZone = new Zone(startX, startY, sizeX, sizeY,true);
+					else
+						currentZone = new Zone(startX, startY, sizeX, sizeY,false);
 					createdZones.add(currentZone);
 					boolean visibleEdge = true;
 
@@ -352,20 +356,24 @@ public class MapGenerator {
 					count++;
 				}
 				World houseWorld = new World(worldID++);
-				houseWorld.generateHouseWorld(10, 10, 1, this.id, randX + 1, randY);
+				houseWorld.generateHouseWorld(10, 10, 1, this.id, randX + 1, randY, zone);
 				houseWorld.printToMap();
 				//worldsToPrintAfterThis.add(houseWorld);
 			}
 		}
 		
-		private void generateHouseWorld(int w, int h, int d, int returnWorldId, int returnX, int returnY) {
+		private void generateHouseWorld(int w, int h, int d, int returnWorldId, int returnX, int returnY,Zone zone) {
 			//generateLabyrinth(0, 0, w, h);
-			Zone currentZone = new Zone(0, 0, w, h);
+			Zone currentZone = new Zone(0, 0, w, h, zone.friendly);
 			generateEdgeTiles(currentZone,true);
+			int friendly = 1;
+			if(!zone.friendly) friendly = 0;
+			generateNonPlayerEntities(currentZone,0.07,friendly);
+			
 			clearTile(0,1);
 			entityStrings.add("Tile;;" + -1+","+1 + ";1;0;enterLevel(" + returnWorldId + " " + returnX + " " + returnY + ")");
 			entityStrings.add("Zone;House of " +NameGenerator.generateRandomName()+ ";" + 0 + "," + 0 + ";" + w + ","
-					+ h + ";" + 1 + ";");
+					+ h + ";" + friendly + ";");
 			
 		}
 

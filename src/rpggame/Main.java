@@ -17,6 +17,6 @@ public class Main {
     	
     	MapGenerator.clearMapFile();
     	
-    	MapGenerator.generate(16, 20, 10, 0.03);
+    	MapGenerator.generate(16, 20, 20, 0.03);
     }
 }

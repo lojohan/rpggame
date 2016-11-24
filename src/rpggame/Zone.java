@@ -11,6 +11,7 @@ public class Zone {
 	public int y;
 	public int sizeX;
 	public int sizeY;
+	public boolean friendly;
 	
 	public Map<Dir,ArrayList<IntegerPair>> edges = new HashMap<>();
 	
@@ -18,11 +19,12 @@ public class Zone {
 	    NORTH, EAST, SOUTH, WEST
 	}
 	
-	public Zone(int x, int y, int sizeX, int sizeY) {
+	public Zone(int x, int y, int sizeX, int sizeY, boolean friendly) {
 		this.x = x;
 		this.y = y;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
+		this.friendly = friendly;
 		
 		generateEdges();
 	}
