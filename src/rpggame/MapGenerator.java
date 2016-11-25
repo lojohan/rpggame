@@ -682,10 +682,10 @@ public class MapGenerator {
 							entities.put(pos, "NPC");
 							if (friendly == 0)
 								entityStrings.add("NPC;" + NameGenerator.generateRandomName() + ";" + pos
-										+ ";1;7;battle;randomAI;displayDialogue(0);");
+										+ ";1;7;battle;randomAI(2000000000);displayDialogue(0);");
 							else
 								entityStrings.add("NPC;" + NameGenerator.generateRandomName() + ";" + pos
-										+ ";1;8;;randomAI;displayDialogue(0);");
+										+ ";1;8;;randomAI(2000000000);displayDialogue(0);");
 
 							break;
 						}
