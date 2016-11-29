@@ -56,6 +56,7 @@ public class MapGenerator {
 		ArrayList<Zone> createdZones = new ArrayList<>();
 		ArrayList<IntegerPair> exitsToClear = new ArrayList<>();
 		ArrayList<IntegerPair> nextToExits = new ArrayList<>();
+		ArrayList<IntegerPair> doNotClear = new ArrayList<>();
 		int numberOfCreatedExits = 0;
 		private ArrayList<World> worldsToPrintAfterThis = new ArrayList<>();
 		
@@ -104,7 +105,7 @@ public class MapGenerator {
 		public void generate(int sizeX, int sizeY, int maximumDepth, double entityDensity) {
 			int currentDepth = 0;
 			System.out.println("Before clearing exits:");
-			generateMap(50, 50, sizeX, sizeY, currentDepth, maximumDepth, 0, 0, entityDensity, null, null);
+			generateMap(50, 50, sizeX, sizeY, currentDepth, maximumDepth,null, entityDensity, null, null);
 			clearExits();
 			clearNextToExits();
 			printToMap();
@@ -201,121 +202,152 @@ public class MapGenerator {
 			}
 		}
 
-		public void generateMap(int startX, int startY, int sizeX, int sizeY, int currentDepth, int maximumDepth,
-				int prevExitX, int prevExitY, double entityDensity, Dir excludeDir, String zoneName) {
-			if (currentDepth <= maximumDepth) {
+		public boolean generateMap(int startX, int startY, int sizeX, int sizeY, int currentDepth, int maximumDepth,
+				IntegerPair prevExit, double entityDensity, Dir excludeDir, String zoneName) {
+			
+			if (currentDepth > maximumDepth) {
+				return false;
+			}
 
-				boolean canCreateZone = true;
-				if (createdZones.isEmpty())
-					canCreateZone = true;
+			boolean canCreateZone = true;
+			if (createdZones.isEmpty())
+				canCreateZone = true;
 
-				for (Zone createdZone : createdZones) {
-					if (zoneOverLaps(createdZone, startX, startY, sizeX, sizeY)) {
-						canCreateZone = false;
+			for (Zone createdZone : createdZones) {
+				if (zoneOverLaps(createdZone, startX, startY, sizeX, sizeY)) {
+					canCreateZone = false;
+				}
+			}
+			
+			if (!canCreateZone)
+				return false;
+
+			int friendly = 0;
+			Zone currentZone;
+			if (isAreaFriendly(10) || currentDepth == 0)
+				friendly = 1;
+			if (zoneName == null)
+				zoneName = NameGenerator.generateRandomPlaceName();
+			entityStrings.add("Zone;" + zoneName + ";" + startX + "," + startY + ";" + (startX + sizeX) + ","
+					+ (startY + sizeY) + ";" + friendly + ";");
+			if(friendly == 1)
+				currentZone = new Zone(startX, startY, sizeX, sizeY,true);
+			else
+				currentZone = new Zone(startX, startY, sizeX, sizeY,false);
+			createdZones.add(currentZone);
+			boolean visibleEdge = true;
+			
+			ArrayList<IntegerPair> exitsFromThisZone = new ArrayList<>();
+
+			for (Dir direction : Dir.values()) {
+				if (direction != excludeDir) {
+					String nextZoneName = NameGenerator.generateRandomPlaceName();
+					IntegerPair nextSizeBounds = getSizeForZone(nextZoneName);
+					IntegerPair nextSize = getNextSize(nextSizeBounds.x, nextSizeBounds.x, nextSizeBounds.y,
+							nextSizeBounds.y);
+					IntegerPair nextCoords = getNewStartCoords(currentZone, nextSize.x, nextSize.y, direction);
+
+					IntegerPair exitPoint = getRandomPointOnEdge(currentZone.getEdge(direction),
+							getLimit(currentZone, nextSize.x, nextSize.y, direction));
+
+					if (currentDepth != maximumDepth) {
+						IntegerPair nextToExitPoint1 = new IntegerPair(exitPoint.x, exitPoint.y);
+						IntegerPair nextToExitPoint2 = new IntegerPair(exitPoint.x, exitPoint.y);
+
+						switch (direction) {
+						case NORTH:
+							nextToExitPoint1.x = exitPoint.x + 1;
+							nextToExitPoint2.x = exitPoint.x - 1;
+							break;
+						case EAST:
+							nextToExitPoint1.y = exitPoint.y - 1;
+							nextToExitPoint2.y = exitPoint.y + 1;
+							break;
+						case SOUTH:
+							nextToExitPoint1.x = exitPoint.x - 1;
+							nextToExitPoint2.x = exitPoint.x + 1;
+							break;
+						case WEST:
+							nextToExitPoint1.y = exitPoint.y + 1;
+							nextToExitPoint2.y = exitPoint.y - 1;
+							break;
+						}
+						if(! ((zoneName.contains("Labyrinth") || zoneName.contains("Cave")) && friendly == 0))
+							nextToExits.add(nextToExitPoint1);
+						nextToExits.add(nextToExitPoint2);
+					}
+
+					if (currentDepth != maximumDepth) {
+						boolean createdNext = generateMap(nextCoords.x, nextCoords.y, nextSize.x, nextSize.y, currentDepth + 1,
+								maximumDepth, exitPoint, entityDensity, getExcludeDir(direction),
+								nextZoneName);
+						
+						if (createdNext) {
+							exitsFromThisZone.add(exitPoint);
+						}
 					}
 				}
 
-				if (canCreateZone) {
-					int friendly = 0;
-					Zone currentZone;
-					if (isAreaFriendly(10) || currentDepth == 0)
-						friendly = 1;
-					if (zoneName == null)
-						zoneName = NameGenerator.generateRandomPlaceName();
-					entityStrings.add("Zone;" + zoneName + ";" + startX + "," + startY + ";" + (startX + sizeX) + ","
-							+ (startY + sizeY) + ";" + friendly + ";");
-					if(friendly == 1)
-						currentZone = new Zone(startX, startY, sizeX, sizeY,true);
-					else
-						currentZone = new Zone(startX, startY, sizeX, sizeY,false);
-					createdZones.add(currentZone);
-					boolean visibleEdge = true;
-
-					for (Dir direction : Dir.values()) {
-						if (direction != excludeDir) {
-							String nextZoneName = NameGenerator.generateRandomPlaceName();
-							IntegerPair nextSizeBounds = getSizeForZone(nextZoneName);
-							IntegerPair nextSize = getNextSize(nextSizeBounds.x, nextSizeBounds.x, nextSizeBounds.y,
-									nextSizeBounds.y);
-							IntegerPair nextCoords = getNewStartCoords(currentZone, nextSize.x, nextSize.y, direction);
-
-							IntegerPair exitPoint = getRandomPointOnEdge(currentZone.getEdge(direction),
-									getLimit(currentZone, nextSize.x, nextSize.y, direction));
-
-							if (currentDepth != maximumDepth) {
-								IntegerPair nextToExitPoint1 = new IntegerPair(exitPoint.x, exitPoint.y);
-								IntegerPair nextToExitPoint2 = new IntegerPair(exitPoint.x, exitPoint.y);
-
-								switch (direction) {
-								case NORTH:
-									nextToExitPoint1.x = exitPoint.x + 1;
-									nextToExitPoint2.x = exitPoint.x - 1;
-									break;
-								case EAST:
-									nextToExitPoint1.y = exitPoint.y - 1;
-									nextToExitPoint2.y = exitPoint.y + 1;
-									break;
-								case SOUTH:
-									nextToExitPoint1.x = exitPoint.x - 1;
-									nextToExitPoint2.x = exitPoint.x + 1;
-									break;
-								case WEST:
-									nextToExitPoint1.y = exitPoint.y + 1;
-									nextToExitPoint2.y = exitPoint.y - 1;
-									break;
-								}
-
-								nextToExits.add(nextToExitPoint1);
-								nextToExits.add(nextToExitPoint2);
-							}
-
-							if (currentDepth != maximumDepth) {
-								generateMap(nextCoords.x, nextCoords.y, nextSize.x, nextSize.y, currentDepth + 1,
-										maximumDepth, exitPoint.x, exitPoint.y, entityDensity, getExcludeDir(direction),
-										nextZoneName);
-							}
-						}
-
-					}
-
-					if ((zoneName.contains("Labyrinth") || zoneName.contains("Cave")) && friendly == 0) {
-						generateLabyrinth(currentZone.x, currentZone.y, currentZone.sizeX, currentZone.sizeY);
-					} else if (zoneName.contains("Forest")) {
-						generateForest(currentZone, 10);
-						generateGrass(currentZone);
-						visibleEdge = false;
-					} else if (zoneName.contains("River")) {
-						generateWater(currentZone, 7);
-						generateGrass(currentZone);
-						visibleEdge = false;
-					} else if (zoneName.contains("Ocean") || zoneName.contains("Sea")) {
-						generateWater(currentZone, 15);
-						generateGrass(currentZone);
-						visibleEdge = false;
-					} else if (zoneName.contains("Field")) {
-						generateGrass(currentZone);
-						visibleEdge = false;
-					} else if (zoneName.contains("Village") || zoneName.contains("City") || zoneName.contains("Town")) {
-						generateHouse(currentZone, 8);
-					}
-
-					generateEdgeTiles(currentZone, visibleEdge);
-
-					generateNonPlayerEntities(currentZone, entityDensity, friendly);
-
-					generatePlayer(currentZone, currentDepth);
-
-					IntegerPair nextExit = new IntegerPair(prevExitX, prevExitY);
-
-					if (!exitsToClear.contains(nextExit)) {
-						exitsToClear.add(nextExit);
-						numberOfCreatedExits++;
-					}
-					checkNumbersBeforeClearing(currentZone);
-
+			}
+			
+			if(prevExit != null)
+				exitsFromThisZone.add(prevExit);
+			
+			for(IntegerPair nextExit : exitsFromThisZone) {
+				if (!exitsToClear.contains(nextExit)) {
+					exitsToClear.add(nextExit);
+					numberOfCreatedExits++;
 				}
 			}
 
+			generateEdgeTiles(currentZone, visibleEdge);
+
+			if ((zoneName.contains("Labyrinth") || zoneName.contains("Cave")) && friendly == 0) {
+				//generateLabyrinth(currentZone.x, currentZone.y, currentZone.sizeX, currentZone.sizeY);
+				generateCave(currentZone,exitsFromThisZone,zoneName);
+			} else if (zoneName.contains("Forest")) {
+				generateForest(currentZone, 10);
+				generateGrass(currentZone);
+				visibleEdge = false;
+			} else if (zoneName.contains("River")) {
+				generateWater(currentZone, 7);
+				generateGrass(currentZone);
+				visibleEdge = false;
+			} else if (zoneName.contains("Ocean") || zoneName.contains("Sea")) {
+				generateWater(currentZone, 15);
+				generateGrass(currentZone);
+				visibleEdge = false;
+			} else if (zoneName.contains("Field")) {
+				generateGrass(currentZone);
+				visibleEdge = false;
+			} else if (zoneName.contains("Village") || zoneName.contains("City") || zoneName.contains("Town")) {
+				//generateHouse(currentZone, 8);
+			}
+			
+			if(! ((zoneName.contains("Labyrinth") || zoneName.contains("Cave")) && friendly == 0))
+				generateNonPlayerEntities(currentZone, entityDensity, friendly);
+
+			generatePlayer(currentZone, currentDepth);
+			
+			checkNumbersBeforeClearing(currentZone);
+			
+			return true;
+		}
+		
+		private void removeFromExitList(ArrayList<IntegerPair> notexits) {
+			for(IntegerPair notexit : notexits) {
+				if(entities.containsKey(notexit.x+","+notexit.y)) {
+					Iterator<IntegerPair> it = exitsToClear.iterator();
+					IntegerPair existingexit;
+					while(it.hasNext()) {
+						existingexit = it.next();
+						if(notexit.equals(existingexit)) {
+							it.remove();
+							break;
+						}
+					}
+				}
+			}
 		}
 
 		private void generateForest(Zone zone, int forestDensity) {
@@ -363,7 +395,6 @@ public class MapGenerator {
 		}
 		
 		private void generateHouseWorld(int w, int h, int d, int returnWorldId, int returnX, int returnY,Zone zone) {
-			//generateLabyrinth(0, 0, w, h);
 			Zone currentZone = new Zone(0, 0, w, h, zone.friendly);
 			generateEdgeTiles(currentZone,true);
 			int friendly = 1;
@@ -374,6 +405,46 @@ public class MapGenerator {
 			entityStrings.add("Tile;;" + -1+","+1 + ";1;0;enterLevel(" + returnWorldId + " " + returnX + " " + returnY + ")");
 			entityStrings.add("Zone;House of " +NameGenerator.generateRandomName()+ ";" + 0 + "," + 0 + ";" + w + ","
 					+ h + ";" + friendly + ";");
+			
+		}
+		
+		private void generateCave(Zone zone, ArrayList<IntegerPair> exits, String zoneName ) {
+			String pos = "";
+			
+			for(int i = 1; i < zone.sizeX; i++) {
+				for(int j = 1; j < zone.sizeY; j++) {
+					pos = (zone.x+i)+","+(zone.y+j);
+					entities.put(pos, "Tile");
+					entityStrings.add("Tile;;" + pos + ";1;1;");
+				}
+			}
+			
+			for(IntegerPair exit : exits) {
+				doNotClear.add(exit);
+				clearTile(exit.x,exit.y);
+				entities.put(exit.x+","+exit.y,"Tile");
+				entityStrings.add("Tile;;" + exit.x+","+exit.y + ";1;3;enterLevel(" + worldID + " " + (exit.x-zone.x) + " " + (exit.y-zone.y) + ")");
+			}
+			World caveWorld = new World(worldID++);
+			caveWorld.generateCaveWorld(zone.sizeX, zone.sizeY, 1, this.id, exits, zone, zoneName);
+			caveWorld.printToMap();
+		}
+		
+		private void generateCaveWorld(int w, int h, int d, int returnWorldId,ArrayList<IntegerPair> entrances,Zone zone, String zoneName) {
+			Zone currentZone = new Zone(0,0,w,h,zone.friendly);
+			generateEdgeTiles(currentZone,true);
+			generateLabyrinth(currentZone.x, currentZone.y, currentZone.sizeX, currentZone.sizeY);
+			int friendly = 1;
+			if(!zone.friendly) friendly = 0;
+			
+			generateNonPlayerEntities(currentZone,0.03,friendly);
+			
+			entityStrings.add("Zone;"+zoneName+ ";" + 0 + "," + 0 + ";" + w + ","
+					+ h + ";" + friendly + ";");
+			for(IntegerPair entrance : entrances) {
+				clearTile(entrance.x - zone.x, entrance.y - zone.y);
+				entityStrings.add("Tile;;" +(entrance.x - zone.x) +","+ (entrance.y - zone.y) + ";1;0;enterLevel(" + returnWorldId + " " + entrance.x + " " + entrance.y + ")");
+			}
 			
 		}
 
@@ -402,7 +473,6 @@ public class MapGenerator {
 				for (int j = 1; j < zone.sizeY; j++) {
 					String pos = (i + zone.x) + "," + (j + zone.y);
 					if (!entities.containsKey(pos)) {
-						// entities.put(pos, "Tile");
 						entityStrings.add("Tile;grass;" + pos + ";0;4;");
 					}
 				}
@@ -630,9 +700,19 @@ public class MapGenerator {
 		private void clearExits() {
 
 			for (IntegerPair exit : exitsToClear) {
-				String exitCoords = exit.x + "," + exit.y;
-				clearTile(exit.x,exit.y);
-				entityStrings.add(0, "Tile;grass;" + exitCoords + ";0;4;");
+				if(!doNotClear.isEmpty()) {
+					for(IntegerPair dont : doNotClear) {
+						if(!dont.equals(exit)) {
+							String exitCoords = exit.x + "," + exit.y;
+							clearTile(exit.x,exit.y);
+							entityStrings.add(0, "Tile;grass;" + exitCoords + ";0;4;");
+						}
+					}
+				} else {
+					String exitCoords = exit.x + "," + exit.y;
+					clearTile(exit.x,exit.y);
+					entityStrings.add(0, "Tile;grass;" + exitCoords + ";0;4;");
+				}
 			}
 		}
 		
