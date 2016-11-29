@@ -108,8 +108,6 @@ public class MapGenerator2 {
 			
 			if(currentDepth > maximumDepth) return couldGenerateThisZone;
 			
-			addToWorldList();
-			
 			// placeholder
 			String name = NameGenerator.generateRandomPlaceName();
 			Zone2 currentZone = new Zone2(name,zones);
@@ -117,35 +115,30 @@ public class MapGenerator2 {
 			if(prevExit != null) {
 				currentZone.exits.add(prevExit);
 			}
+
 			
-			/*
-			currentZone.addRectangle(0, 0, 10, 10);
-			currentZone.addRectangle(10, 0, 5, 5);
-			*/
-			
-			//currentZone.addRectangle(0, 0, 10, 10);
-			//currentZone.generateRandomRectangles(5, 5, 5, 10, 10);
-			
+			// TODO: does not guarantee that the exits are connected
 			if(couldGenerateThisZone = currentZone.generateFirstRectangle(0, 0, 10, 10)) {
 				zones.add(currentZone);
 				//currentZone.generateExits(4);
 				currentZone.generateRandomRectangles(5, 5, 5, 10, 10);
 				currentZone.addZones();
 				IntegerPair potentialExit = currentZone.getPotentialExit();
+				
 				// recurse to next zone.
 				if(generate(currentDepth + 1, potentialExit)) {
 					currentZone.exits.add(potentialExit);
 				}
 				
 				currentZone.generateWallTiles();
-				if(currentDepth == 0)
+				if(currentDepth == 0) {
 					currentZone.addPlayer(new IntegerPair(1,1), "Anton");
+					addToWorldList();
+				}
 				
 				currentZone.setFriendly(true);
-			
+				putEntityMap(currentZone);
 			}
-			
-			putEntityMap(currentZone);
 			
 			return couldGenerateThisZone;
 		}

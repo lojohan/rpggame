@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class Zone2 {
 	ArrayList<Zone2> zonesInWorld = new ArrayList<>();
@@ -84,11 +86,11 @@ public class Zone2 {
 		for(Rectangle rect1 : zone.rects) {
 			for(Rectangle rect2 : this.rects) {
 				if(rect1.intersects(rect2) || rect1.contains(rect2) || rect1.contains(rect1)) {
-					return false;
+					return true;
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 	
 	private ArrayList<ArrayList<IntegerPair>> getEdges(Rectangle rect) {
@@ -156,17 +158,26 @@ public class Zone2 {
 	
 	private boolean tryToAddRect(int x, int y, int w, int h) {
 		Random rand = new Random();
-		// should not be in a set order.
-		int[][] tests = new int[][]{new int[]{x,y,w,h},
+
+		ArrayList<int[]> tests = new ArrayList<>();
+		int[][] testtmp = new int[][]{new int[]{x,y,w,h},
 			{x-w,y,w,h},
 			{x+w,y,w,h},
 			{x,y-h,w,h},
 			{x,y+h,w,h}};
 			
-		int randind = rand.nextInt(tests.length);
+		for(int i = 0; i < testtmp.length; i++) {
+			tests.add(testtmp[i]);
+		}
 		
-		if(addRectangle(tests[randind][0],tests[randind][1],tests[randind][2],tests[randind][3])) {
-			return true;
+		while(tests.size() != 0) {
+			int randind = rand.nextInt(tests.size());
+			
+			if(addRectangle(tests.get(randind)[0],tests.get(randind)[1],tests.get(randind)[2],tests.get(randind)[3])) {
+				return true;
+			} else {
+				tests.remove(randind);
+			}
 		}
 		return false;
 	}
@@ -265,38 +276,56 @@ public class Zone2 {
 		}
 	}
 	
-	/*
-	public ArrayList<IntegerPair> getAllCoordsInZone() {
-		ArrayList<IntegerPair> tmp = new ArrayList<>();
+	public Set<IntegerPair> getAllCoordsInZone() {
+		Set<IntegerPair> tmp = new HashSet<>();
 		
 		for(Rectangle rect : rects) {
-			for()
+			for(int x = 0; x <= rect.width; x++) {
+				for(int y = 0; y <= rect.height; y++) {
+					tmp.add(new IntegerPair(x,y));
+				}
+			}
+		}
+		
+		for(ArrayList<IntegerPair> edge : this.edgeList) {
+			for(IntegerPair pointOnEdge : edge) {
+				if(tmp.contains(pointOnEdge)) {
+					tmp.remove(pointOnEdge);
+				}
+			}
 		}
 		
 		return tmp;
 	}
-	*/
+	
+	private boolean overlaps(Rectangle rectangle, Zone2 zone) {
+		for(Rectangle rect : zone.rects) {
+			if(overlaps(rect,rectangle)) return true;
+		}
+		return false;
+	}
+	
+	private boolean overlaps(Rectangle rect1, Rectangle rect2) {
+		if(rect1.intersects(rect2) || rect1.contains(rect2) || rect2.contains(rect1)) {
+			return true;
+		}
+		return false;
+	}
 	
 	private boolean canAddRectangle(Rectangle rectangle) {
 		
 		// checks if adding this rectangle causes the zone to overlap with other zones
-		this.rects.add(rectangle);
-		
 		for(Zone2 zone : zonesInWorld) {
-			if(this.overlaps(zone) && zone != this) {
+			if(overlaps(rectangle,zone) && zone != this)
 				return false;
-			}
 		}
-		
-		this.rects.remove(rectangle);
 		
 		if(this.rects.isEmpty()) return true;
 
 		for(Rectangle rect : rects) {
-			if(rectangle.intersects(rect) || rectangle.contains(rect) || rect.contains(rectangle)) {
-				return false;
-			}
+			if(overlaps(rect,rectangle)) return false;
 		}
+		
 		ArrayList<ArrayList<IntegerPair>> commonEdges = new ArrayList<>();
 		
 		commonEdges.addAll(
