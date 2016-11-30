@@ -108,7 +108,6 @@ public class MapGenerator2 {
 			
 			if(currentDepth > maximumDepth) return couldGenerateThisZone;
 			
-			// placeholder
 			String name = NameGenerator.generateRandomPlaceName();
 			Zone2 currentZone = new Zone2(name,zones);
 			
@@ -125,11 +124,20 @@ public class MapGenerator2 {
 			*/
 			
 			// TODO: does not guarantee that the exits are connected
-			if(couldGenerateThisZone = currentZone.generateFirstRectangle(0, 0, 10, 10, edgeForEntrance)) {
+			
+			// get rid of this!!!!!!!!
+			IntegerPair stupidCoordsGetRidOf; 
+			if(edgeForEntrance != null)
+				stupidCoordsGetRidOf = new IntegerPair(edgeForEntrance.getCorners().get(0));
+			else
+				stupidCoordsGetRidOf = new IntegerPair(0,0);
+			
+			if(couldGenerateThisZone = currentZone.generateFirstRectangle(stupidCoordsGetRidOf.x, stupidCoordsGetRidOf.y, 10, 10, edgeForEntrance)) {
 				zones.add(currentZone);
 				//currentZone.generateRandomRectangles(5, 5, 5, 10, 10);
 				currentZone.addZones();
 				
+				// this edge should only be the edge which it would have in common with the next rectangle:
 				Edge exitEdge = currentZone.getRandomEdgeForExit();
 				IntegerPair exit = currentZone.getRandomPointForExitOnEdge(exitEdge);
 				

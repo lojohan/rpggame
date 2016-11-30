@@ -12,17 +12,7 @@ public class Edge {
 	}
 	
 	public Edge(IntegerPair ip1, IntegerPair ip2) {
-		if(ip1.x == ip2.x) {
-			vertical = true;
-			for(int y = ip1.y; y <= ip2.y; y++) {
-				edge.add(new IntegerPair(ip1.x,y));
-			}
-		} else {
-			for(int x = ip1.x; x <= ip2.x; x++) {
-				edge.add(new IntegerPair(x,ip1.y));
-			}
-			vertical = false;
-		}
+		this(ip1.x,ip1.y,ip2.x,ip2.y);
 	}
 	
 	public Edge(int startx, int starty, int endx, int endy) {

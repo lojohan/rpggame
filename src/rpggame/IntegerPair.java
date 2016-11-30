@@ -8,6 +8,10 @@ public class IntegerPair {
 		this.x = x;
 		this.y = y;
 	}
+	
+	public IntegerPair(IntegerPair ip) {
+		this(ip.x,ip.y);
+	}
 
 	@Override
 	public int hashCode() {

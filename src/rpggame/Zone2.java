@@ -150,7 +150,6 @@ public class Zone2 {
 	// Attempts to attach rectangle to edge 'edge'
 	private boolean tryToAddRectToEdge(int x, int y, int w, int h, Edge edge) {
 		if( edge != null && !edge.isEmpty()) {
-			Random rand = new Random();
 	
 			ArrayList<int[]> tests = new ArrayList<>();
 			int[][] testtmp = new int[][]{new int[]{x,y,w,h},
@@ -163,16 +162,20 @@ public class Zone2 {
 				tests.add(testtmp[i]);
 			}
 			
-			if(edge.isEdgeVertical()) {
-				if(addRectangle(tests.get(0)[0],tests.get(0)[1],tests.get(0)[2],tests.get(0)[3])) {
+			if(addRectangle(x,y,w,h)) {
+				return true;
+			}
+			
+			if(edge.isEdgeVertical()) {	
+				if(addRectangle(x-w,y,w,h)) {
 					return true;
-				} else if(addRectangle(tests.get(1)[0],tests.get(1)[1],tests.get(1)[2],tests.get(1)[3])){
+				} else if(addRectangle(x+w,y,w,h)){
 					return true;
 				}
 			} else {
-				if(addRectangle(tests.get(2)[0],tests.get(2)[1],tests.get(2)[2],tests.get(2)[3])) {
+				if(addRectangle(x,y-h,w,h)) {
 					return true;
-				} else if(addRectangle(tests.get(3)[0],tests.get(3)[1],tests.get(3)[2],tests.get(3)[3])){
+				} else if(addRectangle(x,y+h,w,h)){
 					return true;
 				}
 			}
