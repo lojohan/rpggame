@@ -37,7 +37,7 @@ public class MapGenerator2 {
 	public static void generate(int maximumDepth) {
 		clearMapFile();
 		World mainWorld = new World(0,maximumDepth);
-		mainWorld.generate(0,null);
+		mainWorld.generate(0,null,null);
 		printToFile();
 	}
 	
@@ -103,7 +103,7 @@ public class MapGenerator2 {
 		}
 		
 		// recursive function to generate worlds and add them WorldList
-		public boolean generate(int currentDepth, IntegerPair prevExit) {
+		public boolean generate(int currentDepth, Edge edgeForEntrance, IntegerPair prevExit) {
 			boolean couldGenerateThisZone = false;
 			
 			if(currentDepth > maximumDepth) return couldGenerateThisZone;
@@ -113,21 +113,29 @@ public class MapGenerator2 {
 			Zone2 currentZone = new Zone2(name,zones);
 			
 			if(prevExit != null) {
+				// should be reworked so that walls of zones do not touch
 				currentZone.exits.add(prevExit);
 			}
-
+			
+			// generate appropriate starting coords for next zone
+			/*
+			if(currentZone.edgeIsVertical(edgeForEntrance)) {
+				nextX = 
+			}
+			*/
 			
 			// TODO: does not guarantee that the exits are connected
-			if(couldGenerateThisZone = currentZone.generateFirstRectangle(0, 0, 10, 10)) {
+			if(couldGenerateThisZone = currentZone.generateFirstRectangle(0, 0, 10, 10, edgeForEntrance)) {
 				zones.add(currentZone);
-				//currentZone.generateExits(4);
-				currentZone.generateRandomRectangles(5, 5, 5, 10, 10);
+				//currentZone.generateRandomRectangles(5, 5, 5, 10, 10);
 				currentZone.addZones();
-				IntegerPair potentialExit = currentZone.getPotentialExit();
+				
+				Edge exitEdge = currentZone.getRandomEdgeForExit();
+				IntegerPair exit = currentZone.getRandomPointForExitOnEdge(exitEdge);
 				
 				// recurse to next zone.
-				if(generate(currentDepth + 1, potentialExit)) {
-					currentZone.exits.add(potentialExit);
+				if(generate(currentDepth + 1, exitEdge, exit)) {
+					currentZone.exits.add(exit);
 				}
 				
 				currentZone.generateWallTiles();

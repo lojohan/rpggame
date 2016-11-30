@@ -1,5 +1,5 @@
 package rpggame;
-
+// TODO: organize methods and make appropriate methods static
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +17,7 @@ public class Zone2 {
 	
 	HashMap<IntegerPair, ArrayList<String> > entities = new HashMap<>();
 	
-	ArrayList<ArrayList<IntegerPair>> edgeList = new ArrayList<>();
+	ArrayList<Edge> edges = new ArrayList<>();
 	
 	ArrayList<IntegerPair> exits = new ArrayList<>();
 	
@@ -66,8 +66,8 @@ public class Zone2 {
 	}
 	
 	public void generateWallTiles() {
-		for(ArrayList<IntegerPair> edge : edgeList) {
-			for(IntegerPair tile : edge) {
+		for(Edge edge : edges) {
+			for(IntegerPair tile : edge.edge) {
 				if(!exits.contains(tile))
 					addWallTile(tile);
 			}
@@ -93,31 +93,20 @@ public class Zone2 {
 		return false;
 	}
 	
-	private ArrayList<ArrayList<IntegerPair>> getEdges(Rectangle rect) {
-		int x, y;
-		ArrayList<ArrayList<IntegerPair>> edges = new ArrayList<>();
-		ArrayList<IntegerPair> edge1 = new ArrayList<>();
-		ArrayList<IntegerPair> edge2 = new ArrayList<>();
-		ArrayList<IntegerPair> edge3 = new ArrayList<>();
-		ArrayList<IntegerPair> edge4 = new ArrayList<>();
+	private ArrayList<Edge> getEdges(Rectangle rect) {
+		//int x, y;
+		ArrayList<Edge> edgesOfRectangle = new ArrayList<>();
+		Edge edge1 = new Edge(rect.x,rect.y,rect.x+rect.width,rect.y);
+		Edge edge2 = new Edge(rect.x,rect.y,rect.x,rect.y+rect.height);
+		Edge edge3 = new Edge(rect.x+rect.width,rect.y,rect.x+rect.width,rect.y+rect.height);
+		Edge edge4 = new Edge(rect.x,rect.y+rect.height,rect.x+rect.width,rect.y+rect.height);
 		
-			
-		for(x = rect.x; x <= rect.width+rect.x; x++) {
-			edge1.add(new IntegerPair(x,rect.y));
-			edge2.add(new IntegerPair(x,rect.y+rect.height));
-		}
-	
-		for(y = rect.y; y <= rect.height+rect.y; y++) {
-			edge3.add(new IntegerPair(rect.x,y));
-			edge4.add(new IntegerPair(rect.x+rect.width,y));
-		}
+		edgesOfRectangle.add(edge1);
+		edgesOfRectangle.add(edge2);
+		edgesOfRectangle.add(edge3);
+		edgesOfRectangle.add(edge4);
 		
-		edges.add(edge1);
-		edges.add(edge2);
-		edges.add(edge3);
-		edges.add(edge4);
-		
-		return edges;
+		return edgesOfRectangle;
 	}
 	
 	public void generateRandomRectangles(int n,int minwidth, int minheight, int maxwidth, int maxheight) {
@@ -151,9 +140,45 @@ public class Zone2 {
 			
 	}
 	
-	public boolean generateFirstRectangle(int x, int y, int w, int h) {
+	// should be able to guarantee that it is properly attached to edge of last zone
+	public boolean generateFirstRectangle(int x, int y, int w, int h, Edge edge) {
 		if(this.zonesInWorld.isEmpty()) return this.addRectangle(x, y, w, h);
-		return this.tryToAddRect(x, y, w, h);
+		// not appropriate method because it does not guarantee zone is attached to edge
+		return this.tryToAddRectToEdge(x, y, w, h, edge);
+	}
+	
+	// Attempts to attach rectangle to edge 'edge'
+	private boolean tryToAddRectToEdge(int x, int y, int w, int h, Edge edge) {
+		if( edge != null && !edge.isEmpty()) {
+			Random rand = new Random();
+	
+			ArrayList<int[]> tests = new ArrayList<>();
+			int[][] testtmp = new int[][]{new int[]{x,y,w,h},
+				{x-w,y,w,h},
+				{x+w,y,w,h},
+				{x,y-h,w,h},
+				{x,y+h,w,h}};
+				
+			for(int i = 0; i < testtmp.length; i++) {
+				tests.add(testtmp[i]);
+			}
+			
+			if(edge.isEdgeVertical()) {
+				if(addRectangle(tests.get(0)[0],tests.get(0)[1],tests.get(0)[2],tests.get(0)[3])) {
+					return true;
+				} else if(addRectangle(tests.get(1)[0],tests.get(1)[1],tests.get(1)[2],tests.get(1)[3])){
+					return true;
+				}
+			} else {
+				if(addRectangle(tests.get(2)[0],tests.get(2)[1],tests.get(2)[2],tests.get(2)[3])) {
+					return true;
+				} else if(addRectangle(tests.get(3)[0],tests.get(3)[1],tests.get(3)[2],tests.get(3)[3])){
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	private boolean tryToAddRect(int x, int y, int w, int h) {
@@ -182,66 +207,70 @@ public class Zone2 {
 		return false;
 	}
 	
+	public Edge getRandomEdgeForExit() {
+		return getRandomEdgeAtLeastSize(3);
+	}
 	
-	private ArrayList<IntegerPair> getRandomEdgeAtLeastSize(int minsize) {
-		ArrayList<ArrayList<IntegerPair>> edges = new ArrayList<>();
+	public IntegerPair getRandomPointForExitOnEdge(Edge edge) {
+		return getRandomPointOnEdgeExceptCorners(edge);
+	}
+	
+	private Edge getRandomEdgeAtLeastSize(int minsize) {
+		ArrayList<Edge> edgesOfSize = new ArrayList<>();
 		
-		for(ArrayList<IntegerPair> edge : this.edgeList) {
+		for(Edge edge : this.edges) {
 			if(edge.size() >= minsize) {
-				edges.add(edge);
+				edgesOfSize.add(edge);
 			}
 		}
 		
-		if(edges.isEmpty()) return new ArrayList<IntegerPair>();
+		if(edgesOfSize.isEmpty()) return new Edge();
 		
 		Random rand = new Random();
-		int rn = rand.nextInt(edges.size());
-		return edges.get(rn);
+		int rn = rand.nextInt(edgesOfSize.size());
+		return edgesOfSize.get(rn);
 		
 	}
 	
-	private ArrayList<IntegerPair> getRandomEdge() {
+	private Edge getRandomEdge() {
 		Random rand = new Random();
-		int rn = rand.nextInt(this.edgeList.size());
-		return this.edgeList.get(rn);
+		int rn = rand.nextInt(this.edges.size());
+		return this.edges.get(rn);
 	}
 	
-	private IntegerPair getRandomPointOnEdge(ArrayList<IntegerPair> edge) {
+	private IntegerPair getRandomPointOnEdge(Edge edge) {
 		Random rand = new Random();
 		int rn = rand.nextInt(edge.size());
 		return edge.get(rn);
 	}
 	
-	private IntegerPair getRandomPointOnEdgeExceptCorners(ArrayList<IntegerPair> edge) {
-		ArrayList<IntegerPair> edgeCopy = new ArrayList<>();
+	private IntegerPair getRandomPointOnEdgeExceptCorners(Edge edge) {
+		Edge edgeCopy = new Edge();
 		
 		for(int i = 1; i < edge.size()-1;i++) {
-			edgeCopy.add(edge.get(i));
+			edgeCopy.edge.add(edge.get(i));
 		}
 		
 		return getRandomPointOnEdge(edgeCopy);
 	}
 	
-	private ArrayList<ArrayList<IntegerPair>> findCommonEdgesExceptCorners(ArrayList<ArrayList<IntegerPair>> edgeList1, 
-			ArrayList<ArrayList<IntegerPair>> edgeList2) {
+	private ArrayList<Edge> findCommonEdgesExceptCorners(ArrayList<Edge> edgeList1, 
+			ArrayList<Edge> edgeList2) {
 		
-		if (edgeList1.isEmpty() || edgeList2.isEmpty()) return new ArrayList<ArrayList<IntegerPair>>();
+		if (edgeList1.isEmpty() || edgeList2.isEmpty()) return new ArrayList<Edge>();
 		
-		final ArrayList<ArrayList<IntegerPair>> edgeList1_2 = new ArrayList<>();
-		for (ArrayList<IntegerPair> edge : edgeList1) {
-			final ArrayList<IntegerPair> newEdge = new ArrayList<>();
-			for (int i = 1; i < edge.size()-1; i++) {
-				newEdge.add(edge.get(i));
-			}
+		final ArrayList<Edge> edgeList1_2 = new ArrayList<>();
+		for (Edge edge : edgeList1) {
+			Edge newEdge = new Edge(edge.getCorners().get(0), edge.getCorners().get(1));
+			newEdge.removeCorners();
 			edgeList1_2.add(newEdge);
 		}
 		
-		ArrayList<ArrayList<IntegerPair>> edgeList2_2 = new ArrayList<>();
-		for (ArrayList<IntegerPair> edge : edgeList2) {
-			final ArrayList<IntegerPair> newEdge = new ArrayList<>();
-			for (int i = 1; i < edge.size()-1; i++) {
-				newEdge.add(edge.get(i));
-			}
+		ArrayList<Edge> edgeList2_2 = new ArrayList<>();
+		for (Edge edge : edgeList2) {
+			Edge newEdge;
+			newEdge = new Edge(edge.getCorners().get(0), edge.getCorners().get(1));
+			newEdge.removeCorners();
 			edgeList2_2.add(newEdge);
 		}
 		
@@ -249,14 +278,14 @@ public class Zone2 {
 		
 	}
 	
-	private ArrayList<ArrayList<IntegerPair>> findCommonEdges(ArrayList<ArrayList<IntegerPair>> edgeList1, 
-			ArrayList<ArrayList<IntegerPair>> edgeList2) {
+	private ArrayList<Edge> findCommonEdges(ArrayList<Edge> edgeList1, 
+			ArrayList<Edge> edgeList2) {
 		
-		ArrayList<ArrayList<IntegerPair>> commonEdges = new ArrayList<>();
+		ArrayList<Edge> commonEdges = new ArrayList<>();
 			
-		for(ArrayList<IntegerPair> edge1 : edgeList1) {
-			for(ArrayList<IntegerPair> edge2 : edgeList2) {
-				ArrayList<IntegerPair> tmp = new ArrayList<>();
+		for(Edge edge1 : edgeList1) {
+			for(Edge edge2 : edgeList2) {
+				Edge tmp = new Edge();
 				getCommonEdgePoints(edge1, edge2, tmp);
 				if(!tmp.isEmpty())
 					commonEdges.add(tmp);
@@ -266,11 +295,12 @@ public class Zone2 {
 		
 	}
 
-	private void getCommonEdgePoints(ArrayList<IntegerPair> edge1, ArrayList<IntegerPair> edge2,ArrayList<IntegerPair> points) {
-		for(IntegerPair edgepoint1 : edge1) {
-			for(IntegerPair edgepoint2 : edge2) {
+	// TODO: rework such that it produces an edge containing all the points which the two edges have in common.
+	private void getCommonEdgePoints(Edge edge1, Edge edge2,Edge points) {
+		for(IntegerPair edgepoint1 : edge1.edge) {
+			for(IntegerPair edgepoint2 : edge2.edge) {
 				if(edgepoint1.equals(edgepoint2)) {
-					points.add(edgepoint1);
+					points.edge.add(edgepoint1);
 				}
 			}
 		}
@@ -287,8 +317,8 @@ public class Zone2 {
 			}
 		}
 		
-		for(ArrayList<IntegerPair> edge : this.edgeList) {
-			for(IntegerPair pointOnEdge : edge) {
+		for(Edge edge : this.edges) {
+			for(IntegerPair pointOnEdge : edge.edge) {
 				if(tmp.contains(pointOnEdge)) {
 					tmp.remove(pointOnEdge);
 				}
@@ -298,7 +328,15 @@ public class Zone2 {
 		return tmp;
 	}
 	
-	private boolean overlaps(Rectangle rectangle, Zone2 zone) {
+	private boolean overlapsInclusive(Rectangle rectangle, Zone2 zone) {
+		if(overlapsExclusive(rectangle, zone)) return true;
+		
+		if(!findCommonEdges(zone.edges, getEdges(rectangle)).isEmpty()) return true;
+		
+		return false;
+	}
+	
+	private boolean overlapsExclusive(Rectangle rectangle, Zone2 zone) {
 		for(Rectangle rect : zone.rects) {
 			if(overlaps(rect,rectangle)) return true;
 		}
@@ -316,7 +354,9 @@ public class Zone2 {
 		
 		// checks if adding this rectangle causes the zone to overlap with other zones
 		for(Zone2 zone : zonesInWorld) {
-			if(overlaps(rectangle,zone) && zone != this)
+			// TODO: should use inclusive once generation of first rectangle is fixed
+			//if(overlapsInclusive(rectangle,zone) && zone != this)
+			if(overlapsExclusive(rectangle,zone) && zone != this)
 				return false;
 		}
 		
@@ -326,10 +366,10 @@ public class Zone2 {
 			if(overlaps(rect,rectangle)) return false;
 		}
 		
-		ArrayList<ArrayList<IntegerPair>> commonEdges = new ArrayList<>();
+		ArrayList<Edge> commonEdges = new ArrayList<>();
 		
 		commonEdges.addAll(
-				findCommonEdgesExceptCorners(getEdges(rectangle),this.edgeList) 
+				findCommonEdgesExceptCorners(getEdges(rectangle),this.edges) 
 				);
 		if(commonEdges.isEmpty()) {
 			return false;
@@ -340,15 +380,15 @@ public class Zone2 {
 	}
 	
 	private void updateEdgeList(Rectangle rect) {
-		ArrayList<ArrayList<IntegerPair>> commonEdges = findCommonEdgesExceptCorners(getEdges(rect),this.edgeList);
-		edgeList.addAll(getEdges(rect));
+		ArrayList<Edge> commonEdges = findCommonEdgesExceptCorners(getEdges(rect),this.edges);
+		edges.addAll(getEdges(rect));
 		removeCommonEdgePoints(commonEdges);
 	}
 	
-	private void removeCommonEdgePoints(ArrayList<ArrayList<IntegerPair>> edgeList1) {
-		for(ArrayList<IntegerPair> edge1 : edgeList1) {
-			for(ArrayList<IntegerPair> edge2 : this.edgeList) {
-				edge2.removeAll(edge1);
+	private void removeCommonEdgePoints(ArrayList<Edge> edgeList1) {
+		for(Edge edge1 : edgeList1) {
+			for(Edge edge2 : this.edges) {
+				edge2.edge.removeAll(edge1.edge);
 			}
 		}
 	}
