@@ -149,19 +149,7 @@ public class Zone2 {
 	
 	// Attempts to attach rectangle to edge 'edge'
 	private boolean tryToAddRectToEdge(int x, int y, int w, int h, Edge edge) {
-		if( edge != null && !edge.isEmpty()) {
-	
-			ArrayList<int[]> tests = new ArrayList<>();
-			int[][] testtmp = new int[][]{new int[]{x,y,w,h},
-				{x-w,y,w,h},
-				{x+w,y,w,h},
-				{x,y-h,w,h},
-				{x,y+h,w,h}};
-				
-			for(int i = 0; i < testtmp.length; i++) {
-				tests.add(testtmp[i]);
-			}
-			
+		if( edge != null && !edge.isEmpty()) {		
 			if(addRectangle(x,y,w,h)) {
 				return true;
 			}
@@ -380,6 +368,10 @@ public class Zone2 {
 		
 		
 		return true;
+	}
+	
+	private boolean canAddRectangle(int x,int y,int w,int h) {
+		return canAddRectangle(new Rectangle(x,y,w,h));
 	}
 	
 	private void updateEdgeList(Rectangle rect) {

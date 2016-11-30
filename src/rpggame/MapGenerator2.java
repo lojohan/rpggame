@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Set;
 
 public class MapGenerator2 {
@@ -112,7 +113,7 @@ public class MapGenerator2 {
 			Zone2 currentZone = new Zone2(name,zones);
 			
 			if(prevExit != null) {
-				// should be reworked so that walls of zones do not touch
+				// TODO : should be reworked so that walls of zones do not touch
 				currentZone.exits.add(prevExit);
 			}
 			
@@ -134,17 +135,22 @@ public class MapGenerator2 {
 			
 			if(couldGenerateThisZone = currentZone.generateFirstRectangle(stupidCoordsGetRidOf.x, stupidCoordsGetRidOf.y, 10, 10, edgeForEntrance)) {
 				zones.add(currentZone);
-				//currentZone.generateRandomRectangles(5, 5, 5, 10, 10);
+				//currentZone.generateRandomRectangles(2, 5, 5, 10, 10);
 				currentZone.addZones();
 				
-				// this edge should only be the edge which it would have in common with the next rectangle:
+				// TODO: this edge should only be the edge which it would have in common with the next rectangle:
 				Edge exitEdge = currentZone.getRandomEdgeForExit();
 				IntegerPair exit = currentZone.getRandomPointForExitOnEdge(exitEdge);
 				
 				// recurse to next zone.
-				if(generate(currentDepth + 1, exitEdge, exit)) {
-					currentZone.exits.add(exit);
-				}
+				/*Random rand = new Random();
+				int rando = 1+rand.nextInt(4);
+				
+				for(int i = 0; i < rando; i++) { */
+					if(generate(currentDepth + 1, exitEdge, exit)) {
+						currentZone.exits.add(exit);
+					}
+				//}
 				
 				currentZone.generateWallTiles();
 				if(currentDepth == 0) {
