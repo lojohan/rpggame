@@ -146,15 +146,17 @@ public class MapGenerator2 {
 				currentZone.generateRandomRectangles(2, 5, 5, 10, 10);
 				currentZone.addZones();
 				
-				// TODO: this edge should only be the edge which it would have in common with the next rectangle:
-				Edge exitEdge = currentZone.getRandomEdgeForExit();
-				IntegerPair exit = currentZone.getRandomPointForExitOnEdge(exitEdge);
-				
 				// recurse to next zone.
-				Random rand = new Random();
-				int rando = 1+rand.nextInt(4);
 				
+				
+				//Random rand = new Random();
+				//int rando = 1+rand.nextInt(4);
+				int rando = 4;
 				for(int i = 0; i < rando; i++) { 
+					// TODO: this edge should only be the edge which it would have in common with the next rectangle:
+					Edge exitEdge = currentZone.getRandomEdgeForExit();
+					IntegerPair exit = currentZone.getRandomPointForExitOnEdge(exitEdge);
+					
 					if(generate(currentDepth + 1, exitEdge, exit)) {
 						currentZone.exits.add(exit);
 					}

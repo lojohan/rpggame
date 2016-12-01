@@ -40,6 +40,16 @@ public class Zone2 {
 		return false;
 	}
 	
+	public boolean addRectangleToEdge(int x, int y, int w, int h, Edge edge) {
+		Rectangle tmpRect = new Rectangle(x,y,w,h);
+		if(canAddRectangleToEdge(tmpRect,edge)) {
+			this.rects.add(tmpRect);
+			updateEdgeList(tmpRect);
+			return true;
+		}
+		return false;
+	}
+	
 	public void setFriendly(boolean friendly) {
 		this.friendly = friendly;
 	}
@@ -175,20 +185,20 @@ public class Zone2 {
 	// Attempts to attach rectangle to edge 'edge'
 	private boolean tryToAddRectToEdge(int x, int y, int w, int h, Edge edge) {
 		if( edge != null && !edge.isEmpty()) {		
-			if(addRectangle(x,y,w,h)) {
+			if(addRectangleToEdge(x,y,w,h,edge)) {
 				return true;
 			}
 			
 			if(edge.isEdgeVertical()) {	
-				if(addRectangle(x-w,y,w,h)) {
+				if(addRectangleToEdge(x-w,y,w,h,edge)) {
 					return true;
-				} else if(addRectangle(x+w,y,w,h)){
+				} else if(addRectangleToEdge(x+w,y,w,h,edge)){
 					return true;
 				}
 			} else {
-				if(addRectangle(x,y-h,w,h)) {
+				if(addRectangleToEdge(x,y-h,w,h,edge)) {
 					return true;
-				} else if(addRectangle(x,y+h,w,h)){
+				} else if(addRectangleToEdge(x,y+h,w,h,edge)){
 					return true;
 				}
 			}
@@ -300,15 +310,28 @@ public class Zone2 {
 		ArrayList<Edge> commonEdges = new ArrayList<>();
 			
 		for(Edge edge1 : edgeList1) {
+			/*
 			for(Edge edge2 : edgeList2) {
 				Edge tmp = new Edge();
 				getCommonEdgePoints(edge1, edge2, tmp);
 				if(!tmp.isEmpty())
 					commonEdges.add(tmp);
 			}
+			*/
+			commonEdges.addAll(findCommonEdges(edgeList2, edge1));
 		}
 		return commonEdges;
-		
+	}
+	
+	private ArrayList<Edge> findCommonEdges(ArrayList<Edge> edgeList, Edge edge) {
+		ArrayList<Edge> commonEdges = new ArrayList<>();
+		for(Edge edge2 : edgeList) {
+			Edge tmp = new Edge();
+			getCommonEdgePoints(edge, edge2, tmp);
+			if(!tmp.isEmpty())
+				commonEdges.add(tmp);
+		}
+		return commonEdges;
 	}
 
 	// TODO: rework such that it produces an edge containing all the points which the two edges have in common.
@@ -368,12 +391,18 @@ public class Zone2 {
 		
 		if(this.zonesInWorld.isEmpty() && this.rects.isEmpty()) return true;
 		
+		boolean connectedToPreviousZone = false;
+		
 		// checks if adding this rectangle causes the zone to overlap with other zones
 		for(Zone2 zone : zonesInWorld) {
 			// TODO: should use inclusive once generation of first rectangle is fixed
 			//if(overlapsInclusive(rectangle,zone) && zone != this)
 			if(overlapsExclusive(rectangle,zone) && zone != this)
 				return false;
+			// TODO: rework to allow for separation by wall between zones
+			if(!this.findCommonEdges(this.getEdges(rectangle), zone.edges).isEmpty()) {
+				connectedToPreviousZone = true;
+			}
 		}
 
 		for(Rectangle rect : rects) {
@@ -392,7 +421,16 @@ public class Zone2 {
 		}
 		
 		
-		return true;
+		return connectedToPreviousZone;
+	}
+	
+	// TODO: should check whether it is next to the appropriate edge instead.
+	private boolean canAddRectangleToEdge(Rectangle rectangle, Edge edge) {
+		if(this.findCommonEdges(this.getEdges(rectangle), edge).isEmpty()) {
+			return false;
+		}
+		
+		return canAddRectangle(rectangle);
 	}
 	
 	private boolean canAddRectangle(int x,int y,int w,int h) {
