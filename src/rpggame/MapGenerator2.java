@@ -117,15 +117,6 @@ public class MapGenerator2 {
 				currentZone.exits.add(prevExit);
 			}
 			
-			// generate appropriate starting coords for next zone
-			/*
-			if(currentZone.edgeIsVertical(edgeForEntrance)) {
-				nextX = 
-			}
-			*/
-			
-			// TODO: does not guarantee that the exits are connected
-			
 			// get rid of this!!!!!!!!
 			IntegerPair stupidCoordsGetRidOf;
 			IntegerPair stupidSizeGetRidOf;
@@ -147,28 +138,11 @@ public class MapGenerator2 {
 				currentZone.addZones();
 				
 				// recurse to next zone.
+				recurseToNextZone(currentZone, currentDepth);
 				
+				generateScenery(currentZone, currentDepth);
 				
-				//Random rand = new Random();
-				//int rando = 1+rand.nextInt(4);
-				int rando = 4;
-				for(int i = 0; i < rando; i++) { 
-					// TODO: this edge should only be the edge which it would have in common with the next rectangle:
-					Edge exitEdge = currentZone.getRandomEdgeForExit();
-					IntegerPair exit = currentZone.getRandomPointForExitOnEdge(exitEdge);
-					
-					if(generate(currentDepth + 1, exitEdge, exit)) {
-						currentZone.exits.add(exit);
-					}
-				}
-				
-				currentZone.generateBlockingScenery();
-				//currentZone.generateNonBlockingScenery();
-				
-				if(currentDepth == 0) {
-					currentZone.addPlayer(new IntegerPair(1,1), "Anton");
-					addToWorldList();
-				}
+				generatePlayer(currentZone, currentDepth);
 				
 				currentZone.setFriendly(true);
 				putEntityMap(currentZone);
@@ -177,6 +151,31 @@ public class MapGenerator2 {
 			return couldGenerateThisZone;
 		}
 		
+		private void generateScenery(Zone2 zone, int currentDepth) {
+			zone.generateBlockingScenery();
+			//zone.generateNonBlockingScenery();
+		}
+		
+		private void generatePlayer(Zone2 zone, int currentDepth) {
+			if(currentDepth == 0) {
+				zone.addPlayer(new IntegerPair(1,1), "Anton");
+				addToWorldList();
+			}
+		}
+		
+		private void recurseToNextZone(Zone2 currentZone, int currentDepth) {
+			Random rand = new Random();
+			int rando = 1+rand.nextInt(4);
+			for(int i = 0; i < rando; i++) { 
+				// TODO: this edge should only be the edge which it would have in common with the next rectangle:
+				Edge exitEdge = currentZone.getRandomEdgeForExit();
+				IntegerPair exit = currentZone.getRandomPointForExitOnEdge(exitEdge);
+				
+				if(generate(currentDepth + 1, exitEdge, exit)) {
+					currentZone.exits.add(exit);
+				}
+			}
+		}
 		
 		public boolean canAddZone(Zone2 zone) {
 			if(zones.isEmpty()) {
