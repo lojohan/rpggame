@@ -1,6 +1,8 @@
 package rpggame;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Edge {
 	ArrayList<IntegerPair> edge = new ArrayList<>();
@@ -56,6 +58,10 @@ public class Edge {
 	
 	public boolean isEmpty() {
 		return this.edge.isEmpty();
+	}
+	
+	public Set<IntegerPair> getAllTilesOnEdge() {
+		return new HashSet<IntegerPair>(this.edge);
 	}
 	
 }

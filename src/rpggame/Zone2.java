@@ -33,7 +33,7 @@ public class Zone2 {
 	public boolean addRectangle(int x, int y, int w, int h) {
 		Rectangle tmpRect = new Rectangle(x,y,w,h);
 		if(canAddRectangle(tmpRect)) {
-			rects.add(tmpRect);
+			this.rects.add(tmpRect);
 			updateEdgeList(tmpRect);
 			return true;
 		}
@@ -58,10 +58,34 @@ public class Zone2 {
 						new String[]{}, new String[][]{{}},new String[]{"playerControl"},new String[][]{{}},new String[]{}, new String[][]{{}}));
 	}
 	
+	public void addNonSolidGrass(IntegerPair ip, String name) {
+		addStringToEntities(ip,
+				generateEntityString(
+						"Tile",name,ip.x,ip.y,false,4,
+						new String[]{}, new String[][]{{}},new String[]{},new String[][]{{}},new String[]{}, new String[][]{{}}));
+	}
+	
 	public void addZones() {
-		for(Rectangle rect : rects) {
+		for(Rectangle rect : this.rects) {
 			zone.add("Zone;" + this.name + ";" + rect.x + "," + rect.y + ";" + (rect.x + rect.width) + ","
-				+ (rect.y + rect.height) + ";" + ((friendly) ? 1 : 0) + ";");
+				+ (rect.y + rect.height) + ";" + ((friendly) ? 0 : 1) + ";");
+		}
+	}
+	
+	public void generateBlockingScenery() {
+		this.generateWallTiles();
+	}
+	
+	public void generateNonBlockingScenery() {
+		// TODO: should really check this based on the zones name
+		generateGrass();
+	}
+	
+	public void generateGrass() {
+		Set<IntegerPair> allTiles = this.getAllCoordsInZone();
+		
+		for(IntegerPair tile : allTiles) {
+			addNonSolidGrass(tile,"grass");
 		}
 	}
 	
@@ -147,6 +171,7 @@ public class Zone2 {
 		return this.tryToAddRectToEdge(x, y, w, h, edge);
 	}
 	
+	// TODO: too generous when it tries to guess where the rectangle can go
 	// Attempts to attach rectangle to edge 'edge'
 	private boolean tryToAddRectToEdge(int x, int y, int w, int h, Edge edge) {
 		if( edge != null && !edge.isEmpty()) {		
@@ -300,21 +325,19 @@ public class Zone2 {
 	public Set<IntegerPair> getAllCoordsInZone() {
 		Set<IntegerPair> tmp = new HashSet<>();
 		
-		for(Rectangle rect : rects) {
-			for(int x = 0; x <= rect.width; x++) {
-				for(int y = 0; y <= rect.height; y++) {
+		for(Rectangle rect : this.rects) {
+			for(int x = rect.x; x <= rect.x +rect.width; x++) {
+				for(int y = rect.y; y <= rect.y + rect.height; y++) {
 					tmp.add(new IntegerPair(x,y));
 				}
 			}
 		}
 		
 		for(Edge edge : this.edges) {
-			for(IntegerPair pointOnEdge : edge.edge) {
-				if(tmp.contains(pointOnEdge)) {
-					tmp.remove(pointOnEdge);
-				}
-			}
+			tmp.removeAll(edge.getAllTilesOnEdge());
 		}
+		
+		tmp.addAll(this.exits);
 		
 		return tmp;
 	}
@@ -343,6 +366,8 @@ public class Zone2 {
 	
 	private boolean canAddRectangle(Rectangle rectangle) {
 		
+		if(this.zonesInWorld.isEmpty() && this.rects.isEmpty()) return true;
+		
 		// checks if adding this rectangle causes the zone to overlap with other zones
 		for(Zone2 zone : zonesInWorld) {
 			// TODO: should use inclusive once generation of first rectangle is fixed
@@ -350,8 +375,6 @@ public class Zone2 {
 			if(overlapsExclusive(rectangle,zone) && zone != this)
 				return false;
 		}
-		
-		if(this.rects.isEmpty()) return true;
 
 		for(Rectangle rect : rects) {
 			if(overlaps(rect,rectangle)) return false;
@@ -359,11 +382,13 @@ public class Zone2 {
 		
 		ArrayList<Edge> commonEdges = new ArrayList<>();
 		
-		commonEdges.addAll(
-				findCommonEdgesExceptCorners(getEdges(rectangle),this.edges) 
-				);
-		if(commonEdges.isEmpty()) {
-			return false;
+		if(!this.edges.isEmpty()) {
+			commonEdges.addAll(
+					findCommonEdgesExceptCorners(getEdges(rectangle),this.edges) 
+					);
+			if(commonEdges.isEmpty()) {
+				return false;
+			}
 		}
 		
 		

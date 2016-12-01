@@ -127,15 +127,23 @@ public class MapGenerator2 {
 			// TODO: does not guarantee that the exits are connected
 			
 			// get rid of this!!!!!!!!
-			IntegerPair stupidCoordsGetRidOf; 
-			if(edgeForEntrance != null)
+			IntegerPair stupidCoordsGetRidOf;
+			IntegerPair stupidSizeGetRidOf;
+			if(edgeForEntrance != null) {
 				stupidCoordsGetRidOf = new IntegerPair(edgeForEntrance.getCorners().get(0));
-			else
+				stupidSizeGetRidOf = new IntegerPair(edgeForEntrance.size()-1,edgeForEntrance.size()-1);
+			}
+			else {
 				stupidCoordsGetRidOf = new IntegerPair(0,0);
+				stupidSizeGetRidOf = new IntegerPair(10,10);
+			}
+				
 			
-			if(couldGenerateThisZone = currentZone.generateFirstRectangle(stupidCoordsGetRidOf.x, stupidCoordsGetRidOf.y, 10, 10, edgeForEntrance)) {
+			// TODO: does not properly determine size of the new zone or guarantee that exit leads to it.
+			if(couldGenerateThisZone = currentZone.generateFirstRectangle(stupidCoordsGetRidOf.x, stupidCoordsGetRidOf.y, 
+					stupidSizeGetRidOf.x, stupidSizeGetRidOf.y, edgeForEntrance)) {
 				zones.add(currentZone);
-				//currentZone.generateRandomRectangles(2, 5, 5, 10, 10);
+				currentZone.generateRandomRectangles(2, 5, 5, 10, 10);
 				currentZone.addZones();
 				
 				// TODO: this edge should only be the edge which it would have in common with the next rectangle:
@@ -143,16 +151,18 @@ public class MapGenerator2 {
 				IntegerPair exit = currentZone.getRandomPointForExitOnEdge(exitEdge);
 				
 				// recurse to next zone.
-				/*Random rand = new Random();
+				Random rand = new Random();
 				int rando = 1+rand.nextInt(4);
 				
-				for(int i = 0; i < rando; i++) { */
+				for(int i = 0; i < rando; i++) { 
 					if(generate(currentDepth + 1, exitEdge, exit)) {
 						currentZone.exits.add(exit);
 					}
-				//}
+				}
 				
-				currentZone.generateWallTiles();
+				currentZone.generateBlockingScenery();
+				//currentZone.generateNonBlockingScenery();
+				
 				if(currentDepth == 0) {
 					currentZone.addPlayer(new IntegerPair(1,1), "Anton");
 					addToWorldList();
