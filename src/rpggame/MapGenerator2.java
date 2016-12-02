@@ -137,12 +137,11 @@ public class MapGenerator2 {
 				currentZone.generateRandomRectangles(2, 5, 5, 10, 10);
 				currentZone.addZones();
 				
-				// recurse to next zone.
 				recurseToNextZone(currentZone, currentDepth);
 				
 				generateScenery(currentZone, currentDepth);
 				
-				generatePlayer(currentZone, currentDepth);
+				doOnlyFirstTime(currentZone, currentDepth);
 				
 				currentZone.setFriendly(true);
 				putEntityMap(currentZone);
@@ -156,7 +155,7 @@ public class MapGenerator2 {
 			//zone.generateNonBlockingScenery();
 		}
 		
-		private void generatePlayer(Zone2 zone, int currentDepth) {
+		private void doOnlyFirstTime(Zone2 zone, int currentDepth) {
 			if(currentDepth == 0) {
 				zone.addPlayer(new IntegerPair(1,1), "Anton");
 				addToWorldList();
