@@ -13,6 +13,7 @@ import java.util.Set;
 public class MapGenerator2 {
 	static final boolean DEBUG = false;
 	
+	// a map containing possible sizes for different kinds of zones.
 	@SuppressWarnings("serial")
 	static final HashMap<String, IntegerPair> sizeMap = new HashMap<String, IntegerPair>() {
 		{
@@ -33,8 +34,13 @@ public class MapGenerator2 {
 		}
 	};
 	
+	// a list of all created worlds.
 	public static ArrayList<World> worlds = new ArrayList<>();
 	
+	/**
+	 * Clears previous map from file, generates a new one, and then prints it to the file.
+	 * @param maximumDepth - the maximumDepth of the recursion.
+	 */
 	public static void generate(int maximumDepth) {
 		clearMapFile();
 		World mainWorld = new World(0,maximumDepth);
@@ -42,6 +48,9 @@ public class MapGenerator2 {
 		printToFile();
 	}
 	
+	/**
+	 * Clears the generated map-file.
+	 */
 	public static void clearMapFile() {
 		try {
 			
@@ -53,6 +62,10 @@ public class MapGenerator2 {
 		}
 	}
 	
+	/**
+	 * Prints to the map-file.
+	 */
+	// TODO: print in proper so that drawing in the game is not messed up.
 	public static void printToFile() {
 		PrintWriter pw;
 		try {
@@ -88,6 +101,7 @@ public class MapGenerator2 {
 		}
 	}
 	
+	// class representing a world
 	static class World {
 		int id;
 		int maximumDepth  = 0;
@@ -103,7 +117,13 @@ public class MapGenerator2 {
 			worlds.add(this);
 		}
 		
-		// recursive function to generate worlds and add them WorldList
+		/**
+		 * recursive function to generate worlds and add them WorldList
+		 * @param currentDepth
+		 * @param edgeForEntrance
+		 * @param prevExit
+		 * @return
+		 */
 		public boolean generate(int currentDepth, Edge edgeForEntrance, IntegerPair prevExit) {
 			boolean couldGenerateThisZone = false;
 			
@@ -150,11 +170,21 @@ public class MapGenerator2 {
 			return couldGenerateThisZone;
 		}
 		
+		/**
+		 * Generates scenery for the zone, both solid and non-solid.
+		 * @param zone
+		 * @param currentDepth
+		 */
 		private void generateScenery(Zone2 zone, int currentDepth) {
 			zone.generateBlockingScenery();
 			//zone.generateNonBlockingScenery();
 		}
 		
+		/**
+		 * Things that should only be done for the first zone in a particular world.
+		 * @param zone
+		 * @param currentDepth
+		 */
 		private void doOnlyFirstTime(Zone2 zone, int currentDepth) {
 			if(currentDepth == 0) {
 				zone.addPlayer(new IntegerPair(1,1), "Anton");
@@ -162,6 +192,11 @@ public class MapGenerator2 {
 			}
 		}
 		
+		/**
+		 * Calls on the generate function to generate the next zone.
+		 * @param currentZone
+		 * @param currentDepth
+		 */
 		private void recurseToNextZone(Zone2 currentZone, int currentDepth) {
 			Random rand = new Random();
 			int rando = 1+rand.nextInt(4);
@@ -174,6 +209,7 @@ public class MapGenerator2 {
 					currentZone.exits.add(exit);
 				}
 			}
+			
 		}
 		
 		public boolean canAddZone(Zone2 zone) {
