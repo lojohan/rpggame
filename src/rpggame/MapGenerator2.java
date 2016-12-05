@@ -132,10 +132,7 @@ public class MapGenerator2 {
 			String name = NameGenerator.generateRandomPlaceName();
 			Zone2 currentZone = new Zone2(name,zones);
 			
-			if(prevExit != null) {
-				// TODO : should be reworked so that walls of zones do not touch
-				currentZone.exits.add(prevExit);
-			}
+			addEntranceToCurrent(currentZone, prevExit);
 			
 			// get rid of this!!!!!!!!
 			IntegerPair stupidCoordsGetRidOf;
@@ -170,6 +167,13 @@ public class MapGenerator2 {
 			return couldGenerateThisZone;
 		}
 		
+		private void addEntranceToCurrent(Zone2 zone, IntegerPair entrance) {
+			if (entrance != null) {
+				zone.exits.add(entrance);
+				zone.fillNonBuildable(entrance);
+			}
+		}
+		
 		/**
 		 * Generates scenery for the zone, both solid and non-solid.
 		 * @param zone
@@ -177,7 +181,7 @@ public class MapGenerator2 {
 		 */
 		private void generateScenery(Zone2 zone, int currentDepth) {
 			zone.generateBlockingScenery();
-			//zone.generateNonBlockingScenery();
+			zone.generateNonBlockingScenery();
 		}
 		
 		/**
@@ -206,7 +210,7 @@ public class MapGenerator2 {
 				IntegerPair exit = currentZone.getRandomPointForExitOnEdge(exitEdge);
 				
 				if(generate(currentDepth + 1, exitEdge, exit)) {
-					currentZone.exits.add(exit);
+					addEntranceToCurrent(currentZone, exit);
 				}
 			}
 			

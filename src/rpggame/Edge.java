@@ -13,6 +13,10 @@ public class Edge {
 		
 	}
 	
+	public Edge(Edge edge) {
+		this.edge.addAll(edge.edge);
+	}
+	
 	public Edge(IntegerPair ip1, IntegerPair ip2) {
 		this(ip1.x,ip1.y,ip2.x,ip2.y);
 	}

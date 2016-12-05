@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -28,6 +30,9 @@ public class Zone2 {
 	
 	// List of the strings containing the coordinates of this zone which can be parsed the game.
 	ArrayList<String> zone = new ArrayList<>();
+	
+	// List of tiles which solid entities cannot be spawned on.
+	ArrayList<IntegerPair> nonBuildable = new ArrayList<>();
 	
 	// Whether or not this zone is considered 'friendly'.
 	boolean friendly;
@@ -113,7 +118,7 @@ public class Zone2 {
 	}
 	
 	/**
-	 * Adds non-spolid tile representing grass to this zone.
+	 * Adds non-solid tile representing grass to this zone.
 	 * @param ip - IntegerPair containing the coordinates of the tile to be added.
 	 */
 	public void addNonSolidGrass(IntegerPair ip, String name) {
@@ -138,6 +143,8 @@ public class Zone2 {
 	 */
 	public void generateGrass() {
 		Set<IntegerPair> allTiles = this.getAllCoordsInZone();
+		
+		allTiles.removeAll(this.nonBuildable);
 		
 		for(IntegerPair tile : allTiles) {
 			addNonSolidGrass(tile,"grass");
@@ -496,6 +503,7 @@ public class Zone2 {
 	private void updateEdgeList(Rectangle rect) {
 		ArrayList<Edge> commonEdges = findCommonEdgesExceptCorners(getEdges(rect),this.edges);
 		edges.addAll(getEdges(rect));
+		fillNonbuildable(commonEdges, 1);
 		removeCommonEdgePoints(commonEdges);
 	}
 	
@@ -510,6 +518,24 @@ public class Zone2 {
 				edge2.edge.removeAll(edge1.edge);
 			}
 		}
+	}
+	
+	// should also add points next to non buildable as well as exits and spaces next to exits
+	public void fillNonbuildable(ArrayList<Edge> edgeList, int minFreeSpaces) {
+		for(Edge edge : edgeList) {
+			Edge tmpEdge = new Edge(edge);
+			Random rand = new Random();
+			while(tmpEdge.size() > minFreeSpaces) {
+				int i = rand.nextInt(tmpEdge.size());
+				tmpEdge.edge.remove(i);
+			}
+			this.nonBuildable.addAll(tmpEdge.edge);
+		}
+		
+	}
+	
+	public void fillNonBuildable(IntegerPair ip) {
+		this.nonBuildable.add(ip);
 	}
 	
 	/**
