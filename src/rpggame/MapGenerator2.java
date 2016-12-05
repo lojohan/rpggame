@@ -181,7 +181,7 @@ public class MapGenerator2 {
 		 */
 		private void generateScenery(Zone2 zone, int currentDepth) {
 			zone.generateBlockingScenery();
-			zone.generateNonBlockingScenery();
+			//zone.generateNonBlockingScenery();
 		}
 		
 		/**
@@ -191,9 +191,13 @@ public class MapGenerator2 {
 		 */
 		private void doOnlyFirstTime(Zone2 zone, int currentDepth) {
 			if(currentDepth == 0) {
-				zone.addPlayer(new IntegerPair(1,1), "Anton");
+				zone.generatePlayer();
 				addToWorldList();
 			}
+			
+			// testing
+			zone.addEnemyNPC(new IntegerPair(1,2), "Anton");
+			zone.addFriendlyNPC(new IntegerPair(5,5), "Kalle");
 		}
 		
 		/**

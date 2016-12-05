@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
 public class Zone2 {
 	// List containing previously generated zones in the same world as this zone
@@ -117,6 +119,22 @@ public class Zone2 {
 						new String[]{}, new String[][]{{}},new String[]{"playerControl"},new String[][]{{}},new String[]{}, new String[][]{{}}));
 	}
 	
+	public void addFriendlyNPC(IntegerPair ip, String name) {
+		addStringToEntities(ip,
+				generateEntityString(
+						"NPC",name,ip.x,ip.y,true,8,
+						new String[]{}, new String[][]{{}}, new String[]{"randomAI"}, new String[][]{{"2000000000"}}, 
+						new String[]{"displayDialogue"}, new String[][]{{"0"}}));
+	}
+	
+	public void addEnemyNPC(IntegerPair ip, String name) {
+		addStringToEntities(ip,
+				generateEntityString(
+						"NPC",name,ip.x,ip.y,true,7,
+						new String[]{"battle"}, new String[][]{{}}, new String[]{"randomAI"}, new String[][]{{"2000000000"}}, 
+						new String[]{"displayDialogue"}, new String[][]{{"0"}}));
+	}
+	
 	/**
 	 * Adds non-solid tile representing grass to this zone.
 	 * @param ip - IntegerPair containing the coordinates of the tile to be added.
@@ -144,8 +162,6 @@ public class Zone2 {
 	public void generateGrass() {
 		Set<IntegerPair> allTiles = this.getAllCoordsInZone();
 		
-		allTiles.removeAll(this.nonBuildable);
-		
 		for(IntegerPair tile : allTiles) {
 			addNonSolidGrass(tile,"grass");
 		}
@@ -161,6 +177,46 @@ public class Zone2 {
 					addWallTile(tile);
 			}
 		}
+	}
+	
+	public void generatePlayer() {
+		IntegerPair[] coords = getAllCoordsInZone().toArray(new IntegerPair[getAllCoordsInZone().size()]);
+		
+		Random rand = new Random();
+		
+		int randi = rand.nextInt(coords.length);
+		
+		int count = 0;
+		
+		while(checkTileForSolid(coords[randi]) && count < coords.length) {
+			count++;
+		}
+		
+		this.addPlayer(new IntegerPair(coords[randi]), NameGenerator.generateRandomName());
+	}
+	
+	public void generateNPCs() {
+		
+	}
+	
+	private void generateFriendlies() {
+		
+	}
+	
+	private void generateEnemies() {
+		
+	}
+	
+	private boolean checkTileForSolid(IntegerPair ip) {
+		ArrayList<String> entities = this.entities.get(ip);
+		if(entities == null) return true;
+		for(String entity : entities) {
+			final String[] tokens = entity.split(Pattern.quote(";"));
+			if(tokens[3] == "1") {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -514,8 +570,8 @@ public class Zone2 {
 	private void updateEdgeList(Rectangle rect) {
 		ArrayList<Edge> commonEdges = findCommonEdgesExceptCorners(getEdges(rect),this.edges);
 		edges.addAll(getEdges(rect));
-		fillNonbuildable(commonEdges, 1);
 		removeCommonEdgePoints(commonEdges);
+		fillNonbuildable(commonEdges, 1);
 	}
 	
 	/**
