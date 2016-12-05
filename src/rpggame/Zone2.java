@@ -437,7 +437,7 @@ public class Zone2 {
 			if(overlapsExclusive(rectangle,zone) && zone != this)
 				return false;
 			// TODO: rework to allow for separation by wall between zones
-			if(!this.findCommonEdges(this.getEdges(rectangle), zone.edges).isEmpty()) {
+			if(!findCommonEdges(getEdges(rectangle), zone.edges).isEmpty()) {
 				connectedToPreviousZone = true;
 			}
 		}
@@ -469,7 +469,7 @@ public class Zone2 {
 	 */
 	// TODO: should check whether it is next to the appropriate edge instead of attached to it.
 	private boolean canAddRectangleToEdge(Rectangle rectangle, Edge edge) {
-		if(this.findCommonEdges(this.getEdges(rectangle), edge).isEmpty()) {
+		if(findCommonEdges(getEdges(rectangle), edge).isEmpty()) {
 			return false;
 		}
 		
