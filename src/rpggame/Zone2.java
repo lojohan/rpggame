@@ -303,6 +303,17 @@ public class Zone2 {
 		return tmp;
 	}
 	
+	public Set<IntegerPair> getNeighbours(IntegerPair ip) {
+		Set<IntegerPair> neighbours = new HashSet<>();
+		
+		neighbours.add(new IntegerPair(ip.x,ip.y+1));
+		neighbours.add(new IntegerPair(ip.x,ip.y-1));
+		neighbours.add(new IntegerPair(ip.x+1,ip.y));
+		neighbours.add(new IntegerPair(ip.x-1,ip.y));
+		
+		return neighbours;
+	}
+	
 	/**
 	 * Generates a random rectangle and attempts to attach it to this zone.
 	 * @param minwidth - minimum width of the generated rectangle.
@@ -529,13 +540,23 @@ public class Zone2 {
 				int i = rand.nextInt(tmpEdge.size());
 				tmpEdge.edge.remove(i);
 			}
-			this.nonBuildable.addAll(tmpEdge.edge);
+			//this.nonBuildable.addAll(tmpEdge.edge);
+			for(IntegerPair ip : tmpEdge.edge) {
+				fillNonBuildable(ip);
+			}
 		}
-		
 	}
 	
 	public void fillNonBuildable(IntegerPair ip) {
 		this.nonBuildable.add(ip);
+		Set<IntegerPair> coords = getAllCoordsInZone();
+		Set<IntegerPair> neighbours = getNeighbours(ip);
+		
+		for(IntegerPair neighbour : neighbours) {
+			if(coords.contains(neighbour)) {
+				this.nonBuildable.add(neighbour);
+			}
+		}
 	}
 	
 	/**

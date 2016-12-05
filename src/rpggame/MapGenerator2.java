@@ -132,8 +132,6 @@ public class MapGenerator2 {
 			String name = NameGenerator.generateRandomPlaceName();
 			Zone2 currentZone = new Zone2(name,zones);
 			
-			addEntranceToCurrent(currentZone, prevExit);
-			
 			// get rid of this!!!!!!!!
 			IntegerPair stupidCoordsGetRidOf;
 			IntegerPair stupidSizeGetRidOf;
@@ -153,6 +151,8 @@ public class MapGenerator2 {
 				zones.add(currentZone);
 				currentZone.generateRandomRectangles(2, 5, 5, 10, 10);
 				currentZone.addZones();
+				
+				addEntranceToCurrent(currentZone, prevExit);
 				
 				recurseToNextZone(currentZone, currentDepth);
 				
