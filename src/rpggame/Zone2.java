@@ -152,7 +152,7 @@ public class Zone2 {
 	public void addZones() {
 		for(Rectangle rect : this.rects) {
 			zone.add("Zone;" + this.name + ";" + rect.x + "," + rect.y + ";" + (rect.x + rect.width) + ","
-				+ (rect.y + rect.height) + ";" + ((friendly) ? 0 : 1) + ";");
+				+ (rect.y + rect.height) + ";" + ((friendly) ? 1 : 0) + ";");
 		}
 	}
 	
@@ -195,21 +195,72 @@ public class Zone2 {
 		this.addPlayer(new IntegerPair(coords[randi]), NameGenerator.generateRandomName());
 	}
 	
-	public void generateNPCs() {
-		
+	public void generateNPCs(double entityDensity) {
+		if(this.friendly) generateFriendlies(entityDensity);
+		else generateEnemies(entityDensity);
 	}
 	
-	private void generateFriendlies() {
-		
+	private void generateFriendlies(double entityDensity) {
+		addSolidEntityRandom(entityDensity,"FriendlyNPC");
 	}
 	
-	private void generateEnemies() {
+	private void generateEnemies(double entityDensity) {
+		addSolidEntityRandom(entityDensity,"EnemyNPC");
+	}
+	
+	private void addSolidEntityRandom(double entityDensity, String type) {
+		int count = 0;
 		
+		final Random rn = new Random();
+
+		for(Rectangle rect : this.rects) {
+			int zoneSize = (rect.width - 2) * (rect.height - 2);
+			while (count < zoneSize) {
+		
+				double makeEntity = rn.nextDouble();
+				if (makeEntity < entityDensity) {
+					int escapeCount = 0;
+					while (true) {
+						int randX = rect.x + 2 + rn.nextInt(rect.width - 2);
+						int randY = rect.y + 2 + rn.nextInt(rect.height - 2);
+	
+						IntegerPair ip = new IntegerPair(randX,randY);
+						
+						if (!checkTileForSolid(ip)) {
+							switch(type) {
+							case "FriendlyNPC": this.addFriendlyNPC(ip, NameGenerator.generateRandomName());
+								break;
+							case "EnemyNPC": this.addEnemyNPC(ip, NameGenerator.generateRandomName());
+							break;
+							}
+							break;
+						}
+						if(escapeCount > rect.width * rect.height) break;
+						escapeCount++;
+					}
+				}
+				count++;
+			}
+		}
+	}
+	
+	public void randomFriendly(double pFriendly) {
+		Random rand = new Random();
+		int max = 10000;
+		int pFriend = (int)(pFriendly * max);
+		
+		int randi = rand.nextInt(max);
+		
+		if(randi < pFriend) {
+			this.setFriendly(true);
+		} else {
+			this.setFriendly(false);
+		}
 	}
 	
 	private boolean checkTileForSolid(IntegerPair ip) {
+		if(!this.entities.containsKey(ip)) return false;
 		ArrayList<String> entities = this.entities.get(ip);
-		if(entities == null) return true;
 		for(String entity : entities) {
 			final String[] tokens = entity.split(Pattern.quote(";"));
 			if(tokens[3] == "1") {

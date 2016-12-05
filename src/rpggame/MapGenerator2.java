@@ -1,11 +1,9 @@
 package rpggame;
 
-import java.awt.Rectangle;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
@@ -75,18 +73,10 @@ public class MapGenerator2 {
 			for(World world : worlds) {
 				pw.println(world.id);
 				
-				for(Zone2 zone : world.zones) {
-					for(String zoneString : zone.zone) {
-						pw.println(zoneString);
-					}
-				}
-				Set<IntegerPair> allEntities = world.entities.keySet();
-				for(IntegerPair entitiesOnPoint : allEntities) {
-					ArrayList<String> entityStrings = world.entities.get(entitiesOnPoint);
-					for(String entity : entityStrings) {		
-						pw.println(entity);
-					}
-				}
+				printZones(world, pw);
+				
+				printEntities(world, pw);
+
 				pw.println();
 				pw.println();
 				pw.println();
@@ -100,6 +90,46 @@ public class MapGenerator2 {
 			e.printStackTrace();
 		}
 	}
+	
+	private static void printZones(World world, PrintWriter pw) {
+		for(Zone2 zone : world.zones) {
+			for(String zoneString : zone.zone) {
+				pw.println(zoneString);
+			}
+		}
+	}
+	
+	private static void printEntities(World world, PrintWriter pw) {
+		
+		Set<IntegerPair> allEntities = world.entities.keySet();
+		for(IntegerPair entitiesOnPoint : allEntities) {
+			ArrayList<String> entityStrings = world.entities.get(entitiesOnPoint);
+			for(String entity : entityStrings) {		
+				pw.println(entity);
+			}
+		}
+		
+		/*
+		Set<IntegerPair> allEntities = world.entities.keySet();
+		ArrayList<String> entityStrings = new ArrayList<>();
+		
+		for(IntegerPair entitiesOnPoint : allEntities) {
+			entityStrings.addAll(world.entities.get(entitiesOnPoint));
+		}
+		
+		orderEntities(entityStrings);
+		
+		for(String entity : entityStrings) {		
+			pw.println(entity);
+		}
+		*/
+	}
+	
+	/*
+	private static void orderEntities(ArrayList<String> entities) {
+		
+	}
+	*/
 	
 	// class representing a world
 	static class World {
@@ -150,18 +180,21 @@ public class MapGenerator2 {
 					stupidSizeGetRidOf.x, stupidSizeGetRidOf.y, edgeForEntrance)) {
 				zones.add(currentZone);
 				currentZone.generateRandomRectangles(2, 5, 5, 10, 10);
-				currentZone.addZones();
+				
+				currentZone.randomFriendly(0.1);
 				
 				addEntranceToCurrent(currentZone, prevExit);
+				
+				doOnlyFirstTime(currentZone, currentDepth);
 				
 				recurseToNextZone(currentZone, currentDepth);
 				
 				generateScenery(currentZone, currentDepth);
 				
-				doOnlyFirstTime(currentZone, currentDepth);
+				generateNPCs(currentZone, currentDepth);
 				
-				currentZone.setFriendly(true);
 				putEntityMap(currentZone);
+				currentZone.addZones();
 			}
 			
 			return couldGenerateThisZone;
@@ -172,6 +205,10 @@ public class MapGenerator2 {
 				zone.exits.add(entrance);
 				zone.fillNonBuildable(entrance);
 			}
+		}
+		
+		private void generateNPCs(Zone2 zone, int currentDepth) {
+			zone.generateNPCs(0.03);
 		}
 		
 		/**
@@ -193,11 +230,8 @@ public class MapGenerator2 {
 			if(currentDepth == 0) {
 				zone.generatePlayer();
 				addToWorldList();
+				zone.setFriendly(true);
 			}
-			
-			// testing
-			zone.addEnemyNPC(new IntegerPair(1,2), "Anton");
-			zone.addFriendlyNPC(new IntegerPair(5,5), "Kalle");
 		}
 		
 		/**
