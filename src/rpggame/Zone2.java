@@ -291,7 +291,10 @@ public class Zone2 {
 	 */
 	public void generateBlockingScenery() {
 		this.generateWallTiles();
-		//this.generateWater(0.2);
+		
+		if(this.name.contains("River") || this.name.contains("Ocean") || this.name.contains("Sea")) {
+			this.generateWater(0.2);
+		}
 	}
 	
 	/**
@@ -299,7 +302,9 @@ public class Zone2 {
 	 */
 	public void generateNonBlockingScenery() {
 		// TODO: should really check this based on the zones name
-		generateGrass();
+		if(this.name.contains("Forest") || this.name.contains("Field")) {
+			generateGrass();
+		}
 	}
 	
 	/**

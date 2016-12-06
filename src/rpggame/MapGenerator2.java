@@ -218,7 +218,7 @@ public class MapGenerator2 {
 		 */
 		private void generateScenery(Zone2 zone, int currentDepth) {
 			zone.generateBlockingScenery();
-			//zone.generateNonBlockingScenery();
+			zone.generateNonBlockingScenery();
 		}
 		
 		/**
