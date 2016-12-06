@@ -108,6 +108,13 @@ public class Zone2 {
 						new String[]{}, new String[][]{{}},new String[]{},new String[][]{{}},new String[]{}, new String[][]{{}}));
 	}
 	
+	public void addWaterTile(IntegerPair ip) {
+		addStringToEntities(ip,
+				generateEntityString(
+						"Tile","water",ip.x,ip.y,true,9,
+						new String[]{}, new String[][]{{}},new String[]{},new String[][]{{}},new String[]{}, new String[][]{{}}));
+	}
+	
 	/**
 	 * Adds a solid entity representing the player to this zone.
 	 * @param ip - IntegerPair containing the coordinates of the entity to be added.
@@ -165,6 +172,10 @@ public class Zone2 {
 		for(IntegerPair tile : allTiles) {
 			addNonSolidGrass(tile,"grass");
 		}
+	}
+	
+	public void generateWater(double entityDensity) {
+		addSolidEntityRandom(entityDensity, "Water");
 	}
 	
 	/**
@@ -231,7 +242,12 @@ public class Zone2 {
 							case "FriendlyNPC": this.addFriendlyNPC(ip, NameGenerator.generateRandomName());
 								break;
 							case "EnemyNPC": this.addEnemyNPC(ip, NameGenerator.generateRandomName());
-							break;
+								break;
+							case "Water": 
+								if(!this.nonBuildable.contains(ip)) {
+									this.addWaterTile(ip);
+								}
+								break;
 							}
 							break;
 						}
@@ -275,6 +291,7 @@ public class Zone2 {
 	 */
 	public void generateBlockingScenery() {
 		this.generateWallTiles();
+		//this.generateWater(0.2);
 	}
 	
 	/**

@@ -187,11 +187,11 @@ public class MapGenerator2 {
 				
 				doOnlyFirstTime(currentZone, currentDepth);
 				
-				recurseToNextZone(currentZone, currentDepth);
+				recurseToNextZone(currentZone, currentDepth, 8);
 				
 				generateScenery(currentZone, currentDepth);
 				
-				generateNPCs(currentZone, currentDepth);
+				//generateNPCs(currentZone, currentDepth);
 				
 				putEntityMap(currentZone);
 				currentZone.addZones();
@@ -239,9 +239,9 @@ public class MapGenerator2 {
 		 * @param currentZone
 		 * @param currentDepth
 		 */
-		private void recurseToNextZone(Zone2 currentZone, int currentDepth) {
+		private void recurseToNextZone(Zone2 currentZone, int currentDepth, int tries) {
 			Random rand = new Random();
-			int rando = 1+rand.nextInt(4);
+			int rando = 1+rand.nextInt(tries);
 			for(int i = 0; i < rando; i++) { 
 				// TODO: this edge should only be the edge which it would have in common with the next rectangle:
 				Edge exitEdge = currentZone.getRandomEdgeForExit();
