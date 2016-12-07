@@ -12,6 +12,10 @@ import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
 public class Zone2 {
+	public static interface Layer {
+		int FOREGROUND = 0, MIDDLE = 1, BACKGROUND = 2;
+	}
+	
 	// List containing previously generated zones in the same world as this zone
 	ArrayList<Zone2> zonesInWorld = new ArrayList<>();
 	
@@ -105,14 +109,14 @@ public class Zone2 {
 		addStringToEntities(ip,
 				generateEntityString(
 						"Tile","wall",ip.x,ip.y,true,1,
-						new String[]{}, new String[][]{{}},new String[]{},new String[][]{{}},new String[]{}, new String[][]{{}}));
+						Layer.MIDDLE, new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
 	}
 	
 	public void addWaterTile(IntegerPair ip) {
 		addStringToEntities(ip,
 				generateEntityString(
 						"Tile","water",ip.x,ip.y,true,9,
-						new String[]{}, new String[][]{{}},new String[]{},new String[][]{{}},new String[]{}, new String[][]{{}}));
+						Layer.MIDDLE, new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
 	}
 	
 	/**
@@ -123,23 +127,23 @@ public class Zone2 {
 		addStringToEntities(ip,
 				generateEntityString(
 						"Player",name,ip.x,ip.y,true,2,
-						new String[]{}, new String[][]{{}},new String[]{"playerControl"},new String[][]{{}},new String[]{}, new String[][]{{}}));
+						Layer.MIDDLE, new String[]{},new String[][]{{}},new String[]{"playerControl"},new String[][]{{}}, new String[]{}, new String[][]{{}}));
 	}
 	
 	public void addFriendlyNPC(IntegerPair ip, String name) {
 		addStringToEntities(ip,
 				generateEntityString(
 						"NPC",name,ip.x,ip.y,true,8,
-						new String[]{}, new String[][]{{}}, new String[]{"randomAI"}, new String[][]{{"2000000000"}}, 
-						new String[]{"displayDialogue"}, new String[][]{{"0"}}));
+						Layer.MIDDLE, new String[]{}, new String[][]{{}}, new String[]{"randomAI"}, 
+						new String[][]{{"2000000000"}}, new String[]{"displayDialogue"}, new String[][]{{"0"}}));
 	}
 	
 	public void addEnemyNPC(IntegerPair ip, String name) {
 		addStringToEntities(ip,
 				generateEntityString(
 						"NPC",name,ip.x,ip.y,true,7,
-						new String[]{"battle"}, new String[][]{{}}, new String[]{"randomAI"}, new String[][]{{"2000000000"}}, 
-						new String[]{"displayDialogue"}, new String[][]{{"0"}}));
+						Layer.MIDDLE, new String[]{"battle"}, new String[][]{{}}, new String[]{"randomAI"}, 
+						new String[][]{{"2000000000"}}, new String[]{"displayDialogue"}, new String[][]{{"0"}}));
 	}
 	
 	/**
@@ -150,7 +154,7 @@ public class Zone2 {
 		addStringToEntities(ip,
 				generateEntityString(
 						"Tile",name,ip.x,ip.y,false,4,
-						new String[]{}, new String[][]{{}},new String[]{},new String[][]{{}},new String[]{}, new String[][]{{}}));
+						Layer.BACKGROUND, new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
 	}
 	
 	/**
@@ -866,6 +870,7 @@ public class Zone2 {
 	 * @param y - y-coordinate of the entity to be generated.
 	 * @param solid - whether this entity is solid or not.
 	 * @param img - an int referencing the image of this entity.
+	 * @param layer TODO
 	 * @param collision - an array containing the functions to be executed when this entity collides with another entity.
 	 * @param colparams - the parameters to be sent to the collision functions.
 	 * @param move - an array containing the functions to be executed when this entity attempts to move.
@@ -874,8 +879,8 @@ public class Zone2 {
 	 * @param useparams - the parameters to be sent to the use functions.
 	 * @return
 	 */
-	private static String generateEntityString(String type, String name, int x, int y, boolean solid, int img,
-			String[] collision, String[][] colparams, String[] move, String[][] moveparams, String[] use, String[][] useparams) {
+	private static String generateEntityString(String type, String name, int x, int y, boolean solid, int img, 
+			int layer, String[] collision, String[][] colparams, String[] move, String[][] moveparams, String[] use, String[][] useparams) {
 		
 		StringBuilder sb = new StringBuilder();
 		
@@ -887,6 +892,8 @@ public class Zone2 {
 		else sb.append(0+";");
 		
 		sb.append(img+";");
+		
+		sb.append(layer+";");
 		
 		createFunctionPointers(collision,colparams,sb);
 		createFunctionPointers(move,moveparams,sb);
