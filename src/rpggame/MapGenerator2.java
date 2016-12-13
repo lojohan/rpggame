@@ -183,7 +183,7 @@ public class MapGenerator2 {
 				
 				currentZone.randomFriendly(0.1);
 				
-				addEntranceToCurrent(currentZone, prevExit);
+				addEntranceToZone(currentZone, prevExit);
 				
 				doOnlyFirstTime(currentZone, currentDepth);
 				
@@ -200,7 +200,7 @@ public class MapGenerator2 {
 			return couldGenerateThisZone;
 		}
 		
-		private void addEntranceToCurrent(Zone2 zone, IntegerPair entrance) {
+		private void addEntranceToZone(Zone2 zone, IntegerPair entrance) {
 			if (entrance != null) {
 				zone.exits.add(entrance);
 				zone.fillNonBuildable(entrance);
@@ -248,7 +248,7 @@ public class MapGenerator2 {
 				IntegerPair exit = currentZone.getRandomPointForExitOnEdge(exitEdge);
 				
 				if(generate(currentDepth + 1, exitEdge, exit)) {
-					addEntranceToCurrent(currentZone, exit);
+					addEntranceToZone(currentZone, exit);
 				}
 			}
 			
