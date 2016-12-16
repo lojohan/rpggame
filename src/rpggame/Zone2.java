@@ -315,9 +315,9 @@ public class Zone2 {
 		this.generateWallTiles();
 		
 		if(this.name.contains("River") || this.name.contains("Ocean") || this.name.contains("Sea")) {
-			this.generateWater(0.2);
+			this.generateWater(0.1);
 		} else if(this.name.contains("Forest")) {
-			this.generateForest(0.3);
+			this.generateForest(0.15);
 		}
 	}
 	
