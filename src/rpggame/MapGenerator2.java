@@ -108,28 +108,7 @@ public class MapGenerator2 {
 				pw.println(entity);
 			}
 		}
-		
-		/*
-		Set<IntegerPair> allEntities = world.entities.keySet();
-		ArrayList<String> entityStrings = new ArrayList<>();
-		
-		for(IntegerPair entitiesOnPoint : allEntities) {
-			entityStrings.addAll(world.entities.get(entitiesOnPoint));
-		}
-		
-		orderEntities(entityStrings);
-		
-		for(String entity : entityStrings) {		
-			pw.println(entity);
-		}
-		*/
 	}
-	
-	/*
-	private static void orderEntities(ArrayList<String> entities) {
-		
-	}
-	*/
 	
 	// class representing a world
 	static class World {
@@ -218,7 +197,7 @@ public class MapGenerator2 {
 		 */
 		private void generateScenery(Zone2 zone, int currentDepth) {
 			zone.generateBlockingScenery();
-			//zone.generateNonBlockingScenery();
+			zone.generateNonBlockingScenery();
 		}
 		
 		/**

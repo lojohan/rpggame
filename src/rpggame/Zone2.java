@@ -119,6 +119,13 @@ public class Zone2 {
 						Layer.MIDDLE, new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
 	}
 	
+	public void addTreeTile(IntegerPair ip) {
+		addStringToEntities(ip,
+				generateEntityString(
+						"Tile","tree",ip.x,ip.y,true,5,
+						Layer.MIDDLE, new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
+	}
+	
 	/**
 	 * Adds a solid entity representing the player to this zone.
 	 * @param ip - IntegerPair containing the coordinates of the entity to be added.
@@ -182,6 +189,10 @@ public class Zone2 {
 		addSolidEntityRandom(entityDensity, "Water");
 	}
 	
+	public void generateForest(double entityDensity) {
+		addSolidEntityRandom(entityDensity, "Tree");
+	}
+	
 	/**
 	 * Generates walls along the edges of this zone.
 	 */
@@ -191,6 +202,14 @@ public class Zone2 {
 				if(!exits.contains(tile))
 					addWallTile(tile);
 			}
+		}
+	}
+	
+	public void generateCaveTiles() {
+		Set<IntegerPair> allTiles = this.getAllCoordsInZone();
+		
+		for(IntegerPair tile : allTiles) {
+			addWallTile(tile);
 		}
 	}
 	
@@ -252,6 +271,11 @@ public class Zone2 {
 									this.addWaterTile(ip);
 								}
 								break;
+							case "Tree":
+								if(!this.nonBuildable.contains(ip)) {
+									this.addTreeTile(ip);
+								}
+								break;
 							}
 							break;
 						}
@@ -298,6 +322,8 @@ public class Zone2 {
 		
 		if(this.name.contains("River") || this.name.contains("Ocean") || this.name.contains("Sea")) {
 			this.generateWater(0.2);
+		} else if(this.name.contains("Forest")) {
+			this.generateForest(0.3);
 		}
 	}
 	
@@ -306,9 +332,9 @@ public class Zone2 {
 	 */
 	public void generateNonBlockingScenery() {
 		// TODO: should really check this based on the zones name
-		if(this.name.contains("Forest") || this.name.contains("Field")) {
+		//if(this.name.contains("Forest") || this.name.contains("Field")) {
 			generateGrass();
-		}
+		//}
 	}
 	
 	/**
