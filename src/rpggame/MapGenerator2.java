@@ -165,6 +165,8 @@ public class MapGenerator2 {
 			// TODO: does not properly determine size of the new zone or guarantee that exit leads to it.
 			if(couldGenerateThisZone = currentZone.generateFirstRectangle(stupidCoordsGetRidOf.x, stupidCoordsGetRidOf.y, 
 					stupidSizeGetRidOf.x, stupidSizeGetRidOf.y, edgeForEntrance)) {
+				addZoneToWorld(currentZone);
+				
 				currentZone.generateRandomRectangles(2, 5, 5, 10, 10);
 				
 				currentZone.randomFriendly(0.1);
@@ -181,8 +183,6 @@ public class MapGenerator2 {
 				
 				putEntityMap(currentZone);
 				currentZone.addZones();
-				
-				addZoneToWorld(currentZone);
 			}
 			
 			return couldGenerateThisZone;
