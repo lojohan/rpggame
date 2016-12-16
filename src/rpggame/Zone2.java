@@ -199,6 +199,8 @@ public class Zone2 {
 		houseWorld.putEntityMap(houseZone);
 		houseZone.addZones();
 		
+		houseWorld.addZoneToWorld(houseZone);
+		
 		MapGenerator2.worlds.add(houseWorld);
 		
 	}
