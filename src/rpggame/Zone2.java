@@ -177,7 +177,7 @@ public class Zone2 {
 	// TODO: in desperate need of cleanup.
 	public void addHouseTile(IntegerPair ip, String name) {
 		
-		world.incrementWorldID();
+		World.incrementWorldID();
 		
 		addDoorTile(ip, new IntegerPair(1,1), name, World.getWorldID());
 		
@@ -203,6 +203,61 @@ public class Zone2 {
 		
 		MapGenerator2.worlds.add(houseWorld);
 		
+	}
+	
+	public void generateCave() {
+		Set<IntegerPair> allCoords = this.getAllCoordsInZone();
+		
+		allCoords.removeAll(this.exits);
+		
+		for(IntegerPair ip : allCoords) {
+			// TODO: temp solution. make it look less shitty.
+			this.addWallTile(ip, Direction.WEST);
+		}
+		
+		World.incrementWorldID();
+		
+		for(IntegerPair ip : this.exits) {
+			addDoorTile(ip, ip, "door", World.getWorldID());
+		}
+		
+		World caveWorld = new World(World.getWorldID(), 0, 0);
+		
+		Zone2 caveZone = new Zone2(this.name, caveWorld.zones, caveWorld);
+		
+		
+		for(Rectangle rect : this.rects) {
+			caveZone.addRectangle(rect.x, rect.y, rect.width, rect.height);
+		}
+		
+		for(IntegerPair ip : this.exits) {
+			caveZone.exits.add(ip);
+			caveZone.addDoorTile(ip, ip, "door", caveWorld.returnid);
+		}
+		
+		caveZone.setFriendly(this.friendly);
+		
+		caveZone.generateWallTiles();
+		
+		caveZone.addZones();
+		caveWorld.putEntityMap(caveZone);
+		caveWorld.addZoneToWorld(caveZone);
+		
+		MapGenerator2.worlds.add(caveWorld);
+	}
+	
+	public void generateLabyrinth(Set<IntegerPair> coords) {
+
+	}
+	
+	public IntegerPair randomCoordInZone() {
+		Random rand = new Random();
+		
+		int rn = rand.nextInt(this.getAllCoordsInZone().size());
+		
+		IntegerPair[] ips = this.getAllCoordsInZone().toArray(new IntegerPair[0]);
+		
+		return ips[rn];
 	}
 	
 	public void addDoorTile(IntegerPair ip1, IntegerPair ip2, String name, int doorToWorldID) {
@@ -363,7 +418,7 @@ public class Zone2 {
 		ArrayList<String> entities = this.entities.get(ip);
 		for(String entity : entities) {
 			final String[] tokens = entity.split(Pattern.quote(";"));
-			if(tokens[3] == "1") {
+			if(tokens[3].equals("1")) {
 				return true;
 			}
 		}
@@ -382,6 +437,8 @@ public class Zone2 {
 			this.generateForest(0.15);
 		} else if(this.name.contains("Village") || this.name.contains("City") || this.name.contains("Town")) {
 			this.generateHouses(0.1);
+		} else if((this.name.contains("Labyrinth") || this.name.contains("Cave")) && this.friendly == false) {
+			this.generateCave();
 		}
 	}
 	

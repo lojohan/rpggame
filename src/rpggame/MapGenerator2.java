@@ -188,7 +188,7 @@ public class MapGenerator2 {
 			return couldGenerateThisZone;
 		}
 		
-		public void incrementWorldID() {
+		public static void incrementWorldID() {
 			worldID += 1;
 		}
 		
