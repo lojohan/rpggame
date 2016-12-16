@@ -16,6 +16,10 @@ public class Zone2 {
 		int FOREGROUND = 0, MIDDLE = 1, BACKGROUND = 2;
 	}
 	
+	public static interface Direction {
+		int NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3;
+	}
+	
 	// List containing previously generated zones in the same world as this zone
 	ArrayList<Zone2> zonesInWorld = new ArrayList<>();
 	
@@ -105,25 +109,25 @@ public class Zone2 {
 	 * Adds a solid tile representing a wall to this zone.
 	 * @param ip - IntegerPair containing the coordinates of the tile to be added.
 	 */
-	public void addWallTile(IntegerPair ip) {
+	public void addWallTile(IntegerPair ip, int direction) {
 		addStringToEntities(ip,
 				generateEntityString(
 						"Tile","wall",ip.x,ip.y,true,1,
-						Layer.MIDDLE, new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
+						Layer.MIDDLE, direction,new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
 	}
 	
 	public void addWaterTile(IntegerPair ip) {
 		addStringToEntities(ip,
 				generateEntityString(
 						"Tile","water",ip.x,ip.y,true,9,
-						Layer.MIDDLE, new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
+						Layer.MIDDLE, Direction.NORTH, new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
 	}
 	
 	public void addTreeTile(IntegerPair ip) {
 		addStringToEntities(ip,
 				generateEntityString(
 						"Tile","tree",ip.x,ip.y,true,5,
-						Layer.MIDDLE, new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
+						Layer.MIDDLE, Direction.NORTH, new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
 	}
 	
 	/**
@@ -134,14 +138,14 @@ public class Zone2 {
 		addStringToEntities(ip,
 				generateEntityString(
 						"Player",name,ip.x,ip.y,true,2,
-						Layer.MIDDLE, new String[]{},new String[][]{{}},new String[]{"playerControl"},new String[][]{{}}, new String[]{}, new String[][]{{}}));
+						Layer.MIDDLE, Direction.NORTH, new String[]{},new String[][]{{}},new String[]{"playerControl"},new String[][]{{}}, new String[]{}, new String[][]{{}}));
 	}
 	
 	public void addFriendlyNPC(IntegerPair ip, String name) {
 		addStringToEntities(ip,
 				generateEntityString(
 						"NPC",name,ip.x,ip.y,true,8,
-						Layer.MIDDLE, new String[]{}, new String[][]{{}}, new String[]{"randomAI"}, 
+						Layer.MIDDLE, Direction.NORTH, new String[]{}, new String[][]{{}}, new String[]{"randomAI"}, 
 						new String[][]{{"2000000000"}}, new String[]{"displayDialogue"}, new String[][]{{"0"}}));
 	}
 	
@@ -149,7 +153,7 @@ public class Zone2 {
 		addStringToEntities(ip,
 				generateEntityString(
 						"NPC",name,ip.x,ip.y,true,7,
-						Layer.MIDDLE, new String[]{"battle"}, new String[][]{{}}, new String[]{"randomAI"}, 
+						Layer.MIDDLE, Direction.NORTH, new String[]{"battle"}, new String[][]{{}}, new String[]{"randomAI"}, 
 						new String[][]{{"2000000000"}}, new String[]{"displayDialogue"}, new String[][]{{"0"}}));
 	}
 	
@@ -161,7 +165,7 @@ public class Zone2 {
 		addStringToEntities(ip,
 				generateEntityString(
 						"Tile",name,ip.x,ip.y,false,4,
-						Layer.BACKGROUND, new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
+						Layer.BACKGROUND, Direction.NORTH, new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
 	}
 	
 	/**
@@ -200,16 +204,19 @@ public class Zone2 {
 		for(Edge edge : edges) {
 			for(IntegerPair tile : edge.edge) {
 				if(!exits.contains(tile))
-					addWallTile(tile);
+					if(edge.isEdgeVertical())
+						addWallTile(tile, Direction.WEST);
+					else
+						addWallTile(tile, Direction.NORTH);
 			}
 		}
 	}
 	
 	public void generateCaveTiles() {
 		Set<IntegerPair> allTiles = this.getAllCoordsInZone();
-		
+		// TODO: placeholder. will look like shit
 		for(IntegerPair tile : allTiles) {
-			addWallTile(tile);
+			addWallTile(tile, Direction.NORTH);
 		}
 	}
 	
@@ -906,7 +913,7 @@ public class Zone2 {
 	 * @return
 	 */
 	private static String generateEntityString(String type, String name, int x, int y, boolean solid, int img, 
-			int layer, String[] collision, String[][] colparams, String[] move, String[][] moveparams, String[] use, String[][] useparams) {
+			int layer, int direction, String[] collision, String[][] colparams, String[] move, String[][] moveparams, String[] use, String[][] useparams) {
 		
 		StringBuilder sb = new StringBuilder();
 		
@@ -920,6 +927,8 @@ public class Zone2 {
 		sb.append(img+";");
 		
 		sb.append(layer+";");
+		
+		sb.append(direction+";");
 		
 		createFunctionPointers(collision,colparams,sb);
 		createFunctionPointers(move,moveparams,sb);
