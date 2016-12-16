@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
+import rpggame.MapGenerator2.World;
+
 public class Zone2 {
 	public static interface Layer {
 		int FOREGROUND = 0, MIDDLE = 1, BACKGROUND = 2;
@@ -46,16 +48,19 @@ public class Zone2 {
 	
 	// Whether or not this zone is considered 'friendly'.
 	boolean friendly;
-	
+
+	//private int worldID;
+	private World world;
 
 	/**
 	 * Generates an empty zone.
 	 * @param name - name of the zone.
 	 * @param zonesInWorld - list of previously constructed zones.
 	 */
-	public Zone2(String name, ArrayList<Zone2> zonesInWorld) {
+	public Zone2(String name, ArrayList<Zone2> zonesInWorld, World world) {
 		this.name = name;
 		this.zonesInWorld = zonesInWorld;
+		this.world = world;
 	}
 	
 	/**
@@ -168,6 +173,43 @@ public class Zone2 {
 						Layer.BACKGROUND, Direction.NORTH, new String[]{},new String[][]{{}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
 	}
 	
+	// TODO: should add more than just the door.
+	// TODO: in desperate need of cleanup.
+	public void addHouseTile(IntegerPair ip, String name) {
+		
+		world.incrementWorldID();
+		
+		addDoorTile(ip, new IntegerPair(1,1), name, World.getWorldID());
+		
+		World houseWorld = new World(World.getWorldID(), 0, 0);
+		
+		Zone2 houseZone = new Zone2("House", houseWorld.zones, houseWorld);
+		
+		houseZone.setFriendly(this.friendly);
+		
+		houseZone.generateFirstRectangle(0, 0, 10, 10, null);
+		houseZone.exits.add(new IntegerPair(0,1));
+		
+		houseWorld.generateNPCs(houseZone, 0);
+		
+		houseWorld.generateScenery(houseZone, 0);
+		
+		houseZone.addDoorTile(new IntegerPair(0,1), ip, "door", this.world.id);
+		
+		houseWorld.putEntityMap(houseZone);
+		houseZone.addZones();
+		
+		MapGenerator2.worlds.add(houseWorld);
+		
+	}
+	
+	public void addDoorTile(IntegerPair ip1, IntegerPair ip2, String name, int doorToWorldID) {
+		addStringToEntities(ip1,
+				generateEntityString(
+						"Tile",name,ip1.x,ip1.y,true,3,
+						Layer.MIDDLE, Direction.NORTH, new String[]{"enterLevel"},new String[][]{{doorToWorldID+" "+ip2.x+" "+ip2.y}},new String[]{},new String[][]{{}}, new String[]{}, new String[][]{{}}));
+	}
+	
 	/**
 	 * Generates the strings representing this zone which can be parsed by the game.
 	 */
@@ -195,6 +237,10 @@ public class Zone2 {
 	
 	public void generateForest(double entityDensity) {
 		addSolidEntityRandom(entityDensity, "Tree");
+	}
+	
+	public Set<IntegerPair> generateHouses(double entityDensity) {
+		return addSolidEntityRandom(entityDensity, "House");
 	}
 	
 	/**
@@ -236,21 +282,22 @@ public class Zone2 {
 		this.addPlayer(new IntegerPair(coords[randi]), NameGenerator.generateRandomName());
 	}
 	
-	public void generateNPCs(double entityDensity) {
-		if(this.friendly) generateFriendlies(entityDensity);
-		else generateEnemies(entityDensity);
+	public Set<IntegerPair> generateNPCs(double entityDensity) {
+		if(this.friendly) return generateFriendlies(entityDensity);
+		else return generateEnemies(entityDensity);
 	}
 	
-	private void generateFriendlies(double entityDensity) {
-		addSolidEntityRandom(entityDensity,"FriendlyNPC");
+	private Set<IntegerPair> generateFriendlies(double entityDensity) {
+		return addSolidEntityRandom(entityDensity,"FriendlyNPC");
 	}
 	
-	private void generateEnemies(double entityDensity) {
-		addSolidEntityRandom(entityDensity,"EnemyNPC");
+	private Set<IntegerPair> generateEnemies(double entityDensity) {
+		return addSolidEntityRandom(entityDensity,"EnemyNPC");
 	}
 	
-	private void addSolidEntityRandom(double entityDensity, String type) {
-		int count = 0;
+	private Set<IntegerPair> addSolidEntityRandom(double entityDensity, String type) {
+		
+		Set<IntegerPair> addedEntities = new HashSet<>();
 		
 		final Random rn = new Random();
 		
@@ -262,24 +309,37 @@ public class Zone2 {
 			if(makeEntity < entityDensity) {
 				if (!checkTileForSolid(ip)) {
 					switch(type) {
-					case "FriendlyNPC": this.addFriendlyNPC(ip, NameGenerator.generateRandomName());
+					case "FriendlyNPC": 
+						this.addFriendlyNPC(ip, NameGenerator.generateRandomName());
+						addedEntities.add(ip);
 						break;
-					case "EnemyNPC": this.addEnemyNPC(ip, NameGenerator.generateRandomName());
+					case "EnemyNPC": 
+						this.addEnemyNPC(ip, NameGenerator.generateRandomName());
+						addedEntities.add(ip);
 						break;
 					case "Water": 
 						if(!this.nonBuildable.contains(ip)) {
 							this.addWaterTile(ip);
+							addedEntities.add(ip);
 						}
 						break;
 					case "Tree":
 						if(!this.nonBuildable.contains(ip)) {
 							this.addTreeTile(ip);
+							addedEntities.add(ip);
 						}
 						break;
+					case "House":
+					if(!this.nonBuildable.contains(ip)) {
+						this.addHouseTile(ip, "House");
+						addedEntities.add(ip);
+					}
+					break;
 					}
 				}
 			}
 		}
+		return addedEntities;
 	}
 	
 	public void randomFriendly(double pFriendly) {
@@ -318,6 +378,8 @@ public class Zone2 {
 			this.generateWater(0.1);
 		} else if(this.name.contains("Forest")) {
 			this.generateForest(0.15);
+		} else if(this.name.contains("Village") || this.name.contains("City") || this.name.contains("Town")) {
+			this.generateHouses(0.1);
 		}
 	}
 	
@@ -411,7 +473,6 @@ public class Zone2 {
 	// TODO: should be able to guarantee that it is properly attached to edge of last zone
 	public boolean generateFirstRectangle(int x, int y, int w, int h, Edge edge) {
 		if(this.zonesInWorld.isEmpty()) return this.addRectangle(x, y, w, h);
-		// TODO: not appropriate method because it does not guarantee zone is attached to edge
 		return this.tryToAddRectToEdge(x, y, w, h, edge);
 	}
 	

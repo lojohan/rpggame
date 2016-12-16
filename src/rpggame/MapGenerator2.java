@@ -5,11 +5,14 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 public class MapGenerator2 {
 	static final boolean DEBUG = false;
+	
+	public static int worldID = 0;
 	
 	// a map containing possible sizes for different kinds of zones.
 	@SuppressWarnings("serial")
@@ -41,7 +44,7 @@ public class MapGenerator2 {
 	 */
 	public static void generate(int maximumDepth) {
 		clearMapFile();
-		World mainWorld = new World(0,maximumDepth);
+		World mainWorld = new World(worldID,worldID, maximumDepth);
 		mainWorld.generate(0,null,null);
 		printToFile();
 	}
@@ -113,11 +116,12 @@ public class MapGenerator2 {
 	// class representing a world
 	static class World {
 		int id;
+		int returnid;
 		int maximumDepth  = 0;
 		HashMap<IntegerPair, ArrayList<String> > entities = new HashMap<>();	
 		ArrayList<Zone2> zones = new ArrayList<>();
 		
-		public World(int id, int maximumDepth) {
+		public World(int id, int returnid, int maximumDepth) {
 			this.id = id;
 			this.maximumDepth = maximumDepth;
 		}
@@ -139,7 +143,7 @@ public class MapGenerator2 {
 			if(currentDepth > maximumDepth) return couldGenerateThisZone;
 			
 			String name = NameGenerator.generateRandomPlaceName();
-			Zone2 currentZone = new Zone2(name,zones);
+			Zone2 currentZone = new Zone2(name,zones,this);
 			
 			// get rid of this!!!!!!!!
 			IntegerPair stupidCoordsGetRidOf;
@@ -179,6 +183,14 @@ public class MapGenerator2 {
 			return couldGenerateThisZone;
 		}
 		
+		public void incrementWorldID() {
+			worldID += 1;
+		}
+		
+		public static int getWorldID() {
+			return worldID;
+		}
+		
 		private void addEntranceToZone(Zone2 zone, IntegerPair entrance) {
 			if (entrance != null) {
 				zone.exits.add(entrance);
@@ -186,7 +198,7 @@ public class MapGenerator2 {
 			}
 		}
 		
-		private void generateNPCs(Zone2 zone, int currentDepth) {
+		public void generateNPCs(Zone2 zone, int currentDepth) {
 			zone.generateNPCs(0.03);
 		}
 		
@@ -195,7 +207,7 @@ public class MapGenerator2 {
 		 * @param zone
 		 * @param currentDepth
 		 */
-		private void generateScenery(Zone2 zone, int currentDepth) {
+		public void generateScenery(Zone2 zone, int currentDepth) {
 			zone.generateBlockingScenery();
 			zone.generateNonBlockingScenery();
 		}
@@ -244,7 +256,7 @@ public class MapGenerator2 {
 			return true;
 		}
 		
-		private void putEntityMap(Zone2 zone) {
+		public void putEntityMap(Zone2 zone) {
 			for(IntegerPair key : zone.entities.keySet()) {
 				if(this.entities.containsKey(key)) {
 					for(String entity : zone.entities.get(key)) {
