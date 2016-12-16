@@ -253,44 +253,31 @@ public class Zone2 {
 		int count = 0;
 		
 		final Random rn = new Random();
-
-		for(Rectangle rect : this.rects) {
-			int zoneSize = (rect.width - 2) * (rect.height - 2);
-			while (count < zoneSize) {
 		
-				double makeEntity = rn.nextDouble();
-				if (makeEntity < entityDensity) {
-					int escapeCount = 0;
-					while (true) {
-						int randX = rect.x + 2 + rn.nextInt(rect.width - 2);
-						int randY = rect.y + 2 + rn.nextInt(rect.height - 2);
-	
-						IntegerPair ip = new IntegerPair(randX,randY);
-						
-						if (!checkTileForSolid(ip)) {
-							switch(type) {
-							case "FriendlyNPC": this.addFriendlyNPC(ip, NameGenerator.generateRandomName());
-								break;
-							case "EnemyNPC": this.addEnemyNPC(ip, NameGenerator.generateRandomName());
-								break;
-							case "Water": 
-								if(!this.nonBuildable.contains(ip)) {
-									this.addWaterTile(ip);
-								}
-								break;
-							case "Tree":
-								if(!this.nonBuildable.contains(ip)) {
-									this.addTreeTile(ip);
-								}
-								break;
-							}
-							break;
+		Set<IntegerPair> allCoords = this.getAllCoordsInZone();
+		
+		for(IntegerPair ip : allCoords) {
+			double makeEntity = rn.nextDouble();
+			
+			if(makeEntity < entityDensity) {
+				if (!checkTileForSolid(ip)) {
+					switch(type) {
+					case "FriendlyNPC": this.addFriendlyNPC(ip, NameGenerator.generateRandomName());
+						break;
+					case "EnemyNPC": this.addEnemyNPC(ip, NameGenerator.generateRandomName());
+						break;
+					case "Water": 
+						if(!this.nonBuildable.contains(ip)) {
+							this.addWaterTile(ip);
 						}
-						if(escapeCount > rect.width * rect.height) break;
-						escapeCount++;
+						break;
+					case "Tree":
+						if(!this.nonBuildable.contains(ip)) {
+							this.addTreeTile(ip);
+						}
+						break;
 					}
 				}
-				count++;
 			}
 		}
 	}
