@@ -2,10 +2,12 @@ package rpggame;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.Set;
@@ -13,6 +15,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
 import rpggame.MapGenerator2.World;
+import rpggame.Zone.Dir;
 
 public class Zone2 {
 	public static interface Layer {
@@ -236,8 +239,7 @@ public class Zone2 {
 		}
 		
 		for(IntegerPair ip : this.exits) {
-			caveZone.exits.add(ip);
-			caveZone.addDoorTile(ip, ip, "door", caveWorld.returnid);
+			caveZone.addExit(ip);
 		}
 		
 		caveZone.setFriendly(this.friendly);
@@ -245,9 +247,13 @@ public class Zone2 {
 		caveZone.generateWallTiles();
 		
 		// TODO: implement this method :P
-		generateLabyrinth();
+		caveZone.generateLabyrinth();
 		
-		clearNonBuildableFromSolids();
+		caveZone.clearNonBuildableFromSolids();
+		
+		for(IntegerPair ip : this.exits) {
+			caveZone.addDoorTile(ip, ip, "door", caveWorld.returnid);
+		}
 		
 		caveZone.addZones();
 		caveWorld.putEntityMap(caveZone);
@@ -257,7 +263,84 @@ public class Zone2 {
 	
 	public void generateLabyrinth() {
 		for(Rectangle rect : this.rects) {
-			
+			generateLabyrinth(rect.x, rect.y, rect.width, rect.height);
+		}
+	}
+	
+	public void generateLabyrinth(int x, int y, int sizeX, int sizeY) {
+		HashMap<IntegerPair, IntegerPair> labyrinthTiles = new HashMap<>();
+
+		// fill with prelim tiles
+		for (int i = 0; i < sizeX - 1; i++) {
+			for (int j = 0; j < sizeY - 1; j++) {
+				if (i % 2 == 0 && j % 2 == 0) {
+					labyrinthTiles.put(new IntegerPair(i, j), new IntegerPair(0, 0));
+				} else {
+					labyrinthTiles.put(new IntegerPair(i, j), new IntegerPair(1, 0));
+				}
+			}
+		}
+
+		recursiveLabyrinth(labyrinthTiles, 0, 0, sizeX - 1, sizeY - 1);
+
+		// generate tiles
+		for (IntegerPair ip : labyrinthTiles.keySet()) {
+			IntegerPair tile = labyrinthTiles.get(ip);
+			if (tile.x == 1) {
+				addWallTile(new IntegerPair(ip.x + x + 1, ip.y + y + 1), Direction.NORTH);
+			}
+		}
+	}
+	
+	public void recursiveLabyrinth(HashMap<IntegerPair, IntegerPair> labyrinth, int currentX, int currentY,
+			int sizeX, int sizeY) {
+		int newX = 0;
+		int newY = 0;
+
+		List<Dir> dirs = (List<Dir>) Arrays.asList(Dir.values());
+		Collections.shuffle(dirs);
+		for (Dir dir : dirs) {
+			IntegerPair newPos = new IntegerPair(currentX + newX, currentY + newY);
+
+			newX = 0;
+			newY = 0;
+			switch (dir) {
+			case NORTH:
+				newY = -2;
+				break;
+			case EAST:
+				newX = 2;
+				break;
+			case SOUTH:
+				newY = 2;
+				break;
+			case WEST:
+				newX = -2;
+				break;
+			}
+
+			newPos.x = currentX + newX;
+			newPos.y = currentY + newY;
+
+			boolean withinMapBounds = currentX + newX >= 0 && currentX + newX < sizeX && currentY + newY >= 0
+					&& currentY + newY < sizeY;
+
+			if (!withinMapBounds)
+				continue; // next dir
+
+			boolean visited = labyrinth.get(newPos).y == 1;
+
+			if (visited)
+				continue; // next dir
+
+			if (labyrinth.containsKey(newPos)) {
+				IntegerPair wall = new IntegerPair(currentX + newX / 2, currentY + newY / 2);
+				labyrinth.put(wall, new IntegerPair(0, 0));
+				labyrinth.get(newPos).y = 1;
+				recursiveLabyrinth(labyrinth, newPos.x, newPos.y, sizeX, sizeY);
+			} else {
+				throw new AssertionError("is a bug");
+			}
 		}
 	}
 	
@@ -847,6 +930,11 @@ public class Zone2 {
 				this.nonBuildable.add(neighbour);
 			}
 		}
+	}
+	
+	public void addExit(IntegerPair ip) {
+		this.exits.add(ip);
+		this.fillNonBuildable(ip);
 	}
 	
 	/**

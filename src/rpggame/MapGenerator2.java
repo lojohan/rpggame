@@ -198,8 +198,9 @@ public class MapGenerator2 {
 		
 		private void addEntranceToZone(Zone2 zone, IntegerPair entrance) {
 			if (entrance != null) {
-				zone.exits.add(entrance);
-				zone.fillNonBuildable(entrance);
+				//zone.exits.add(entrance);
+				//zone.fillNonBuildable(entrance);
+				zone.addExit(entrance);
 			}
 		}
 		
