@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.Set;
@@ -225,9 +226,13 @@ public class Zone2 {
 		
 		Zone2 caveZone = new Zone2(this.name, caveWorld.zones, caveWorld);
 		
+		int i = 0;
 		
 		for(Rectangle rect : this.rects) {
-			caveZone.addRectangle(rect.x, rect.y, rect.width, rect.height);
+			if(caveZone.addRectangle(rect.x, rect.y, rect.width, rect.height) && i == 0) {
+				caveWorld.addZoneToWorld(caveZone);
+				i++;
+			}
 		}
 		
 		for(IntegerPair ip : this.exits) {
@@ -239,25 +244,37 @@ public class Zone2 {
 		
 		caveZone.generateWallTiles();
 		
+		// TODO: implement this method :P
+		generateLabyrinth();
+		
+		clearNonBuildableFromSolids();
+		
 		caveZone.addZones();
 		caveWorld.putEntityMap(caveZone);
-		caveWorld.addZoneToWorld(caveZone);
 		
 		MapGenerator2.worlds.add(caveWorld);
 	}
 	
-	public void generateLabyrinth(Set<IntegerPair> coords) {
-
+	public void generateLabyrinth() {
+		for(Rectangle rect : this.rects) {
+			
+		}
 	}
 	
-	public IntegerPair randomCoordInZone() {
-		Random rand = new Random();
-		
-		int rn = rand.nextInt(this.getAllCoordsInZone().size());
-		
-		IntegerPair[] ips = this.getAllCoordsInZone().toArray(new IntegerPair[0]);
-		
-		return ips[rn];
+	// TODO: implement this method :P
+	public void clearNonBuildableFromSolids() {
+		for(IntegerPair ip : this.nonBuildable) {
+			if(!this.checkTileForSolid(ip)) {
+				continue;
+			} else {
+				for(Iterator<String> it = this.entities.get(ip).iterator(); it.hasNext();) {
+					final String[] tokens = it.next().split(Pattern.quote(";"));
+					if(tokens[3].equals("1")) {
+						it.remove();
+					}
+				}
+			}
+		}
 	}
 	
 	public void addDoorTile(IntegerPair ip1, IntegerPair ip2, String name, int doorToWorldID) {
