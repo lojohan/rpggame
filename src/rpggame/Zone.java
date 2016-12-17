@@ -352,7 +352,7 @@ public class Zone {
 			} else {
 				for(Iterator<String> it = this.entities.get(ip).iterator(); it.hasNext();) {
 					final String[] tokens = it.next().split(Pattern.quote(";"));
-					if(tokens[3].equals("1")) {
+					if(tokens[0].equals("Tile") && tokens[3].equals("1")) {
 						it.remove();
 					}
 				}

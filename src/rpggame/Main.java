@@ -11,8 +11,9 @@ public class Main {
     	DialogueGenerator.printDialoguesToFile();
     	
     	MapGenerator.generate(40);
-    	
+    	/*
     	Gui gui = new Gui();
     	gui.makeVisible();
+    	*/
     }
 }
