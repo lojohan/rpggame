@@ -10,6 +10,9 @@ public class Main {
     	DialogueGenerator.generateDialogues(10000,3,15);
     	DialogueGenerator.printDialoguesToFile();
     	
-    	MapGenerator2.generate(5);
+    	MapGenerator.generate(40);
+    	
+    	Gui gui = new Gui();
+    	gui.makeVisible();
     }
 }
