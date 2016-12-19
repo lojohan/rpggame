@@ -2,7 +2,9 @@ package rpggame;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,6 +46,8 @@ public class MapGenerator {
 	 */
 	public static void generate(int maximumDepth) {
 		clearMapFile();
+		worldID = 0;
+		worlds.clear();
 		World mainWorld = new World(worldID,worldID, maximumDepth);
 		mainWorld.generate(0,null,null);
 		printToFile();
@@ -54,10 +58,10 @@ public class MapGenerator {
 	 */
 	public static void clearMapFile() {
 		try {
-			
-			PrintWriter pw = new PrintWriter(new FileOutputStream("output/maps/randommap.txt"));
-			pw.close();
-		} catch (FileNotFoundException e) {
+			RandomAccessFile rf = new RandomAccessFile("output/maps/randommap.txt", "rw");
+			rf.setLength(0);
+			rf.close();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -86,7 +90,7 @@ public class MapGenerator {
 				pw.println();
 				pw.println();
 			}
-			
+			pw.flush();
 			pw.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
