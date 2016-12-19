@@ -16,6 +16,8 @@ public class MapGenerator {
 	
 	public static int worldID = 0;
 	
+	public static Gui gui;
+	
 	// a map containing possible sizes for different kinds of zones.
 	@SuppressWarnings("serial")
 	static final HashMap<String, IntegerPair> sizeMap = new HashMap<String, IntegerPair>() {
@@ -45,12 +47,21 @@ public class MapGenerator {
 	 * @param maximumDepth - the maximumDepth of the recursion.
 	 */
 	public static void generate(int maximumDepth) {
+		gui.writeToTextArea(gui.output, "");
+		gui.writeToTextArea(gui.output, "Generating map...\n");
+		
 		clearMapFile();
 		worldID = 0;
 		worlds.clear();
 		World mainWorld = new World(worldID,worldID, maximumDepth);
 		mainWorld.generate(0,null,null);
 		printToFile();
+		
+		gui.appendToTextArea(gui.output, "Map Generated!\n");
+	}
+	
+	public static void addGui(Gui gui) {
+		MapGenerator.gui = gui;
 	}
 	
 	/**

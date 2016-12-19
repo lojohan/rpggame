@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 public class Gui extends JFrame implements ActionListener{
 	JPanel mapGenerationPanel = new JPanel();
@@ -14,6 +17,10 @@ public class Gui extends JFrame implements ActionListener{
 	JButton mapGenerationButton;
 	
 	TextField recursionDepth;
+	
+	JTextArea output;
+	
+	JScrollPane outputPane;
 	
 	public Gui() {
 		super("Gui");
@@ -26,6 +33,8 @@ public class Gui extends JFrame implements ActionListener{
 		this.add(mapGenerationPanel);
 		
 		this.setSize(400, 400);
+		
+		MapGenerator.addGui(this);
 	}
 	
 	public void initButtons() {
@@ -48,6 +57,16 @@ public class Gui extends JFrame implements ActionListener{
 		recursionDepth.setBounds(60, 400, 220, 30);
 		
 		mapGenerationPanel.add(recursionDepth);
+		
+		output = new JTextArea(16, 58);
+		
+		output.setEditable(false);
+		
+		outputPane = new JScrollPane(output);
+		
+		outputPane.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
+		
+		mapGenerationPanel.add(outputPane);
 	}
 	
 	public void makeVisible() {
@@ -71,4 +90,13 @@ public class Gui extends JFrame implements ActionListener{
 		}
 	}
 	
+	public void writeToTextArea(JTextArea ta, String s) {
+		ta.setText(s);
+		this.update(this.getGraphics());
+	}
+	
+	public void appendToTextArea(JTextArea ta, String s) {
+		ta.append(s);
+		this.update(this.getGraphics());
+	}
 }
