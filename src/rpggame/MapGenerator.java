@@ -16,6 +16,12 @@ public class MapGenerator {
 	
 	public static int worldID = 0;
 	
+	public static int numberofNPCs = 0;
+	
+	public static int numberofZones = 0;
+	
+	public static int numberofSublevels = 0;
+	
 	public static Gui gui;
 	
 	// a map containing possible sizes for different kinds of zones.
@@ -50,14 +56,27 @@ public class MapGenerator {
 		gui.writeToTextArea(gui.output, "");
 		gui.writeToTextArea(gui.output, "Generating map...\n");
 		
-		clearMapFile();
-		worldID = 0;
-		worlds.clear();
+		reset();
+		
 		World mainWorld = new World(worldID,worldID, maximumDepth);
 		mainWorld.generate(0,null,null);
 		printToFile();
 		
-		gui.appendToTextArea(gui.output, "Map Generated!\n");
+		gui.appendToTextArea(gui.output, "\n Map Generated!\n");
+		gui.appendToTextArea(gui.output, "	"+worlds.size()+" worlds generated!\n");
+		gui.appendToTextArea(gui.output, "	"+numberofZones+" zones generated!\n");
+		gui.appendToTextArea(gui.output, "	"+numberofSublevels+" sublevels generated!\n");
+		gui.appendToTextArea(gui.output, "	"+numberofNPCs+" NPCs generated!\n");
+		
+	}
+	
+	public static void reset() {
+		clearMapFile();
+		worldID = 0;
+		worlds.clear();
+		numberofNPCs = 0;
+		numberofZones = 0;
+		numberofSublevels = 0;
 	}
 	
 	public static void addGui(Gui gui) {
@@ -180,24 +199,47 @@ public class MapGenerator {
 			// TODO: does not properly determine size of the new zone or guarantee that exit leads to it.
 			if(couldGenerateThisZone = currentZone.generateFirstRectangle(stupidCoordsGetRidOf.x, stupidCoordsGetRidOf.y, 
 					stupidSizeGetRidOf.x, stupidSizeGetRidOf.y, edgeForEntrance)) {
+				numberofZones++;
+				
 				addZoneToWorld(currentZone);
 				
+				gui.appendToTextAreaIfVerbose(gui.output, "Generating Zone: "+currentZone.name+"...\n");
+				
+				gui.appendToTextAreaIfVerbose(gui.output, "Generating Rectangles...\n");
 				currentZone.generateRandomRectangles(2, 5, 5, 10, 10);
+				gui.appendToTextAreaIfVerbose(gui.output, "Done Generating Rectangles!\n");
 				
-				currentZone.randomFriendly(0.1);
+				if(currentDepth != 0) {
+					gui.appendToTextAreaIfVerbose(gui.output, "Setting Zone friendly...\n");
+					currentZone.randomFriendly(0.1);
+					gui.appendToTextAreaIfVerbose(gui.output, "Done setting zone friendly: "+currentZone.friendly+"\n");
+				}
 				
+				gui.appendToTextAreaIfVerbose(gui.output, "Adding entrance to zone: "+currentZone.name+"...\n");
 				addEntranceToZone(currentZone, prevExit);
+				gui.appendToTextAreaIfVerbose(gui.output, "Added entrance to zone: "+currentZone.name+"!\n");
 				
 				doOnlyFirstTime(currentZone, currentDepth);
 				
 				recurseToNextZone(currentZone, currentDepth, 8);
 				
+				gui.appendToTextAreaIfVerbose(gui.output, "Generating scenery for zone: "+currentZone.name+"...\n");
 				generateScenery(currentZone, currentDepth);
+				gui.appendToTextAreaIfVerbose(gui.output, "Generated scenery for zone: "+currentZone.name+"!\n");
 				
-				generateNPCs(currentZone, currentDepth);
+				gui.appendToTextAreaIfVerbose(gui.output, "Generating NPCs for zone: "+currentZone.name+"...\n");
+				numberofNPCs += generateNPCs(currentZone, currentDepth);
+				gui.appendToTextAreaIfVerbose(gui.output, "Generated NPCs for zone: "+currentZone.name+"!\n");
 				
+				gui.appendToTextAreaIfVerbose(gui.output, "Adding entities to map...\n");
 				putEntityMap(currentZone);
+				gui.appendToTextAreaIfVerbose(gui.output, "Added entities to map!\n");
+				
+				gui.appendToTextAreaIfVerbose(gui.output, "Adding zone: "+currentZone.name+" to map...\n");
 				currentZone.addZones();
+				gui.appendToTextAreaIfVerbose(gui.output, "Added zone: "+currentZone.name+" to map!\n");
+				
+				gui.appendToTextAreaIfVerbose(gui.output, "Done Generating Zone: "+currentZone.name+"!\n");
 			}
 			
 			return couldGenerateThisZone;
@@ -213,14 +255,12 @@ public class MapGenerator {
 		
 		private void addEntranceToZone(Zone zone, IntegerPair entrance) {
 			if (entrance != null) {
-				//zone.exits.add(entrance);
-				//zone.fillNonBuildable(entrance);
 				zone.addExit(entrance);
 			}
 		}
 		
-		public void generateNPCs(Zone zone, int currentDepth) {
-			zone.generateNPCs(0.03);
+		public int generateNPCs(Zone zone, int currentDepth) {
+			return zone.generateNPCs(0.03).size();
 		}
 		
 		/**
@@ -229,8 +269,13 @@ public class MapGenerator {
 		 * @param currentDepth
 		 */
 		public void generateScenery(Zone zone, int currentDepth) {
+			gui.appendToTextAreaIfVerbose(gui.output, "Generating blocking scenery for zone: "+zone.name+"...\n");
 			zone.generateBlockingScenery();
+			gui.appendToTextAreaIfVerbose(gui.output, "Generated blocking scenery for zone: "+zone.name+"!\n");
+			
+			gui.appendToTextAreaIfVerbose(gui.output, "Generating non-blocking scenery for zone: "+zone.name+"...\n");
 			zone.generateNonBlockingScenery();
+			gui.appendToTextAreaIfVerbose(gui.output, "Generated non-blocking scenery for zone: "+zone.name+"!\n");
 		}
 		
 		/**

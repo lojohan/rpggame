@@ -12,15 +12,22 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 public class Gui extends JFrame implements ActionListener{
+	
 	JPanel mapGenerationPanel = new JPanel();
 	
 	JButton mapGenerationButton;
 	
+	JButton dialogueGenerationButton;
+	
 	TextField recursionDepth;
+	
+	TextField numberOfDialogues;
 	
 	JTextArea output;
 	
 	JScrollPane outputPane;
+	
+	boolean verbose = true;
 	
 	public Gui() {
 		super("Gui");
@@ -35,6 +42,8 @@ public class Gui extends JFrame implements ActionListener{
 		this.setSize(400, 400);
 		
 		MapGenerator.addGui(this);
+		
+		DialogueGenerator.addGui(this);
 	}
 	
 	public void initButtons() {
@@ -47,6 +56,14 @@ public class Gui extends JFrame implements ActionListener{
 		
 		mapGenerationButton.addActionListener(this);
 		
+		dialogueGenerationButton = new JButton("Generate random dialogues");
+		
+		dialogueGenerationButton.setBounds(60, 400, 220, 30);
+		
+		mapGenerationPanel.add(dialogueGenerationButton);
+		
+		dialogueGenerationButton.addActionListener(this);
+		
 	}
 	
 	public void initTextFields() {
@@ -56,7 +73,15 @@ public class Gui extends JFrame implements ActionListener{
 		
 		recursionDepth.setBounds(60, 400, 220, 30);
 		
+		numberOfDialogues = new TextField(10);
+		
+		numberOfDialogues.setEditable(true);
+		
+		numberOfDialogues.setBounds(60, 400, 220, 30);
+		
 		mapGenerationPanel.add(recursionDepth);
+		
+		mapGenerationPanel.add(numberOfDialogues);
 		
 		output = new JTextArea(16, 58);
 		
@@ -67,6 +92,8 @@ public class Gui extends JFrame implements ActionListener{
 		outputPane.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
 		
 		mapGenerationPanel.add(outputPane);
+		
+		
 	}
 	
 	public void makeVisible() {
@@ -77,26 +104,95 @@ public class Gui extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
-		case "Generate random map":
-			String rec = this.recursionDepth.getText();
-			int depth = 0;
-			try {
-				depth = Integer.parseInt(rec);
-				MapGenerator.generate(depth);
-			} catch(NumberFormatException ex) {
-				ex.getStackTrace();
-			}
+		case "Generate random map": {
+			Runnable runnable = new GenerateMap();
+			Thread thread = new Thread(runnable);
+			thread.start();
 			break;
+		}
+		case "Generate random dialogues": {
+			Runnable runnable = new GenerateDialogue();
+			Thread thread = new Thread(runnable);
+			thread.start();
+			break;
+			}
+		}
+	}
+
+	private void generateRandomMap() {
+		String rec = this.recursionDepth.getText();
+		int depth = 0;
+		try {
+			depth = Integer.parseInt(rec);
+			if(depth > -1) {
+				MapGenerator.generate(depth);
+			} else {
+				this.writeToTextArea(this.output, "Input must be at least 0!");
+			}
+		} catch(NumberFormatException ex) {
+			ex.getStackTrace();
+		}
+	}
+	
+	public void generateRandomDialogues() {
+		String num = this.numberOfDialogues.getText();
+		int count = 0;
+		try {
+			count = Integer.parseInt(num);
+			if(count > -1) {
+		    	DialogueGenerator.generateDialogues(count,3,15);
+		    	this.appendToTextArea(this.output, "Generated "+count+" random dialogue strings!\n");
+		    	
+		    	this.appendToTextArea(this.output, "Printing dialogue strings to file...\n");
+		    	DialogueGenerator.printDialoguesToFile();
+		    	this.appendToTextArea(this.output, "Printed dialogue strings to file!\n");
+			} else {
+				this.writeToTextArea(this.output, "Input must be at least 0!");
+			}
+		} catch(NumberFormatException ex) {
+			ex.getStackTrace();
 		}
 	}
 	
 	public void writeToTextArea(JTextArea ta, String s) {
 		ta.setText(s);
-		this.update(this.getGraphics());
+		//output.setCaretPosition(output.getText().length() - 1);
+		this.output.repaint();
 	}
 	
 	public void appendToTextArea(JTextArea ta, String s) {
 		ta.append(s);
-		this.update(this.getGraphics());
+		//output.setCaretPosition(output.getText().length() - 1);
+		this.output.repaint();
+	}
+	
+	public void writeToTextAreaIfVerbose(JTextArea ta, String s) {
+		if(verbose) {
+			writeToTextArea(ta,s);
+		}
+	}
+	
+	public void appendToTextAreaIfVerbose(JTextArea ta, String s) {
+		if(verbose) {
+			appendToTextArea(ta,s);
+		}
+	}
+	
+	class GenerateDialogue implements Runnable{
+
+		@Override
+		public void run() {
+			generateRandomDialogues();		
+		}
+		
+	}
+	
+	class GenerateMap implements Runnable{
+
+		@Override
+		public void run() {
+			generateRandomMap();
+		}
+		
 	}
 }

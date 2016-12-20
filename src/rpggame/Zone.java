@@ -194,7 +194,9 @@ public class Zone {
 		houseZone.generateFirstRectangle(0, 0, 10, 10, null);
 		houseZone.exits.add(new IntegerPair(0,1));
 		
-		houseWorld.generateNPCs(houseZone, 0);
+		MapGenerator.numberofNPCs += houseWorld.generateNPCs(houseZone, 0);
+		
+		MapGenerator.numberofSublevels++;
 		
 		houseWorld.generateScenery(houseZone, 0);
 		
@@ -259,6 +261,8 @@ public class Zone {
 		caveWorld.putEntityMap(caveZone);
 		
 		MapGenerator.worlds.add(caveWorld);
+		
+		MapGenerator.numberofSublevels++;
 	}
 	
 	public void generateLabyrinth() {

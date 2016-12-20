@@ -32,6 +32,12 @@ public class DialogueGenerator {
 	private static int wordsNotInLists;
 	private static int totalWordsCount;
 	
+	public static Gui gui;
+	
+	public static void addGui(Gui gui) {
+		DialogueGenerator.gui = gui;
+	}
+	
 	public static void loadTemplate() {
 		try {
 			BufferedReader in = new BufferedReader(new FileReader("templates/template.txt"));
@@ -273,8 +279,11 @@ public class DialogueGenerator {
 	public static void generateDialogues(int numberOfDialogues, int minimumWords, int maximumWords) {
 		while(dialogues.size() < numberOfDialogues) {
 			String s = generate(minimumWords,maximumWords);
-			if(s != null)
+			if(s != null) {
 				dialogues.add(s);
+			}
+			gui.writeToTextArea(gui.output, "Generating "+numberOfDialogues+" random dialogue strings...\n");
+			gui.appendToTextArea(gui.output, "Progress: "+(100*dialogues.size()/(float)numberOfDialogues)+"%\n");
 		}
 	}
 	
