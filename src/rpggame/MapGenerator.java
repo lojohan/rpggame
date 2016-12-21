@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-public class MapGenerator {
+public class MapGenerator extends Generator {
 	static final boolean DEBUG = false;
 	
 	public static int worldID = 0;
@@ -52,7 +52,7 @@ public class MapGenerator {
 	 * Clears previous map from file, generates a new one, and then prints it to the file.
 	 * @param maximumDepth - the maximumDepth of the recursion.
 	 */
-	public static void generate(int maximumDepth) {
+	public static boolean generate(int maximumDepth) {
 		gui.writeToTextArea(gui.output, "");
 		gui.writeToTextArea(gui.output, "Generating map...\n");
 		
@@ -68,9 +68,12 @@ public class MapGenerator {
 		gui.appendToTextArea(gui.output, "	"+numberofSublevels+" sublevels generated!\n");
 		gui.appendToTextArea(gui.output, "	"+numberofNPCs+" NPCs generated!\n");
 		
+		return true;
+		
 	}
 	
 	public static void reset() {
+		init();
 		clearMapFile();
 		worldID = 0;
 		worlds.clear();
@@ -297,15 +300,17 @@ public class MapGenerator {
 		 * @param currentDepth
 		 */
 		private void recurseToNextZone(Zone currentZone, int currentDepth, int tries) {
-			Random rand = new Random();
-			int rando = 1+rand.nextInt(tries);
-			for(int i = 0; i < rando; i++) { 
-				// TODO: this edge should only be the edge which it would have in common with the next rectangle:
-				Edge exitEdge = currentZone.getRandomEdgeForExit();
-				IntegerPair exit = currentZone.getRandomPointForExitOnEdge(exitEdge);
-				
-				if(generate(currentDepth + 1, exitEdge, exit)) {
-					addEntranceToZone(currentZone, exit);
+			if(!abort) {
+				Random rand = new Random();
+				int rando = 1+rand.nextInt(tries);
+				for(int i = 0; i < rando; i++) { 
+					// TODO: this edge should only be the edge which it would have in common with the next rectangle:
+					Edge exitEdge = currentZone.getRandomEdgeForExit();
+					IntegerPair exit = currentZone.getRandomPointForExitOnEdge(exitEdge);
+					
+					if(generate(currentDepth + 1, exitEdge, exit)) {
+						addEntranceToZone(currentZone, exit);
+					}
 				}
 			}
 			

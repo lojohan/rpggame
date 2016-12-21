@@ -32,6 +32,8 @@ public class Gui extends JFrame implements ActionListener{
 	
 	JButton dialogueGenerationButton;
 	
+	JButton abortButton;
+	
 	TextField recursionDepth;
 	
 	TextField numberOfDialogues;
@@ -95,6 +97,19 @@ public class Gui extends JFrame implements ActionListener{
 		
 		dialogueGenerationButton.addActionListener(this);
 		
+		abortButton = new JButton("Abort current process");
+		
+		abortButton.setBounds(60, 400, 220, 30);
+		
+		c.gridx = 1;
+		c.gridy = 2;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		
+		mapGenerationPanel.add(abortButton, c);
+		
+		abortButton.addActionListener(this);
+		
 	}
 	
 	public void initTextFields() {
@@ -150,57 +165,83 @@ public class Gui extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
 		case "Generate random map":
-			if(!thread.isAlive()) {
+			if(this.thread != null) {
+				if(!this.thread.isAlive()) {
+					thread = new Thread(run1);
+					thread.start();
+				} else {
+					showThreadBusy(this);
+				}
+			} else {
 				thread = new Thread(run1);
 				thread.start();
-			} else {
-				showThreadBusy(this);
 			}
 			break;
 		case "Generate random dialogues":
-			if(!thread.isAlive()) {
+			if(this.thread != null) {
+				if(!this.thread.isAlive()) {
+					thread = new Thread(run2);
+					thread.start();
+				} else {
+					showThreadBusy(this);
+				}
+			} else {
 				thread = new Thread(run2);
 				thread.start();
-			} else {
-				showThreadBusy(this);
 			}
+			break;
+		case "Abort current process":
+			terminateThread();
 			break;
 		}
 	}
 
-	private void generateRandomMap() {
+	private boolean generateRandomMap() {
 		String rec = this.recursionDepth.getText();
 		int depth = 0;
 		try {
 			depth = Integer.parseInt(rec);
 			if(depth > -1) {
 				MapGenerator.generate(depth);
+				return true;
 			} else {
-				this.writeToTextArea(this.output, "Input must be at least 0!");
+				this.writeToTextArea(this.output, "Input must be a number larger than or equal to 0!");
 			}
 		} catch(NumberFormatException ex) {
+			this.writeToTextArea(this.output, "Input must be a number larger than or equal to 0!");
 			ex.getStackTrace();
+			this.terminateThread();
+			return false;
 		}
+		this.terminateThread();
+		return false;
 	}
 	
-	public void generateRandomDialogues() {
+	public boolean generateRandomDialogues() {
 		String num = this.numberOfDialogues.getText();
 		int count = 0;
 		try {
 			count = Integer.parseInt(num);
 			if(count > -1) {
+				DialogueGenerator.resetDialogues();
 		    	DialogueGenerator.generateDialogues(count,3,15);
 		    	this.appendToTextArea(this.output, "Generated "+count+" random dialogue strings!\n");
 		    	
 		    	this.appendToTextArea(this.output, "Printing dialogue strings to file...\n");
 		    	DialogueGenerator.printDialoguesToFile();
 		    	this.appendToTextArea(this.output, "Printed dialogue strings to file!\n");
+		    	return true;
 			} else {
-				this.writeToTextArea(this.output, "Input must be at least 0!");
+				this.writeToTextArea(this.output, "Input must be a number larger than or equal to 0!");
 			}
 		} catch(NumberFormatException ex) {
+			this.writeToTextArea(this.output, "Input must be a number larger than or equal to 0!");
 			ex.getStackTrace();
+			this.terminateThread();
+			return false;
 		}
+		this.terminateThread();
+		return false;
 	}
 	
 	public void showThreadBusy(JFrame parent) {
@@ -212,6 +253,7 @@ public class Gui extends JFrame implements ActionListener{
 		scrollPane.setPreferredSize(new Dimension(350,150));
 		
 		JOptionPane.showMessageDialog(parent, scrollPane, "An Error Has Occurred", JOptionPane.ERROR_MESSAGE);
+
 	}
 	
 	public void writeToTextArea(JTextArea ta, String s) {
@@ -238,11 +280,27 @@ public class Gui extends JFrame implements ActionListener{
 		}
 	}
 	
+	// TODO: this does not work. make fix plz.
+	public void terminateThread() {
+		this.thread = null;
+		DialogueGenerator.abort();
+		MapGenerator.abort();
+	}
+	
 	class GenerateDialogue implements Runnable{
 
 		@Override
 		public void run() {
-			generateRandomDialogues();		
+			Thread thisThread = Thread.currentThread();
+			boolean first = true;
+			boolean done = false;
+			while(thread == thisThread) {
+				if(first) {
+					done = generateRandomDialogues();
+					first = false;
+				}
+				if(done) thread = null;
+			}
 		}
 		
 	}
@@ -251,7 +309,16 @@ public class Gui extends JFrame implements ActionListener{
 
 		@Override
 		public void run() {
-			generateRandomMap();
+			Thread thisThread = Thread.currentThread();
+			boolean first = true;
+			boolean done = false;
+			while(thread == thisThread) {
+				if(first) {
+					done = generateRandomMap();
+					first = false;
+				}
+				if(done) thread = null;
+			}
 		}
 		
 	}

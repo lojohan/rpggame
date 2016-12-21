@@ -15,7 +15,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DialogueGenerator {
+public class DialogueGenerator extends Generator{
 	
 	static String templateText = "";
 	static HashMap<String, HashMap<String,Integer>> wordOccurrences = new HashMap<>();
@@ -36,6 +36,11 @@ public class DialogueGenerator {
 	
 	public static void addGui(Gui gui) {
 		DialogueGenerator.gui = gui;
+	}
+	
+	public static void resetDialogues() {
+		init();
+		dialogues.clear();
 	}
 	
 	public static void loadTemplate() {
@@ -276,8 +281,8 @@ public class DialogueGenerator {
 			return null;
 	}
 	
-	public static void generateDialogues(int numberOfDialogues, int minimumWords, int maximumWords) {
-		while(dialogues.size() < numberOfDialogues) {
+	public static boolean generateDialogues(int numberOfDialogues, int minimumWords, int maximumWords) {
+		while(dialogues.size() < numberOfDialogues && !abort) {
 			String s = generate(minimumWords,maximumWords);
 			if(s != null) {
 				dialogues.add(s);
@@ -285,6 +290,7 @@ public class DialogueGenerator {
 			gui.writeToTextArea(gui.output, "Generating "+numberOfDialogues+" random dialogue strings...\n");
 			gui.appendToTextArea(gui.output, "Progress: "+(100*dialogues.size()/(float)numberOfDialogues)+"%\n");
 		}
+		return true;
 	}
 	
 	public static void printDialoguesToFile() {
