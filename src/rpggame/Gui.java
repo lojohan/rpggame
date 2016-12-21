@@ -29,6 +29,12 @@ public class Gui extends JFrame implements ActionListener{
 	
 	boolean verbose = true;
 	
+	Runnable run1 = new GenerateMap();
+	
+	Runnable run2 = new GenerateDialogue();
+	
+	Thread thread = new Thread();
+	
 	public Gui() {
 		super("Gui");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,18 +110,18 @@ public class Gui extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
-		case "Generate random map": {
-			Runnable runnable = new GenerateMap();
-			Thread thread = new Thread(runnable);
-			thread.start();
-			break;
-		}
-		case "Generate random dialogues": {
-			Runnable runnable = new GenerateDialogue();
-			Thread thread = new Thread(runnable);
-			thread.start();
-			break;
+		case "Generate random map":
+			if(!thread.isAlive()) {
+				thread = new Thread(run1);
+				thread.start();
 			}
+			break;
+		case "Generate random dialogues":
+			if(!thread.isAlive()) {
+				thread = new Thread(run2);
+				thread.start();
+			}
+			break;
 		}
 	}
 
