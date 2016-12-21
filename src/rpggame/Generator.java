@@ -17,6 +17,8 @@ public abstract class  Generator {
 	protected static String backupName;
 	
 	protected static String outputName;
+
+	protected static Gui gui;
 	
 	public static void init() {
 		abort = false;
@@ -75,5 +77,9 @@ public abstract class  Generator {
 	
 	public static void onComplete() {
 		eraseBackup();
+	}
+	
+	public static void addGui(Gui gui) {
+		Generator.gui = gui;
 	}
 }

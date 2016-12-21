@@ -32,12 +32,6 @@ public class DialogueGenerator extends Generator{
 	private static int wordsNotInLists;
 	private static int totalWordsCount;
 	
-	public static Gui gui;
-	
-	public static void addGui(Gui gui) {
-		DialogueGenerator.gui = gui;
-	}
-	
 	public static void resetDialogues() {
 		setFilePaths("output/","RandomDialogues.txt","RandomDialoguesBackup.txt");
 		init();

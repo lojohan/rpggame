@@ -22,8 +22,6 @@ public class MapGenerator extends Generator {
 	
 	public static int numberofSublevels = 0;
 	
-	public static Gui gui;
-	
 	// a map containing possible sizes for different kinds of zones.
 	@SuppressWarnings("serial")
 	static final HashMap<String, IntegerPair> sizeMap = new HashMap<String, IntegerPair>() {
@@ -85,10 +83,6 @@ public class MapGenerator extends Generator {
 		numberofNPCs = 0;
 		numberofZones = 0;
 		numberofSublevels = 0;
-	}
-	
-	public static void addGui(Gui gui) {
-		MapGenerator.gui = gui;
 	}
 	
 	/**
