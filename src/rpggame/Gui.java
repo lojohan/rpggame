@@ -253,7 +253,7 @@ public class Gui extends JFrame implements ActionListener{
 		try {
 			count = Integer.parseInt(num);
 			if(count > -1) {
-				DialogueGenerator.resetDialogues();
+				//DialogueGenerator.resetDialogues();
 		    	DialogueGenerator.generateDialogues(count,3,15);
 		    	return true;
 			} else {

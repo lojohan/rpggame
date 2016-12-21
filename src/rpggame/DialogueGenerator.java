@@ -277,6 +277,9 @@ public class DialogueGenerator extends Generator{
 	}
 	
 	public static boolean generateDialogues(int numberOfDialogues, int minimumWords, int maximumWords) {
+		
+		resetDialogues();
+		
 		while(dialogues.size() < numberOfDialogues && !abort) {
 			String s = generate(minimumWords,maximumWords);
 			if(s != null) {

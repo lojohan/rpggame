@@ -5,6 +5,7 @@ import java.nio.file.Path;
 
 import static java.nio.file.StandardCopyOption.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 
@@ -44,6 +45,13 @@ public abstract class  Generator {
 		Path source = FileSystems.getDefault().getPath(outputPath, outputName);
 		Path target = FileSystems.getDefault().getPath(outputPath, backupName);
 		try {
+			File f = new File(outputPath+outputName);
+			if(!f.exists()) {
+				gui.appendToTextArea(gui.output, outputName+" does not exist. Creating...\n");
+				f.createNewFile();
+				gui.appendToTextArea(gui.output, "Successfully created "+outputName+"!\n");
+			}
+			
 			Files.copy(source, target, COPY_ATTRIBUTES);
 			gui.appendToTextArea(gui.output, "Backed up "+outputName+" to "+backupName+"!\n");
 			return true;
