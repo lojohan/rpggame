@@ -34,6 +34,8 @@ public class Gui extends JFrame implements ActionListener{
 	
 	JButton abortButton;
 	
+	JButton toggleVerboseButton;
+	
 	TextField recursionDepth;
 	
 	TextField numberOfDialogues;
@@ -42,13 +44,15 @@ public class Gui extends JFrame implements ActionListener{
 	
 	JScrollPane outputPane;
 	
-	boolean verbose = true;
+	boolean verbose = false;
 	
 	Runnable run1 = new GenerateMap();
 	
 	Runnable run2 = new GenerateDialogue();
 	
 	Thread thread = new Thread();
+	
+	Class currentGenerator;
 	
 	public Gui() {
 		super("Gui");
@@ -101,7 +105,7 @@ public class Gui extends JFrame implements ActionListener{
 		
 		abortButton.setBounds(60, 400, 220, 30);
 		
-		c.gridx = 1;
+		c.gridx = 0;
 		c.gridy = 2;
 		c.weightx = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -109,6 +113,19 @@ public class Gui extends JFrame implements ActionListener{
 		mapGenerationPanel.add(abortButton, c);
 		
 		abortButton.addActionListener(this);
+		
+		toggleVerboseButton = new JButton( (verbose ? "verbose" : "simple") );
+		
+		toggleVerboseButton.setBounds(60, 400, 220, 30);
+		
+		c.gridx = 1;
+		c.gridy = 2;
+		c.weightx = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		
+		mapGenerationPanel.add(toggleVerboseButton, c);
+		
+		toggleVerboseButton.addActionListener(this);
 		
 	}
 	
@@ -148,7 +165,7 @@ public class Gui extends JFrame implements ActionListener{
 		outputPane.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
 		
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 3;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		
 		mapGenerationPanel.add(outputPane, c);
@@ -168,12 +185,14 @@ public class Gui extends JFrame implements ActionListener{
 			if(this.thread != null) {
 				if(!this.thread.isAlive()) {
 					thread = new Thread(run1);
+					currentGenerator = MapGenerator.class;
 					thread.start();
 				} else {
 					showThreadBusy(this);
 				}
 			} else {
 				thread = new Thread(run1);
+				currentGenerator = MapGenerator.class;
 				thread.start();
 			}
 			break;
@@ -181,17 +200,28 @@ public class Gui extends JFrame implements ActionListener{
 			if(this.thread != null) {
 				if(!this.thread.isAlive()) {
 					thread = new Thread(run2);
+					currentGenerator = DialogueGenerator.class;
 					thread.start();
 				} else {
 					showThreadBusy(this);
 				}
 			} else {
 				thread = new Thread(run2);
+				currentGenerator = DialogueGenerator.class;
 				thread.start();
 			}
 			break;
 		case "Abort current process":
+			abortGeneration();
 			terminateThread();
+			break;
+		case "verbose":
+			verbose = false;
+			toggleVerboseButton.setText("simple");
+			break;
+		case "simple":
+			verbose = true;
+			toggleVerboseButton.setText("verbose");
 			break;
 		}
 	}
@@ -225,11 +255,6 @@ public class Gui extends JFrame implements ActionListener{
 			if(count > -1) {
 				DialogueGenerator.resetDialogues();
 		    	DialogueGenerator.generateDialogues(count,3,15);
-		    	this.appendToTextArea(this.output, "Generated "+count+" random dialogue strings!\n");
-		    	
-		    	this.appendToTextArea(this.output, "Printing dialogue strings to file...\n");
-		    	DialogueGenerator.printDialoguesToFile();
-		    	this.appendToTextArea(this.output, "Printed dialogue strings to file!\n");
 		    	return true;
 			} else {
 				this.writeToTextArea(this.output, "Input must be a number larger than or equal to 0!");
@@ -280,11 +305,19 @@ public class Gui extends JFrame implements ActionListener{
 		}
 	}
 	
-	// TODO: this does not work. make fix plz.
 	public void terminateThread() {
 		this.thread = null;
-		DialogueGenerator.abort();
-		MapGenerator.abort();
+		
+	}
+
+	public void abortGeneration() {
+		if(this.thread != null && this.thread.isAlive()) {
+			if(currentGenerator.equals(MapGenerator.class)) {
+				MapGenerator.abort();
+			} else if(currentGenerator.equals(DialogueGenerator.class)) {
+				DialogueGenerator.abort();
+			}
+		}
 	}
 	
 	class GenerateDialogue implements Runnable{

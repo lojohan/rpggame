@@ -282,10 +282,19 @@ public class DialogueGenerator extends Generator{
 			if(s != null) {
 				dialogues.add(s);
 			}
-			gui.writeToTextArea(gui.output, "Generating "+numberOfDialogues+" random dialogue strings...\n");
-			gui.appendToTextArea(gui.output, "Progress: "+(100*dialogues.size()/(float)numberOfDialogues)+"%\n");
+			if(!abort) {
+				gui.writeToTextArea(gui.output, "Generating "+numberOfDialogues+" random dialogue strings...\n");
+				gui.appendToTextArea(gui.output, "Progress: "+(100*dialogues.size()/(float)numberOfDialogues)+"%\n");
+			}
 		}
-		onComplete();
+		if(!abort) {
+			gui.appendToTextArea(gui.output, "Generated "+numberOfDialogues+" random dialogue strings!\n");
+	    	
+	    	gui.appendToTextArea(gui.output, "Printing dialogue strings to file...\n");
+	    	DialogueGenerator.printDialoguesToFile();
+	    	gui.appendToTextArea(gui.output, "Printed dialogue strings to file!\n");
+			onComplete();
+		}
 		return true;
 	}
 	

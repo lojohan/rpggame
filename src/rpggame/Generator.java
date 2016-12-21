@@ -26,9 +26,11 @@ public abstract class  Generator {
 	}
 	
 	public static void abort() {
+		gui.appendToTextArea(gui.output, "Aborting generation...\n");
 		abort = true;
 		restorePrevious();
 		eraseBackup();
+		gui.appendToTextArea(gui.output, "Aborted generation!\n");
 	}
 	
 	public static void setFilePaths(String outputPath, String outputName, String backupName) {
@@ -38,39 +40,44 @@ public abstract class  Generator {
 	}
 	
 	public static boolean backupPrevious() {
+		gui.appendToTextArea(gui.output, "Backing up "+outputName+" to "+backupName+"...\n");
 		Path source = FileSystems.getDefault().getPath(outputPath, outputName);
 		Path target = FileSystems.getDefault().getPath(outputPath, backupName);
 		try {
 			Files.copy(source, target, COPY_ATTRIBUTES);
+			gui.appendToTextArea(gui.output, "Backed up "+outputName+" to "+backupName+"!\n");
 			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			gui.appendToTextArea(gui.output, e.getMessage());
 			return false;
 		}
 	}
 	
 	public static boolean eraseBackup() {
+		gui.appendToTextArea(gui.output, "Erasing backup file: "+backupName+"...\n");
 		Path target = FileSystems.getDefault().getPath(outputPath, backupName);
 		try {
 			Files.delete(target);
+			gui.appendToTextArea(gui.output, "Erased backup file: "+backupName+"!\n");
 			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			gui.appendToTextArea(gui.output, e.getMessage());
 			return false;
 		}
 	}
 	
 	public static boolean restorePrevious() {
+		gui.appendToTextArea(gui.output, "Restoring "+outputName+" from "+backupName+"...\n");
 		Path target = FileSystems.getDefault().getPath(outputPath, outputName);
 		Path source = FileSystems.getDefault().getPath(outputPath, backupName);
 		try {
 			Files.copy(source, target, REPLACE_EXISTING);
+			gui.appendToTextArea(gui.output, "Restored "+outputName+" from "+backupName+"!\n");
 			return true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			gui.appendToTextArea(gui.output, e.getMessage());
 			return false;
 		}
 	}
