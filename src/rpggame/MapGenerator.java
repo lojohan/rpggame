@@ -62,7 +62,7 @@ public class MapGenerator {
 		mainWorld.generate(0,null,null);
 		printToFile();
 		
-		gui.appendToTextArea(gui.output, "\n Map Generated!\n");
+		gui.appendToTextArea(gui.output, "\nMap Generated!\n");
 		gui.appendToTextArea(gui.output, "	"+worlds.size()+" worlds generated!\n");
 		gui.appendToTextArea(gui.output, "	"+numberofZones+" zones generated!\n");
 		gui.appendToTextArea(gui.output, "	"+numberofSublevels+" sublevels generated!\n");

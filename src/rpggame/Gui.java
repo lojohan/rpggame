@@ -162,13 +162,13 @@ public class Gui extends JFrame implements ActionListener{
 	
 	public void writeToTextArea(JTextArea ta, String s) {
 		ta.setText(s);
-		//output.setCaretPosition(output.getText().length() - 1);
+		output.setCaretPosition(output.getDocument().getLength());
 		this.output.repaint();
 	}
 	
 	public void appendToTextArea(JTextArea ta, String s) {
 		ta.append(s);
-		//output.setCaretPosition(output.getText().length() - 1);
+		output.setCaretPosition(output.getDocument().getLength());
 		this.output.repaint();
 	}
 	
