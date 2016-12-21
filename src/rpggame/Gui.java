@@ -1,5 +1,9 @@
 package rpggame;
 
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +17,14 @@ import javax.swing.ScrollPaneConstants;
 
 public class Gui extends JFrame implements ActionListener{
 	
-	JPanel mapGenerationPanel = new JPanel();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	JPanel mapGenerationPanel = new JPanel(new GridBagLayout());
+	
+	GridBagConstraints c = new GridBagConstraints();
 	
 	JButton mapGenerationButton;
 	
@@ -47,6 +58,8 @@ public class Gui extends JFrame implements ActionListener{
 		
 		this.setSize(400, 400);
 		
+		this.setResizable(false);
+		
 		MapGenerator.addGui(this);
 		
 		DialogueGenerator.addGui(this);
@@ -58,7 +71,12 @@ public class Gui extends JFrame implements ActionListener{
 		mapGenerationPanel.setBounds(800, 800, 200, 200);
 		mapGenerationButton.setBounds(60, 400, 220, 30);
 		
-		mapGenerationPanel.add(mapGenerationButton);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		
+		mapGenerationPanel.add(mapGenerationButton, c);
 		
 		mapGenerationButton.addActionListener(this);
 		
@@ -66,7 +84,12 @@ public class Gui extends JFrame implements ActionListener{
 		
 		dialogueGenerationButton.setBounds(60, 400, 220, 30);
 		
-		mapGenerationPanel.add(dialogueGenerationButton);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		
+		mapGenerationPanel.add(dialogueGenerationButton, c);
 		
 		dialogueGenerationButton.addActionListener(this);
 		
@@ -85,9 +108,19 @@ public class Gui extends JFrame implements ActionListener{
 		
 		numberOfDialogues.setBounds(60, 400, 220, 30);
 		
-		mapGenerationPanel.add(recursionDepth);
+		c.gridx = 1;
+		c.gridy = 0;
+		c.weightx = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		
-		mapGenerationPanel.add(numberOfDialogues);
+		mapGenerationPanel.add(recursionDepth, c);
+		
+		c.gridx = 1;
+		c.gridy = 1;
+		c.weightx = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		
+		mapGenerationPanel.add(numberOfDialogues, c);
 		
 		output = new JTextArea(16, 58);
 		
@@ -97,7 +130,11 @@ public class Gui extends JFrame implements ActionListener{
 		
 		outputPane.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
 		
-		mapGenerationPanel.add(outputPane);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		
+		mapGenerationPanel.add(outputPane, c);
 		
 		
 	}
