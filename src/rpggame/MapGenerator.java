@@ -60,7 +60,9 @@ public class MapGenerator extends Generator {
 		
 		World mainWorld = new World(worldID,worldID, maximumDepth);
 		mainWorld.generate(0,null,null);
-		printToFile();
+		if(!abort) {
+			printToFile();
+		}
 		
 		gui.appendToTextArea(gui.output, "\nMap Generated!\n");
 		gui.appendToTextArea(gui.output, "	"+worlds.size()+" worlds generated!\n");
@@ -68,11 +70,14 @@ public class MapGenerator extends Generator {
 		gui.appendToTextArea(gui.output, "	"+numberofSublevels+" sublevels generated!\n");
 		gui.appendToTextArea(gui.output, "	"+numberofNPCs+" NPCs generated!\n");
 		
+		onComplete();
+		
 		return true;
 		
 	}
 	
 	public static void reset() {
+		setFilePaths("output/maps/","randommap.txt","randommapbackup.txt");
 		init();
 		clearMapFile();
 		worldID = 0;

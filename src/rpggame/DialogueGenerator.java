@@ -39,6 +39,7 @@ public class DialogueGenerator extends Generator{
 	}
 	
 	public static void resetDialogues() {
+		setFilePaths("output/","RandomDialogues.txt","RandomDialoguesBackup.txt");
 		init();
 		dialogues.clear();
 	}
@@ -290,6 +291,7 @@ public class DialogueGenerator extends Generator{
 			gui.writeToTextArea(gui.output, "Generating "+numberOfDialogues+" random dialogue strings...\n");
 			gui.appendToTextArea(gui.output, "Progress: "+(100*dialogues.size()/(float)numberOfDialogues)+"%\n");
 		}
+		onComplete();
 		return true;
 	}
 	
