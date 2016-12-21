@@ -1,6 +1,7 @@
 package rpggame;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -10,6 +11,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -151,12 +153,16 @@ public class Gui extends JFrame implements ActionListener{
 			if(!thread.isAlive()) {
 				thread = new Thread(run1);
 				thread.start();
+			} else {
+				showThreadBusy(this);
 			}
 			break;
 		case "Generate random dialogues":
 			if(!thread.isAlive()) {
 				thread = new Thread(run2);
 				thread.start();
+			} else {
+				showThreadBusy(this);
 			}
 			break;
 		}
@@ -195,6 +201,17 @@ public class Gui extends JFrame implements ActionListener{
 		} catch(NumberFormatException ex) {
 			ex.getStackTrace();
 		}
+	}
+	
+	public void showThreadBusy(JFrame parent) {
+		final JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
+		writeToTextArea(textArea, "Thread currently busy. "
+				+ "Please wait until current process is done and try again.");
+		JScrollPane scrollPane = new JScrollPane(textArea);
+		scrollPane.setPreferredSize(new Dimension(350,150));
+		
+		JOptionPane.showMessageDialog(parent, scrollPane, "An Error Has Occurred", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	public void writeToTextArea(JTextArea ta, String s) {
